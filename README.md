@@ -1,10 +1,17 @@
 # Partical
 
 This is the SJTU CG final homework —— Partical.  
-It just started and has nothing to show.  
 
 ## Todo List
-* Name
-* Topic
-* framework
-* tutorial
+* 名称
+* 主题
+  * 鱼和海洋
+  * 樱花
+* 框架设计
+* 教程
+
+
+
+##  History
+
+none
