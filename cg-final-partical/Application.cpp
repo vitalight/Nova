@@ -2,54 +2,92 @@
 
 //#define A_LINE
 #define A_DRAW_ELEMENTS 6
-#define A_STRIDE 8
+#define A_STRIDE 5
 #define A_SHADER_VS "glsl/shader.vs"
 #define A_SHADER_FS "glsl/shader.fs"
 
+
+#define A_KEY_W (0x57)
+
 Application::Application()
+	:camera(glm::vec3(0.0f, 0.0f, 3.0f))
+{
+}
+
+void Application::init()
 {
 	// build and compile our shader program
 	// ------------------------------------
 	// vertex shader
 	glewInit();
+	glEnable(GL_DEPTH_TEST);
 	ourShader = new Shader(A_SHADER_VS, A_SHADER_FS);
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
-		// positions		// colors			// texture
-		 0.5f,  0.5f, 0.0f,	1.0f, 0.0f, 0.0f,	1.0f, 1.0f,
- 		 0.5f, -0.5f, 0.0f,	0.0f, 1.0f, 0.0f,	1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,	0.0f, 0.0f, 1.0f,	0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
+
 	unsigned int indices[] = {
 		0, 1, 3,
 		1, 2, 3
 	};
-	unsigned int VBO, EBO;
+	unsigned int VBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), 
-	// and then configure vertex attributes.
+
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, A_STRIDE * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, A_STRIDE * sizeof(float), (void*)(3 * sizeof(float)));
+	// texutre coord attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, A_STRIDE * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	// texutre attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, A_STRIDE * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
 
 	// load and create a texture
 	// -------------------------
@@ -104,6 +142,7 @@ Application::Application()
 	// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
 	// -------------------------------------------------------------------------------------------
 	ourShader->use();
+	ourShader->setInt("texture1", 0);
 	ourShader->setInt("texture2", 1);
 
 #ifdef A_LINE
@@ -113,10 +152,18 @@ Application::Application()
 
 void Application::run()
 {
+	// per-frame time logic
+	// --------------------
+	processKeyboard();
+
+	float currentFrame = getTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+
 	// render
 	// ------
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// now render the triangle
 	glActiveTexture(GL_TEXTURE0);
@@ -124,10 +171,65 @@ void Application::run()
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	// render container
+	// activate shader
 	ourShader->use();
+
+	// create transformations
+	glm::mat4 view = camera.GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)GLUT_SCREEN_WIDTH / (float)GLUT_SCREEN_HEIGHT, 0.1f, 100.0f);
+
+	// pass transformation matrics to the shader
+	ourShader->setMat4("projection", projection);
+	ourShader->setMat4("view", view);
+
+	// render boxes
+	glBindVertexArray(VAO);
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		// calculate the model matrix for each object and pass it to shader before drawing
+		glm::mat4 model;
+		model = glm::translate(model, cubePositions[i]);
+		float angle = 20.0f * i;
+		model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		ourShader->setMat4("model", model);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
+	// create transformations
+	glm::mat4 transform;
+	transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+	transform = glm::rotate(transform, getTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	// get matrix's uniform location and set matrix
+	ourShader->use();
+	unsigned int transformLoc = glGetUniformLocation(ourShader->ID, "transform");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+	// render container
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, A_DRAW_ELEMENTS, GL_UNSIGNED_INT, 0);
 
 	glutSwapBuffers();
+}
+
+float Application::getTime()
+{
+	return glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+}
+
+void Application::processKeyboard()
+{
+	if (GetKeyState('W') < 0) {
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	}
+	if (GetKeyState('S') < 0) {
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	}
+	if (GetKeyState('A') < 0) {
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	}
+	if (GetKeyState('D') < 0) {
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+	}
 }
