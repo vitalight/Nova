@@ -14,13 +14,14 @@
 Mipmap
 =================================================================
 问题：
-[ ] VAO, VBO ?
 [v] glew.h
 	SysWOW64 instead of System32
 [v] exit重定义
 	include iostream before GL
 [v] 键盘延迟
 	GetKeyState()
+[v] obj重定义
+	call和定义的参数类型不同(隐式声明)
 =================================================================
 TODO:
 细分模块

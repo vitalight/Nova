@@ -9,6 +9,7 @@
 #include "includes/glm/gtc/matrix_transform.hpp"
 #include "includes/glm/gtc/type_ptr.hpp"
 
+#include "Model.h"
 #include "Shader.h"
 #include "Camera.h"
 
@@ -45,8 +46,8 @@ private:
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
-	Shader *lightingShader,
-		*lampShader;
+	Shader *ourShader;
+	Model *ourModel;
 
 	int shaderProgram;
 	unsigned int cubeVAO, lightVAO, diffuseMap, specularMap;
