@@ -14,4 +14,4 @@ This is the SJTU CG final homework —— Partical.
 
 ##  History
 
-none
+core-profile mode(核心模式) instead of immediate mode(固定渲染管线)

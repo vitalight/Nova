@@ -153,11 +153,14 @@
     <ClInclude Include="util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSL\shader.fs" />
-    <None Include="GLSL\shader.vs" />
+    <None Include="glsl\lamp.fs" />
+    <None Include="glsl\lamp.vs" />
+    <None Include="GLSL\lighting.fs" />
+    <None Include="GLSL\lighting.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />

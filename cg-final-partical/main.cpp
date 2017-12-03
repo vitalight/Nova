@@ -10,9 +10,11 @@
 2. 樱花
 =================================================================
 优化：
-使用vbo, glsl等底层管线改善性能
+使用vbo, glsl等core-profile改善性能
+Mipmap
 =================================================================
 问题：
+[ ] VAO, VBO ?
 [v] glew.h
 	SysWOW64 instead of System32
 [v] exit重定义
@@ -37,6 +39,8 @@ void display(void)
 	app.run();
 }
 
+// this function doesn't handle movement(like wasd)
+// because it can't complete per frame call
 void keyboardFunc(unsigned char key, int x, int y)
 {
 	switch (key)
@@ -66,10 +70,10 @@ void motionFunc(int x, int y)
 
 int main(int argc, char *argv[])
 {
-	glutInit(&argc, argv);
+	glutInit(&argc, argv); 
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(600, 600);
+	glutInitWindowSize(A_SCR_HEIGHT, A_SCR_WIDTH);
 	glutCreateWindow("Alpha Test");
 
 	std::cout << "Loading application..." << std::endl;
