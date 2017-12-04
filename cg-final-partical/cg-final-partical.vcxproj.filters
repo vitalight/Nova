@@ -39,7 +39,16 @@
     <ClInclude Include="Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="TextRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,12 +71,21 @@
     <None Include="glsl\text.fs">
       <Filter>源文件\glsl</Filter>
     </None>
+    <None Include="asteroids.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="asteroids.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="planet.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="planet.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -79,7 +97,19 @@
     <ClCompile Include="Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

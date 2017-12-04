@@ -1,38 +1,48 @@
-#pragma once
-#include <iostream>
-#include <GL/glew.h>
-#include <GL/glut.h>
+/*******************************************************************
+** This code is part of Breakout.
+**
+** Breakout is free software: you can redistribute it and/or modify
+** it under the terms of the CC BY 4.0 license as published by
+** Creative Commons, either version 4 of the License, or (at your
+** option) any later version.
+******************************************************************/
+#ifndef SHADER_H
+#define SHADER_H
 
 #include <string>
-#include <fstream>
-#include <sstream>
 
-#include "includes/glm/glm.hpp"
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
+
+// General purpsoe shader object. Compiles from file, generates
+// compile/link-time error messages and hosts several utility 
+// functions for easy management.
 class Shader
 {
 public:
-	// the program ID
-	unsigned int ID;
-	
-	// constructor reads and builds the shader
-	Shader(const char* vertexPath, const char* fragmentPath);
-	// use/activate the shader
-	void use();
-	// utility uniform functions
-	void setBool(const std::string &name, bool value) const;
-	void setInt(const std::string &name, int value) const;
-	void setFloat(const std::string &name, float value) const;
-	void setVec2(const std::string &name, const glm::vec2 &value) const;
-	void setVec2(const std::string &name, float x, float y) const;
-	void setVec3(const std::string &name, const glm::vec3 &value) const;
-	void setVec3(const std::string &name, float x, float y, float z) const;
-	void setVec4(const std::string &name, const glm::vec4 &value) const;
-	void setVec4(const std::string &name, float x, float y, float z, float w);
-	void setMat2(const std::string &name, const glm::mat2 &mat) const;
-	void setMat3(const std::string &name, const glm::mat3 &mat) const;
-	void setMat4(const std::string &name, const glm::mat4 &mat) const;
-
+	// State
+	GLuint ID;
+	// Constructor
+	Shader() { }
+	// Sets the current shader as active
+	Shader  &Use();
+	// Compiles the shader from given source code
+	void    Compile(const GLchar *vertexSource, const GLchar *fragmentSource, const GLchar *geometrySource = nullptr); // Note: geometry source code is optional 
+																													   // Utility functions
+	void    SetFloat(const GLchar *name, GLfloat value, GLboolean useShader = false);
+	void    SetInteger(const GLchar *name, GLint value, GLboolean useShader = false);
+	void    SetVector2f(const GLchar *name, GLfloat x, GLfloat y, GLboolean useShader = false);
+	void    SetVector2f(const GLchar *name, const glm::vec2 &value, GLboolean useShader = false);
+	void    SetVector3f(const GLchar *name, GLfloat x, GLfloat y, GLfloat z, GLboolean useShader = false);
+	void    SetVector3f(const GLchar *name, const glm::vec3 &value, GLboolean useShader = false);
+	void    SetVector4f(const GLchar *name, GLfloat x, GLfloat y, GLfloat z, GLfloat w, GLboolean useShader = false);
+	void    SetVector4f(const GLchar *name, const glm::vec4 &value, GLboolean useShader = false);
+	void    SetMatrix4(const GLchar *name, const glm::mat4 &matrix, GLboolean useShader = false);
 private:
-	void checkCompileErrors(unsigned int shader, std::string type);
+	// Checks if compilation or linking failed and if so, print the error logs
+	void    checkCompileErrors(GLuint object, std::string type);
 };
+
+#endif

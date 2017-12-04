@@ -6,8 +6,9 @@ This is the SJTU CG final homework —— Partical.
 * 名称
 * 主题
   * 鱼和海洋
-  * 樱花
+  * 樱花、银杏叶
   * 宇宙与星环
+  * 3D Break Out
 * 框架设计
 * 教程
 

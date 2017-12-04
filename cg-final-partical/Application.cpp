@@ -1,70 +1,144 @@
 #include "Application.h"
 
 //#define A_LINE
-//#define A_DRAW_ELEMENTS 6
-#define A_STRIDE 8
-#define A_KEY_W (0x57)
-#define A_SHADER_VS "glsl/lighting.vs"
-#define A_SHADER_FS "glsl/lighting.fs"
-#define A_LAMP_VS "glsl/lamp.vs"
-#define A_LAMP_FS "glsl/lamp.fs"
 
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+unsigned int amount = 10000;
 
 Application::Application()
-	:camera(glm::vec3(0.0f, 0.0f, 3.0f))
+	:camera(glm::vec3(0.0f, 0.0f, 155.0f))
 {
 }
 
-void Application::init()
+Application::~Application()
 {
-	// build and compile our shader program
-	// ------------------------------------
-	// vertex shader
-	glewInit();
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// to delete
+}
 
-	// build and compile shaders
-	// -------------------------
-	ourShader = new Shader("glsl/text.vs", "glsl/text.fs");
-	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(A_SCR_WIDTH), 0.0f, static_cast<GLfloat>(A_SCR_HEIGHT));
-	ourShader->use();
-	glUniformMatrix4fv(glGetUniformLocation(ourShader->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-	// Configure VAO/VBO for texture quads
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	// initialize renderer
-	renderer = new Renderer(VAO, VBO, ourShader);
+void Application::Init()
+{
+	// Load shaders
+	//ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
 	
+	// Configure shaders
+	//glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(A_SCR_WIDTH), static_cast<GLfloat>(A_SCR_HEIGHT), 0.0f, -1.0f, 1.0f);
+	//ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
+	//ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+	
+	// Load textures
+	//ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
+	
+	// Set render-specific controls
+	//spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+
+	/*=========================================================================================================*/
+	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
+	ResourceManager::LoadShader("glsl/planet.vs", "glsl/planet.fs", nullptr, "planet");
+
+	rock = new Model("resources/objects/rock/rock.obj");
+	planet = new Model("resources/objects/planet/planet.obj");
+
+	glm::mat4* modelMatrices;
+	modelMatrices = new glm::mat4[amount];
+	srand(getTime()); // initialize random seed	
+	float radius = 150.0;
+	float offset = 25.0f;
+	for (unsigned int i = 0; i < amount; i++)
+	{
+		glm::mat4 model;
+		// 1. translation: displace along circle with 'radius' in range [-offset, offset]
+		float angle = (float)i / (float)amount * 360.0f;
+		float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float x = sin(angle) * radius + displacement;
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float y = displacement * 0.4f; // keep height of asteroid field smaller compared to width of x and z
+		displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+		float z = cos(angle) * radius + displacement;
+		model = glm::translate(model, glm::vec3(x, y, z));
+
+		// 2. scale: Scale between 0.05 and 0.25f
+		float scale = (rand() % 20) / 100.0f + 0.05;
+		model = glm::scale(model, glm::vec3(scale));
+
+		// 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
+		float rotAngle = (rand() % 360);
+		model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+
+		// 4. now add to list of matrices
+		modelMatrices[i] = model;
+	}
+
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+	for (unsigned int i = 0; i < rock->meshes.size(); i++)
+	{
+		unsigned int VAO = rock->meshes[i].VAO;
+		glBindVertexArray(VAO);
+		// set attribute pointers for matrix (4 times vec4)
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+		glEnableVertexAttribArray(6);
+		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+		glVertexAttribDivisor(3, 1);
+		glVertexAttribDivisor(4, 1);
+		glVertexAttribDivisor(5, 1);
+		glVertexAttribDivisor(6, 1);
+
+		glBindVertexArray(0);
+	}
+
+	/*=========================================================================================================*/
+	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
+	textRenderer->Load("resources/fonts/arial.ttf", 24);
+
 #ifdef A_LINE
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 #endif
 }
 
-void Application::run()
+void Application::Update()
 {
 	// per-frame logic
 	// --------------------
 	processKeyboard();
 
-	// render
-	// ------
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	/*=========================================================================================================*/
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
+	glm::mat4 view = camera.GetViewMatrix();
+	ResourceManager::GetShader("asteroids").Use().SetMatrix4("projection", projection);
+	ResourceManager::GetShader("asteroids").SetMatrix4("view", view);
+
+	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
+	ResourceManager::GetShader("planet").SetMatrix4("view", view);
+
+	// draw planet
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
+
+	ResourceManager::GetShader("planet").SetMatrix4("model", model);
+	planet->Draw(ResourceManager::GetShader("planet"));
+
+	// draw meteorites
+	ResourceManager::GetShader("asteroids").Use().SetInteger("texture_diffuse1", 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, rock->textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
+	for (unsigned int i = 0; i < rock->meshes.size(); i++)
+	{
+		glBindVertexArray(rock->meshes[i].VAO);
+		glDrawElementsInstanced(GL_TRIANGLES, rock->meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
+		glBindVertexArray(0);
+	}
+	/*=========================================================================================================*/
 
 	showFPS();
-	glutSwapBuffers();
 }
 
 float Application::getTime()
@@ -108,43 +182,6 @@ void Application::showFPS()
 		lastTime = lastFrame;
 		frameCnt = 0;
 	}
-	renderer->renderText(*ourShader, "FPS: " + to_string(fps), 25.0f, A_SCR_HEIGHT - 25.0f, 0.5f, glm::vec3(1, 1, 1));
+	textRenderer->RenderText("FPS: " + to_string(fps), 25.0f, 25.0f, 0.6f, glm::vec3(1, 1, 1));
 
-}
-
-unsigned int Application::loadTexture(char const * path)
-{
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-
-	int width, height, nrComponents;
-	unsigned char *data = stbi_load(path, &width, &height, &nrComponents, 0);
-	if (data)
-	{
-		GLenum format;
-		if (nrComponents == 1)
-			format = GL_RED;
-		else if (nrComponents == 3)
-			format = GL_RGB;
-		else if (nrComponents == 4)
-			format = GL_RGBA;
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		stbi_image_free(data);
-	}
-	else
-	{
-		std::cout << "Texture failed to load at path: " << path << std::endl;
-		stbi_image_free(data);
-	}
-
-	return textureID;
 }

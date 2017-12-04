@@ -22,6 +22,10 @@ Mipmap
 	GetKeyState()
 [v] obj重定义
 	call和定义的参数类型不同(隐式声明)
+[v] gl卡死
+	glewInit()!
+[v] 不显示
+	clearDepthBufferBit
 =================================================================
 TODO:
 实例化！！！！！超厉害的粒子效果
@@ -40,7 +44,10 @@ int lastX, lastY;
 
 void display(void)
 {
-	app.run();
+	glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	app.Update();
+	glutSwapBuffers();
 }
 
 // this function doesn't handle movement(like wasd)
@@ -74,14 +81,23 @@ void motionFunc(int x, int y)
 
 int main(int argc, char *argv[])
 {
-	glutInit(&argc, argv); 
+	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(A_SCR_WIDTH, A_SCR_HEIGHT);
-	glutCreateWindow("Alpha Test");
+	glutCreateWindow("Day 0");
+
+	glewExperimental = GL_TRUE;
+	glewInit();
+	glGetError();
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	std::cout << "Loading application..." << std::endl;
-	app.init();
+	app.Init();
 
 	glutDisplayFunc(display);
 	glutIdleFunc(display);
