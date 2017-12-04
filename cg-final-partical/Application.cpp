@@ -34,8 +34,8 @@ void Application::Init()
 	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
 	ResourceManager::LoadShader("glsl/planet.vs", "glsl/planet.fs", nullptr, "planet");
 
-	rock = new Model("resources/objects/rock/rock.obj");
-	planet = new Model("resources/objects/planet/planet.obj");
+	rock = new Model("resources/objects/rock/rock.obj", ResourceManager::GetShader("asteroids"));
+	planet = new Model("resources/objects/planet/planet.obj", ResourceManager::GetShader("planet"));
 
 	glm::mat4* modelMatrices;
 	modelMatrices = new glm::mat4[amount];
@@ -119,12 +119,7 @@ void Application::Update()
 	ResourceManager::GetShader("planet").SetMatrix4("view", view);
 
 	// draw planet
-	glm::mat4 model;
-	model = glm::translate(model, glm::vec3(0.0f, -3.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
-
-	ResourceManager::GetShader("planet").SetMatrix4("model", model);
-	planet->Draw(ResourceManager::GetShader("planet"));
+	planet->Draw(glm::vec3(0, -20, 0) ,glm::vec3(15, 15, 15), getTime()/10.0, glm::vec3(0, 1, 0));
 
 	// draw meteorites
 	ResourceManager::GetShader("asteroids").Use().SetInteger("texture_diffuse1", 0);

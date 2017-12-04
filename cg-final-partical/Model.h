@@ -30,20 +30,40 @@ public:
 
 	/*  Functions   */
 	// constructor, expects a filepath to a 3D model.
-	Model(string const &path, bool gamma = false) : gammaCorrection(gamma)
+	Model(string const &path, Shader &shader, bool gamma = false) : gammaCorrection(gamma)
 	{
 		cout << "Loading from [" << path << "]..." << endl;
+		this->shader = shader;
 		loadModel(path);
 	}
 
 	// draws the model, and thus all its meshes
-	void Draw(Shader shader)
+	void Draw(glm::vec3 position = glm::vec3(0, 0, 0), 
+		      glm::vec3 size = glm::vec3(1, 1, 1), 
+		      GLfloat rotate = 0.0f, 
+		      glm::vec3 axis = glm::vec3(0.0f, 0.0f, 1.0f))
 	{
+		this->shader.Use();
+		glm::mat4 model;
+		// First translate (transformations are: scale happens first, then rotation and then finall translation happens; reversed order)
+		model = glm::translate(model, glm::vec3(position));
+		// Move origin of rotation to center of quad
+		model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+		// Then rotate
+		model = glm::rotate(model, rotate, axis);
+		// Move origin back
+		model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+		// Last scale
+		model = glm::scale(model, glm::vec3(size));
+		this->shader.SetMatrix4("model", model);
+
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].Draw(shader);
 	}
 
 private:
+	Shader shader;
+
 	/*  Functions   */
 	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const &path)
