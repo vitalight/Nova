@@ -8,22 +8,15 @@
 #include "includes/glm/glm.hpp"
 #include "includes/glm/gtc/matrix_transform.hpp"
 #include "includes/glm/gtc/type_ptr.hpp"
-#include <ft2build.h>
-#include FT_FREETYPE_H
+
 
 #include "Model.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Renderer.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
-
-struct Character {
-	GLuint TextureID;   // ID handle of the glyph texture
-	glm::ivec2 Size;    // Size of glyph
-	glm::ivec2 Bearing;  // Offset from baseline to left/top of glyph
-	GLuint Advance;    // Horizontal offset to advance to next glyph
-};
 
 class Application {
 public:
@@ -55,6 +48,7 @@ private:
 		glm::vec3(0.0f,  0.0f, -3.0f)
 	};
 
+	Renderer *renderer;
 	Shader *ourShader;
 	Model *ourModel;
 
@@ -64,7 +58,6 @@ private:
 		lastFrame = 0;
 	std::map<GLchar, Character> Characters;
 
-	void renderText(Shader &shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 	void showFPS();
 	float getTime();
 	void processKeyboard();
