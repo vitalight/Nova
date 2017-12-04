@@ -24,9 +24,12 @@ Mipmap
 	call和定义的参数类型不同(隐式声明)
 =================================================================
 TODO:
+实例化！！！！！超厉害的粒子效果
 细分模块
 拆分h->h+cpp
 支持滚轮？
+glEnable(GL_CULL_FACE); 面剔除
+立方体贴图 天空盒
 *****************************************************************/
 
 #define KEY_EXIT 27
@@ -74,7 +77,7 @@ int main(int argc, char *argv[])
 	glutInit(&argc, argv); 
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(A_SCR_HEIGHT, A_SCR_WIDTH);
+	glutInitWindowSize(A_SCR_WIDTH, A_SCR_HEIGHT);
 	glutCreateWindow("Alpha Test");
 
 	std::cout << "Loading application..." << std::endl;

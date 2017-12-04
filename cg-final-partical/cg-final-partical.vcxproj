@@ -74,9 +74,12 @@
     <LibraryPath>F:\MyCodes\cg-final-partical\cg-final-partical\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>F:\MyCodes\cg-final-partical\cg-final-partical\includes;$(IncludePath)</IncludePath>
     <ExecutablePath>F:\MyCodes\cg-final-partical\cg-final-partical\dll;$(ExecutablePath)</ExecutablePath>
+    <ReferencePath>F:\MyCodes\cg-final-partical\cg-final-partical\lib;$(VC_ReferencesPath_x86);</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>F:\MyCodes\cg-final-partical\cg-final-partical\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\MyCodes\cg-final-partical\cg-final-partical\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,7 +99,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype271.lib;assimp.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,6 +114,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glut.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -162,6 +166,8 @@
     <None Include="glsl\lamp.vs" />
     <None Include="GLSL\lighting.fs" />
     <None Include="GLSL\lighting.vs" />
+    <None Include="glsl\text.fs" />
+    <None Include="glsl\text.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
