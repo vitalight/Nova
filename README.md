@@ -9,8 +9,7 @@ This is the SJTU CG final homework —— Partical.
   * 樱花、银杏叶
   * 宇宙与星环
   * 3D Break Out
-* 框架设计
-* 教程
+  * 特效打架
 
 
 

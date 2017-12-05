@@ -166,16 +166,16 @@
     <ClInclude Include="util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="asteroids.fs" />
-    <None Include="asteroids.vs" />
+    <None Include="glsl\asteroids.fs" />
+    <None Include="glsl\asteroids.vs" />
     <None Include="glsl\lamp.fs" />
     <None Include="glsl\lamp.vs" />
     <None Include="GLSL\lighting.fs" />
     <None Include="GLSL\lighting.vs" />
+    <None Include="glsl\planet.fs" />
+    <None Include="glsl\planet.vs" />
     <None Include="glsl\text.fs" />
     <None Include="glsl\text.vs" />
-    <None Include="planet.fs" />
-    <None Include="planet.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

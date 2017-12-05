@@ -71,16 +71,16 @@
     <None Include="glsl\text.fs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="asteroids.vs">
+    <None Include="glsl\asteroids.fs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="asteroids.fs">
+    <None Include="glsl\asteroids.vs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="planet.vs">
+    <None Include="glsl\planet.fs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="planet.fs">
+    <None Include="glsl\planet.vs">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>

@@ -38,4 +38,7 @@ private:
 	void showFPS();
 	float getTime();
 	void processKeyboard();
+
+	void prepareAsteroids();
+	void drawAsteroids();
 };

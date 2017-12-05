@@ -15,33 +15,93 @@ Application::~Application()
 }
 
 void Application::Init()
-{
-	// Load shaders
-	//ResourceManager::LoadShader("shaders/sprite.vs", "shaders/sprite.frag", nullptr, "sprite");
-	
-	// Configure shaders
-	//glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(A_SCR_WIDTH), static_cast<GLfloat>(A_SCR_HEIGHT), 0.0f, -1.0f, 1.0f);
-	//ResourceManager::GetShader("sprite").Use().SetInteger("image", 0);
-	//ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
-	
-	// Load textures
-	//ResourceManager::LoadTexture("textures/awesomeface.png", GL_TRUE, "face");
-	
+{	
 	// Set render-specific controls
 	//spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 
-	/*=========================================================================================================*/
-	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
 	ResourceManager::LoadShader("glsl/planet.vs", "glsl/planet.fs", nullptr, "planet");
+	planet = new Model("resources/objects/yingcao/yingcao.obj", ResourceManager::GetShader("planet"));
 
+	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
+	textRenderer->Load("resources/fonts/arial.ttf", 24);
+
+#ifdef A_LINE
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#endif
+}
+
+void Application::Update()
+{
+	// per-frame logic
+	// --------------------
+	processKeyboard();
+
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
+	glm::mat4 view = camera.GetViewMatrix();
+
+	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
+	ResourceManager::GetShader("planet").SetMatrix4("view", view);
+	// draw planet
+	planet->Draw(glm::vec3(0, -20, 0), glm::vec3(15, 15, 15), getTime() / 10.0, glm::vec3(0, 1, 0));
+
+	showFPS();
+}
+
+float Application::getTime()
+{
+	return glutGet(GLUT_ELAPSED_TIME) / 1000.0;
+}
+
+void Application::processKeyboard()
+{
+	float currentFrame = getTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+
+	if (GetKeyState('W') < 0) {
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	}
+	if (GetKeyState('S') < 0) {
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	}
+	if (GetKeyState('A') < 0) {
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	}
+	if (GetKeyState('D') < 0) {
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+	}
+	if (GetKeyState('Q') < 0) {
+		camera.ProcessKeyboard(UP, deltaTime);
+	}
+	if (GetKeyState('E') < 0) {
+		camera.ProcessKeyboard(DOWN, deltaTime);
+	}
+}
+
+void Application::showFPS()
+{
+	frameCnt++;
+	if (lastFrame - lastTime > 1)
+	{
+		//cout << "gotcha" << endl;
+		fps = frameCnt / (lastFrame - lastTime);
+		lastTime = lastFrame;
+		frameCnt = 0;
+	}
+	textRenderer->RenderText("FPS: " + to_string(fps), 25.0f, 25.0f, 0.6f, glm::vec3(1, 1, 1));
+
+}
+
+void Application::prepareAsteroids()
+{
+	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
 	rock = new Model("resources/objects/rock/rock.obj", ResourceManager::GetShader("asteroids"));
-	planet = new Model("resources/objects/planet/planet.obj", ResourceManager::GetShader("planet"));
 
 	glm::mat4* modelMatrices;
 	modelMatrices = new glm::mat4[amount];
 	srand(getTime()); // initialize random seed	
-	float radius = 150.0;
-	float offset = 25.0f;
+	float radius = 100.0;
+	float offset = 15.0f;
 	for (unsigned int i = 0; i < amount; i++)
 	{
 		glm::mat4 model;
@@ -93,36 +153,16 @@ void Application::Init()
 
 		glBindVertexArray(0);
 	}
-
-	/*=========================================================================================================*/
-	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
-	textRenderer->Load("resources/fonts/arial.ttf", 24);
-
-#ifdef A_LINE
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-#endif
 }
 
-void Application::Update()
+void Application::drawAsteroids()
 {
-	// per-frame logic
-	// --------------------
-	processKeyboard();
-
-	/*=========================================================================================================*/
+	// draw meteorites
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
 	glm::mat4 view = camera.GetViewMatrix();
 	ResourceManager::GetShader("asteroids").Use().SetMatrix4("projection", projection);
 	ResourceManager::GetShader("asteroids").SetMatrix4("view", view);
-
-	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
-	ResourceManager::GetShader("planet").SetMatrix4("view", view);
-
-	// draw planet
-	planet->Draw(glm::vec3(0, -20, 0) ,glm::vec3(15, 15, 15), getTime()/10.0, glm::vec3(0, 1, 0));
-
-	// draw meteorites
-	ResourceManager::GetShader("asteroids").Use().SetInteger("texture_diffuse1", 0);
+	ResourceManager::GetShader("asteroids").SetInteger("texture_diffuse1", 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, rock->textures_loaded[0].id); // note: we also made the textures_loaded vector public (instead of private) from the model class.
 	for (unsigned int i = 0; i < rock->meshes.size(); i++)
@@ -131,52 +171,4 @@ void Application::Update()
 		glDrawElementsInstanced(GL_TRIANGLES, rock->meshes[i].indices.size(), GL_UNSIGNED_INT, 0, amount);
 		glBindVertexArray(0);
 	}
-	/*=========================================================================================================*/
-
-	showFPS();
-}
-
-float Application::getTime()
-{
-	return glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-}
-
-void Application::processKeyboard()
-{
-	float currentFrame = getTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-
-	if (GetKeyState('W') < 0) {
-		camera.ProcessKeyboard(FORWARD, deltaTime);
-	}
-	if (GetKeyState('S') < 0) {
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	}
-	if (GetKeyState('A') < 0) {
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	}
-	if (GetKeyState('D') < 0) {
-		camera.ProcessKeyboard(RIGHT, deltaTime);
-	}
-	if (GetKeyState('Q') < 0) {
-		camera.ProcessKeyboard(UP, deltaTime);
-	}
-	if (GetKeyState('E') < 0) {
-		camera.ProcessKeyboard(DOWN, deltaTime);
-	}
-}
-
-void Application::showFPS()
-{
-	frameCnt++;
-	if (lastFrame - lastTime > 1)
-	{
-		//cout << "gotcha" << endl;
-		fps = frameCnt / (lastFrame - lastTime);
-		lastTime = lastFrame;
-		frameCnt = 0;
-	}
-	textRenderer->RenderText("FPS: " + to_string(fps), 25.0f, 25.0f, 0.6f, glm::vec3(1, 1, 1));
-
 }
