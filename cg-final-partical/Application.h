@@ -14,6 +14,9 @@
 #include "TextRenderer.h"
 #include "Light.h"
 #include "Entity.h"
+#include "Terrain.h"
+#include "TerrainRenderer.h"
+#include "TerrainGenerator.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000

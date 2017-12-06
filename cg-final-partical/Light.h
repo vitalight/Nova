@@ -6,15 +6,14 @@
 class Light
 {
 public:
-	Light(glm::vec3 position, glm::vec3 color, glm::vec3 attenuation = glm::vec3(1, 0, 0))
+	glm::vec3 Direction;
+	glm::vec3 Color;
+	glm::vec2 LightBias;
+
+	Light(glm::vec3 direction, glm::vec3 color, glm::vec2 lightBias)
+		:Direction(direction), Color(color), LightBias(lightBias)
 	{
-		this->Position = position;
-		this->Color = color;
-		this->Attenuation = attenuation;
 	}
 
-	glm::vec3 Position;
-	glm::vec3 Color;
-	glm::vec3 Attenuation;
 };
 

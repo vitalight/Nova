@@ -54,6 +54,27 @@
     <ClInclude Include="Entity.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Configs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainGenerator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicesGenerator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorGenerator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\asteroids.fs">
@@ -72,6 +93,12 @@
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\2dVertex.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\terrainVertex.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\terrainFragment.glsl">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>
@@ -101,6 +128,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

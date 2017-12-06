@@ -1,8 +1,21 @@
 #include "Application.h"
 
 //#define A_LINE
+#define A_LIGHT_POS (glm::vec3(0.3f, -1.0f, 0.5f))
+#define A_LIGHT_COL (glm::vec3(1.0f, 0.8f, 0.8f))
+#define A_LIGHT_BIAS (glm::vec2(0.3f, 0.8f))
 
-unsigned int amount = 10000;
+#define A_OCTAVES 3
+#define A_AMPLITUDE 10
+#define A_ROUGHNESS (0.35f)
+
+
+glm::vec3 A_TERRAIN_COLS[4] = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 255.0f),
+								glm::vec3(135 / 255.0f, 184 / 255.0f, 82 / 255.0f),
+								glm::vec3(120 / 255.0f, 120 / 255.0f, 120 / 255.0f),
+								glm::vec3(200 / 255.0f, 200 / 255.0f, 210 / 255.0f) };
+#define A_COLOR_SPREAD ()
+#define A_TERRAIN_SIZE 100
 
 Application::Application()
 	:camera(glm::vec3(0.0f, 0.0f, 0.0f))
@@ -18,10 +31,15 @@ void Application::Init()
 {	
 	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
 	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
-	planet = new Model("resources/objects/house/house.x", ResourceManager::GetShader("basic"));
+	
+	//planet = new Model("resources/objects/house/house.x", ResourceManager::GetShader("basic"));
+	light = new Light(A_LIGHT_POS, A_LIGHT_COL, A_LIGHT_BIAS);
+	
+	//PerlinNoise noise = new PerlinNoise(A_OCTAVES, A_AMPLITUDE, A_ROUGHNESS);
+	//ColorGenerator colorGen = new ColorGenerator(A_TERRAIN_COLS, A_COLOR_SPREAD);
 
-	light = new Light(glm::vec3(100, 100, 100), glm::vec3(1.3f, 1.3f, 1.3f));
-	house = new Entity(planet, glm::vec3(0, 0, 0), glm::vec3(0.1, 0.1, 0.1), 0, glm::vec3(0, 1, 0));
+	TerrainGenerator terrainGenerator = new TerrainGenerator(noise, colorGen);
+	Terrain terrain = terrainGenerator.generateTerrain(A_TERRAIN_SIZE);
 
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
@@ -38,14 +56,6 @@ void Application::Update()
 
 	processKeyboard();
 
-	// player.move
-	// camera.move
-	// picker.update
-	// entity?
-
-	// render water reflection texture
-
-	// renderer.render
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
 	glm::mat4 view = camera.GetViewMatrix();

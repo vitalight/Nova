@@ -156,11 +156,18 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorGenerator.h" />
+    <ClInclude Include="Configs.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="IndicesGenerator.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TerrainGenerator.h" />
+    <ClInclude Include="TerrainRenderer.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
@@ -173,6 +180,8 @@
     <None Include="glsl\basicVertex.glsl" />
     <None Include="glsl\2dFragment.glsl" />
     <None Include="glsl\2dVertex.glsl" />
+    <None Include="glsl\terrainFragment.glsl" />
+    <None Include="glsl\terrainVertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -180,6 +189,8 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TerrainRenderer.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
