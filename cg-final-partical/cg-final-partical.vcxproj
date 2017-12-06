@@ -156,10 +156,11 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
@@ -168,21 +169,17 @@
   <ItemGroup>
     <None Include="glsl\asteroids.fs" />
     <None Include="glsl\asteroids.vs" />
-    <None Include="glsl\lamp.fs" />
-    <None Include="glsl\lamp.vs" />
-    <None Include="GLSL\lighting.fs" />
-    <None Include="GLSL\lighting.vs" />
-    <None Include="glsl\planet.fs" />
-    <None Include="glsl\planet.vs" />
-    <None Include="glsl\text.fs" />
-    <None Include="glsl\text.vs" />
+    <None Include="glsl\basicFragment.glsl" />
+    <None Include="glsl\basicVertex.glsl" />
+    <None Include="glsl\2dFragment.glsl" />
+    <None Include="glsl\2dVertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />

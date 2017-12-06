@@ -71,6 +71,7 @@ private:
 		// read file via ASSIMP
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		//cout << "Model:: assimp read scene" << endl;
 		// check for errors
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 		{
@@ -81,7 +82,9 @@ private:
 		directory = path.substr(0, path.find_last_of('/'));
 
 		// process ASSIMP's root node recursively
+		//cout << "Model:: before processNode" << endl;
 		processNode(scene->mRootNode, scene);
+		//cout << "Model:: after processNode" << endl;
 	}
 
 	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
@@ -110,6 +113,7 @@ private:
 		vector<unsigned int> indices;
 		vector<Texture> textures;
 
+		//cout << "Model:: processMesh" << endl;
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -120,11 +124,13 @@ private:
 			vector.y = mesh->mVertices[i].y;
 			vector.z = mesh->mVertices[i].z;
 			vertex.Position = vector;
+			//cout << "Model:: inloop 3" << endl;
 			// normals
 			vector.x = mesh->mNormals[i].x;
 			vector.y = mesh->mNormals[i].y;
 			vector.z = mesh->mNormals[i].z;
 			vertex.Normal = vector;
+			//cout << "Model:: inloop 2" << endl;
 			// texture coordinates
 			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 			{
@@ -149,6 +155,7 @@ private:
 			vertex.Bitangent = vector;
 			vertices.push_back(vertex);
 		}
+		//cout << "Model:: flag 1" << endl;
 		// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 		{
@@ -158,15 +165,19 @@ private:
 				indices.push_back(face.mIndices[j]);
 		}
 		// process materials
+		//cout << "Model:: flag 2" << endl;
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		Material myMaterial = loadMaterialColors(material);
 		// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
 		// Same applies to other texture as the following list summarizes:
 		// diffuse: texture_diffuseN
 		// specular: texture_specularN
 		// normal: texture_normalN
-
+		
 		// 1. diffuse maps
+		//cout << "Model:: in maps" << endl;
+	
 		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		// 2. specular maps
@@ -179,8 +190,9 @@ private:
 		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+		//cout << "Model:: out maps" << endl;
 		// return a mesh object created from the extracted mesh data
-		return Mesh(vertices, indices, textures);
+		return Mesh(vertices, indices, textures, myMaterial);
 	}
 
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -214,6 +226,19 @@ private:
 			}
 		}
 		return textures;
+	}
+
+	Material loadMaterialColors(aiMaterial *mat)
+	{
+		Material myMaterial;
+		aiColor4D color;
+		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
+		myMaterial.ambient = glm::vec3(color.r, color.g, color.b);
+		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		myMaterial.diffuse = glm::vec3(color.r, color.g, color.b);
+		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
+		myMaterial.specular = glm::vec3(color.r, color.g, color.b);
+		return myMaterial;
 	}
 
 	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false)

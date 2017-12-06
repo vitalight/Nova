@@ -5,6 +5,7 @@
 #include "Application.h"
 
 /****************************************************************
+NOVA
 =================================================================
 优化：
 使用vbo, glsl等core-profile改善性能
@@ -23,6 +24,11 @@ Mipmap
 	glewInit()!
 [v] 不显示
 	clearDepthBufferBit
+[v] assimp读取材料色
+	很辛苦的看document
+[v] model load in error
+	全部合并后导出obj
+	或者.x格式！
 =================================================================
 TODO:
 细分模块
@@ -37,6 +43,7 @@ ResourceManager 管理纹理
 
 Application app;
 bool firstMouse = true;
+bool polygonMode = false;
 int lastX, lastY;
 
 void display(void)
@@ -55,6 +62,15 @@ void keyboardFunc(unsigned char key, int x, int y)
 	{
 	case KEY_EXIT:
 		exit(0);
+	case '1':
+		if (polygonMode) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			polygonMode = false;
+		}
+		else {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			polygonMode = true;
+		}
 	}
 }
 

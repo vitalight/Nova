@@ -48,39 +48,30 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRenderer.h">
+    <ClInclude Include="Light.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GLSL\lighting.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="GLSL\lighting.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\lamp.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\lamp.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\text.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\text.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
     <None Include="glsl\asteroids.fs">
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\asteroids.vs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="glsl\planet.fs">
+    <None Include="glsl\basicFragment.glsl">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="glsl\planet.vs">
+    <None Include="glsl\basicVertex.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\2dFragment.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\2dVertex.glsl">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>
@@ -109,7 +100,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="SpriteRenderer.cpp">
+    <ClCompile Include="Entity.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

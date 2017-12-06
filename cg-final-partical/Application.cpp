@@ -5,7 +5,7 @@
 unsigned int amount = 10000;
 
 Application::Application()
-	:camera(glm::vec3(0.0f, 0.0f, 155.0f))
+	:camera(glm::vec3(0.0f, 0.0f, 0.0f))
 {
 }
 
@@ -16,11 +16,12 @@ Application::~Application()
 
 void Application::Init()
 {	
-	// Set render-specific controls
-	//spriteRenderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
+	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
+	planet = new Model("resources/objects/house/house.x", ResourceManager::GetShader("basic"));
 
-	ResourceManager::LoadShader("glsl/planet.vs", "glsl/planet.fs", nullptr, "planet");
-	planet = new Model("resources/objects/yingcao/yingcao.obj", ResourceManager::GetShader("planet"));
+	light = new Light(glm::vec3(100, 100, 100), glm::vec3(1.3f, 1.3f, 1.3f));
+	house = new Entity(planet, glm::vec3(0, 0, 0), glm::vec3(0.1, 0.1, 0.1), 0, glm::vec3(0, 1, 0));
 
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
@@ -34,7 +35,17 @@ void Application::Update()
 {
 	// per-frame logic
 	// --------------------
+
 	processKeyboard();
+
+	// player.move
+	// camera.move
+	// picker.update
+	// entity?
+
+	// render water reflection texture
+
+	// renderer.render
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
 	glm::mat4 view = camera.GetViewMatrix();
@@ -42,7 +53,7 @@ void Application::Update()
 	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
 	ResourceManager::GetShader("planet").SetMatrix4("view", view);
 	// draw planet
-	planet->Draw(glm::vec3(0, -20, 0), glm::vec3(15, 15, 15), getTime() / 10.0, glm::vec3(0, 1, 0));
+	house->Draw();
 
 	showFPS();
 }

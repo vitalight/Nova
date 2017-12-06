@@ -11,8 +11,9 @@
 #include "Model.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "SpriteRenderer.h"
 #include "TextRenderer.h"
+#include "Light.h"
+#include "Entity.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
@@ -27,8 +28,9 @@ public:
 	void Update();
 private:
 	Model *planet, *rock;
-	SpriteRenderer *spriteRenderer;
 	TextRenderer *textRenderer;
+	Light *light;
+	Entity *house;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;
