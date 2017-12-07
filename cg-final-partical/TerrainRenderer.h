@@ -12,8 +12,8 @@ public:
 	bool hasIndices;
 
 	TerrainRenderer(Shader *shader, bool hasIndices);
-	void render(Terrain terrain, Camera camera, Light light);
-	void prepare(Terrain terrain, Camera camera, Light light);
-	void finish(Terrain terrain);
+	void render(Terrain *terrain, Camera *camera, Light *light);
+	void prepare(Terrain *terrain, Camera *camera, Light *light);
+	void finish(Terrain *terrain);
 };
 

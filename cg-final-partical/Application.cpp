@@ -10,15 +10,14 @@
 #define A_ROUGHNESS (0.35f)
 
 
-glm::vec3 A_TERRAIN_COLS[4] = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 255.0f),
+vector<glm::vec3> A_TERRAIN_COLS = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 255.0f),
 								glm::vec3(135 / 255.0f, 184 / 255.0f, 82 / 255.0f),
 								glm::vec3(120 / 255.0f, 120 / 255.0f, 120 / 255.0f),
 								glm::vec3(200 / 255.0f, 200 / 255.0f, 210 / 255.0f) };
-#define A_COLOR_SPREAD ()
+#define A_COLOR_SPREAD (0.45f)
 #define A_TERRAIN_SIZE 100
 
 Application::Application()
-	:camera(glm::vec3(0.0f, 0.0f, 0.0f))
 {
 }
 
@@ -34,12 +33,13 @@ void Application::Init()
 	
 	//planet = new Model("resources/objects/house/house.x", ResourceManager::GetShader("basic"));
 	light = new Light(A_LIGHT_POS, A_LIGHT_COL, A_LIGHT_BIAS);
+	camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f));
 	
-	//PerlinNoise noise = new PerlinNoise(A_OCTAVES, A_AMPLITUDE, A_ROUGHNESS);
-	//ColorGenerator colorGen = new ColorGenerator(A_TERRAIN_COLS, A_COLOR_SPREAD);
+	PerlinNoise noise(A_OCTAVES, A_AMPLITUDE, A_ROUGHNESS);
+	ColorGenerator colorGen(A_TERRAIN_COLS, A_COLOR_SPREAD);
 
-	TerrainGenerator terrainGenerator = new TerrainGenerator(noise, colorGen);
-	Terrain terrain = terrainGenerator.generateTerrain(A_TERRAIN_SIZE);
+	TerrainGenerator terrainGenerator(&noise, &colorGen, new IndicesGenerator());
+	Terrain *terrain = terrainGenerator.createTerrain(A_TERRAIN_SIZE);
 
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
@@ -58,12 +58,12 @@ void Application::Update()
 
 
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
-	glm::mat4 view = camera.GetViewMatrix();
+	glm::mat4 view = camera->GetViewMatrix();
 
 	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
 	ResourceManager::GetShader("planet").SetMatrix4("view", view);
 	// draw planet
-	house->Draw();
+	terrain->render(camera, light);
 
 	showFPS();
 }

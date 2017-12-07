@@ -17,13 +17,14 @@
 #include "Terrain.h"
 #include "TerrainRenderer.h"
 #include "TerrainGenerator.h"
+#include "IndicesGenerator.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
 
 class Application {
 public:
-	Camera camera;
+	Camera *camera;
 
 	Application();
 	~Application();
@@ -31,6 +32,7 @@ public:
 	void Update();
 private:
 	Model *planet, *rock;
+	Terrain *terrain;
 	TextRenderer *textRenderer;
 	Light *light;
 	Entity *house;
