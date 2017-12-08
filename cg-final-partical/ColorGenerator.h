@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include <iostream>
 #include "includes/glm/glm.hpp"
 #include <vector>
@@ -57,10 +57,10 @@ public:
 
 	glm::vec3 interpolateColors(glm::vec3 color1, glm::vec3 color2, float blend)
 	{
-		float colour1Weight = 1 - blend;
-		float r = (colour1Weight * color1.x) + (blend * color2.x);
-		float g = (colour1Weight * color1.y) + (blend * color2.y);
-		float b = (colour1Weight * color1.z) + (blend * color2.z);
+		float color1Weight = 1 - blend;
+		float r = (color1Weight * color1.x) + (blend * color2.x);
+		float g = (color1Weight * color1.y) + (blend * color2.y);
+		float b = (color1Weight * color1.z) + (blend * color2.z);
 		return glm::vec3(r, g, b);
 	}
-};
+};*/

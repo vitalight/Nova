@@ -1,9 +1,10 @@
 #include "Application.h"
 
 //#define A_LINE
-#define A_LIGHT_POS (glm::vec3(0.3f, -1.0f, 0.5f))
+#define A_LIGHT_DIR (glm::vec3(-1.0f, -1.0f, -2.0f))
 #define A_LIGHT_COL (glm::vec3(1.0f, 0.8f, 0.8f))
-#define A_LIGHT_BIAS (glm::vec2(0.3f, 0.8f))
+#define A_LIGHT_BIAS (glm::vec2(0.6f, 0.4f))
+#define A_LINE_DIRECTION (glm::vec3(-1, -1, 0))
 
 #define A_OCTAVES 3
 #define A_AMPLITUDE 10
@@ -29,17 +30,18 @@ Application::~Application()
 void Application::Init()
 {	
 	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
-	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
+	ResourceManager::LoadShader("glsl/normalVertex.glsl", "glsl/normalFragment.glsl", "glsl/normalGeometry.glsl", "normal");
+	ResourceManager::LoadModel("resources/objects/house/house.x", "house", "basic");
+	ResourceManager::LoadModel("resources/objects/tree.x", "tree", "basic");
+	ResourceManager::LoadModel("resources/objects/tree.x", "tree1", "normal");
 	
-	//planet = new Model("resources/objects/house/house.x", ResourceManager::GetShader("basic"));
-	light = new Light(A_LIGHT_POS, A_LIGHT_COL, A_LIGHT_BIAS);
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f));
-	
-	PerlinNoise noise(A_OCTAVES, A_AMPLITUDE, A_ROUGHNESS);
-	ColorGenerator colorGen(A_TERRAIN_COLS, A_COLOR_SPREAD);
+	entities.push_back(new Entity(ResourceManager::GetModel("house"), glm::vec3(-50, 0, 0), glm::vec3(0.2, 0.2, 0.2)));
+	entities.push_back(new Entity(ResourceManager::GetModel("tree"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
+	entities.push_back(new Entity(ResourceManager::GetModel("tree1"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
 
-	TerrainGenerator terrainGenerator(&noise, &colorGen, new IndicesGenerator());
-	Terrain *terrain = terrainGenerator.createTerrain(A_TERRAIN_SIZE);
+
+	light = new Light(A_LIGHT_DIR, A_LIGHT_COL, A_LIGHT_BIAS);
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 0.0f, 100.0f));
 
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
@@ -53,19 +55,27 @@ void Application::Update()
 {
 	// per-frame logic
 	// --------------------
-
+#ifdef __DEBUG__
+	cout << "Update..." << endl;
+#endif
 	processKeyboard();
 
 
-	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
+	/*glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
 
-	ResourceManager::GetShader("planet").Use().SetMatrix4("projection", projection);
-	ResourceManager::GetShader("planet").SetMatrix4("view", view);
-	// draw planet
-	terrain->render(camera, light);
+	ResourceManager::GetShader("basic").Use().SetMatrix4("projection", projection);
+	ResourceManager::GetShader("basic").SetMatrix4("view", view);*/
+
+	drawEntity();
 
 	showFPS();
+}
+
+void Application::drawEntity()
+{
+	for (auto entity:entities)
+		entity->Draw(*(this->light), *(this->camera));
 }
 
 float Application::getTime()
@@ -80,22 +90,22 @@ void Application::processKeyboard()
 	lastFrame = currentFrame;
 
 	if (GetKeyState('W') < 0) {
-		camera.ProcessKeyboard(FORWARD, deltaTime);
+		camera->ProcessKeyboard(FORWARD, deltaTime);
 	}
 	if (GetKeyState('S') < 0) {
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
+		camera->ProcessKeyboard(BACKWARD, deltaTime);
 	}
 	if (GetKeyState('A') < 0) {
-		camera.ProcessKeyboard(LEFT, deltaTime);
+		camera->ProcessKeyboard(LEFT, deltaTime);
 	}
 	if (GetKeyState('D') < 0) {
-		camera.ProcessKeyboard(RIGHT, deltaTime);
+		camera->ProcessKeyboard(RIGHT, deltaTime);
 	}
 	if (GetKeyState('Q') < 0) {
-		camera.ProcessKeyboard(UP, deltaTime);
+		camera->ProcessKeyboard(UP, deltaTime);
 	}
 	if (GetKeyState('E') < 0) {
-		camera.ProcessKeyboard(DOWN, deltaTime);
+		camera->ProcessKeyboard(DOWN, deltaTime);
 	}
 }
 
@@ -113,10 +123,12 @@ void Application::showFPS()
 
 }
 
+/*
 void Application::prepareAsteroids()
 {
 	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
 	rock = new Model("resources/objects/rock/rock.obj", ResourceManager::GetShader("asteroids"));
+	unsigned int amount = 1000;
 
 	glm::mat4* modelMatrices;
 	modelMatrices = new glm::mat4[amount];
@@ -178,9 +190,10 @@ void Application::prepareAsteroids()
 
 void Application::drawAsteroids()
 {
+	unsigned int amount = 1000;
 	// draw meteorites
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
-	glm::mat4 view = camera.GetViewMatrix();
+	glm::mat4 view = camera->GetViewMatrix();
 	ResourceManager::GetShader("asteroids").Use().SetMatrix4("projection", projection);
 	ResourceManager::GetShader("asteroids").SetMatrix4("view", view);
 	ResourceManager::GetShader("asteroids").SetInteger("texture_diffuse1", 0);
@@ -193,3 +206,5 @@ void Application::drawAsteroids()
 		glBindVertexArray(0);
 	}
 }
+
+*/

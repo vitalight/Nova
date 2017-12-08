@@ -171,7 +171,6 @@
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="util\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\asteroids.fs" />
@@ -180,16 +179,17 @@
     <None Include="glsl\basicVertex.glsl" />
     <None Include="glsl\2dFragment.glsl" />
     <None Include="glsl\2dVertex.glsl" />
+    <None Include="glsl\normalFragment.glsl" />
+    <None Include="glsl\normalGeometry.glsl" />
+    <None Include="glsl\normalVertex.glsl" />
     <None Include="glsl\terrainFragment.glsl" />
     <None Include="glsl\terrainVertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TerrainRenderer.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />

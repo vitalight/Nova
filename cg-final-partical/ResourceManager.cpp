@@ -13,6 +13,7 @@
 // Instantiate static variables
 std::map<std::string, Texture2D>    ResourceManager::Textures;
 std::map<std::string, Shader>       ResourceManager::Shaders;
+std::map<std::string, Model*> ResourceManager::Models;
 
 Shader ResourceManager::LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile, std::string name)
 {
@@ -42,6 +43,21 @@ Texture2D ResourceManager::GetTexture(std::string name)
 		exit(-1);
 	}
 	return Textures[name];
+}
+
+Model *ResourceManager::LoadModel(std::string path, std::string name, std::string shaderName, bool gamma)
+{
+	Models[name] = new Model(Shaders[shaderName], path, gamma);
+	return Models[name];
+}
+
+Model *ResourceManager::GetModel(std::string name)
+{
+	if (Models.find(name) == Models.end()) {
+		std::cout << "Error::ResourceManager::GetTexture: No model named '" << name << "'" << std::endl;
+		exit(-1);
+	}
+	return Models[name];
 }
 
 void ResourceManager::Clear()

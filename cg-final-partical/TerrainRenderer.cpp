@@ -1,5 +1,5 @@
 #include "TerrainRenderer.h"
-
+/*
 
 
 TerrainRenderer::TerrainRenderer(Shader *shader, bool hasIndices)
@@ -33,4 +33,4 @@ void TerrainRenderer::finish(Terrain *terrain)
 {
 	glBindVertexArray(0);
 	glUseProgram(0);
-}
+}*/

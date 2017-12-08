@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "Shader.h"
 #include "Terrain.h"
 #include "Camera.h"
@@ -17,3 +17,4 @@ public:
 	void finish(Terrain *terrain);
 };
 
+*/

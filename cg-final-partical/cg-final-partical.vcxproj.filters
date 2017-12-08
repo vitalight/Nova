@@ -13,67 +13,70 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\util">
-      <UniqueIdentifier>{01b8f12f-d309-48bf-b776-97e987883f8e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\glsl">
       <UniqueIdentifier>{a637addc-7276-4159-b6f0-10e0827d0a06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="历史">
+      <UniqueIdentifier>{c268110d-d1a0-4ffc-94af-ea26564b606b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\model">
+      <UniqueIdentifier>{871eb11b-b8e7-4dd8-aa1d-c7094e467ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\util">
+      <UniqueIdentifier>{f4a3b0a0-0afe-4e56-aeeb-2e0633f7a219}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="util\stb_image.h">
-      <Filter>源文件\util</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TextRenderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ColorGenerator.h">
+      <Filter>历史</Filter>
     </ClInclude>
     <ClInclude Include="Configs.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainRenderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainGenerator.h">
-      <Filter>头文件</Filter>
+      <Filter>历史</Filter>
     </ClInclude>
     <ClInclude Include="IndicesGenerator.h">
-      <Filter>头文件</Filter>
+      <Filter>历史</Filter>
     </ClInclude>
     <ClInclude Include="PerlinNoise.h">
-      <Filter>头文件</Filter>
+      <Filter>历史</Filter>
     </ClInclude>
-    <ClInclude Include="ColorGenerator.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Terrain.h">
+      <Filter>历史</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainGenerator.h">
+      <Filter>历史</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainRenderer.h">
+      <Filter>历史</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>源文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>源文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>源文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,39 +104,42 @@
     <None Include="glsl\terrainFragment.glsl">
       <Filter>源文件\glsl</Filter>
     </None>
+    <None Include="glsl\normalGeometry.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\normalFragment.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\normalVertex.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TerrainRenderer.cpp">
+      <Filter>历史</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="Application.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="stb_image.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TextRenderer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>源文件\util</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="TerrainRenderer.cpp">
+    <ClCompile Include="TextRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,20 +30,25 @@ public:
 
 	/*  Functions   */
 	// constructor, expects a filepath to a 3D model.
-	Model(string const &path, Shader &shader, bool gamma = false) : gammaCorrection(gamma)
+	Model(Shader shader, string const &path, bool gamma = false) 
+		: gammaCorrection(gamma), shader(shader)
 	{
 		cout << "Loading from [" << path << "]..." << endl;
-		this->shader = shader;
 		loadModel(path);
 	}
 
 	// draws the model, and thus all its meshes
-	void Draw(glm::vec3 position = glm::vec3(0, 0, 0), 
-		      glm::vec3 size = glm::vec3(1, 1, 1), 
-		      GLfloat rotate = 0.0f, 
-		      glm::vec3 axis = glm::vec3(0.0f, 0.0f, 1.0f))
+	void Draw(Light light,
+			  Camera camera,
+			  glm::vec3 position,
+		      glm::vec3 size, 
+		      GLfloat rotate, 
+		      glm::vec3 axis)
 	{
-		this->shader.Use();
+		shader.Use();
+		shader.SetMatrix4("projection", camera.Projection);
+		shader.SetMatrix4("view", camera.GetViewMatrix());
+
 		glm::mat4 model;
 		// First translate (transformations are: scale happens first, then rotation and then finall translation happens; reversed order)
 		model = glm::translate(model, glm::vec3(position));
@@ -55,15 +60,14 @@ public:
 		model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 		// Last scale
 		model = glm::scale(model, glm::vec3(size));
-		this->shader.SetMatrix4("model", model);
+		shader.SetMatrix4("model", model);
 
 		for (unsigned int i = 0; i < meshes.size(); i++)
-			meshes[i].Draw(shader);
+			meshes[i].Draw(light, camera, shader);
 	}
 
 private:
 	Shader shader;
-
 	/*  Functions   */
 	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const &path)
@@ -143,16 +147,17 @@ private:
 			}
 			else
 				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-			// tangent
-			vector.x = mesh->mTangents[i].x;
-			vector.y = mesh->mTangents[i].y;
-			vector.z = mesh->mTangents[i].z;
-			vertex.Tangent = vector;
-			// bitangent
-			vector.x = mesh->mBitangents[i].x;
-			vector.y = mesh->mBitangents[i].y;
-			vector.z = mesh->mBitangents[i].z;
-			vertex.Bitangent = vector;
+			//// tangent
+			//vector.x = mesh->mTangents[i].x;
+			//vector.y = mesh->mTangents[i].y;
+			//vector.z = mesh->mTangents[i].z;
+			//vertex.Tangent = vector;
+			//// bitangent
+			//vector.x = mesh->mBitangents[i].x;
+			//vector.y = mesh->mBitangents[i].y;
+			//vector.z = mesh->mBitangents[i].z;
+			//vertex.Bitangent = vector;
+			
 			vertices.push_back(vertex);
 		}
 		//cout << "Model:: flag 1" << endl;

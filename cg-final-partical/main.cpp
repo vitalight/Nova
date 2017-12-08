@@ -29,14 +29,14 @@ Mipmap
 [v] model load in error
 	全部合并后导出obj
 	或者.x格式！
+[v] singleton
+	static both in .h and .cpp
 =================================================================
 TODO:
-细分模块
-拆分h->h+cpp
 支持滚轮
 立方体贴图 天空盒
 减少状态切换
-ResourceManager 管理纹理
+load model miss 不报错
 *****************************************************************/
 
 #define KEY_EXIT 27
@@ -48,7 +48,7 @@ int lastX, lastY;
 
 void display(void)
 {
-	glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+	glClearColor(0.1f, 0.15f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	app.Update();
 	glutSwapBuffers();
@@ -71,6 +71,18 @@ void keyboardFunc(unsigned char key, int x, int y)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			polygonMode = true;
 		}
+		break;
+	case '2':
+		/*glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		glEnable(GL_LINE_SMOOTH);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		glEnable(GL_POLYGON_SMOOTH);
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);*/
+		glEnable(GL_MULTISAMPLE);
+		break;
 	}
 }
 
@@ -89,13 +101,13 @@ void motionFunc(int x, int y)
 	lastX = x;
 	lastY = y;
 
-	app.camera.ProcessMouseMovement(xoffset, yoffset);
+	app.camera->ProcessMouseMovement(xoffset, yoffset);
 }
 
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(A_SCR_WIDTH, A_SCR_HEIGHT);
 	glutCreateWindow("Day 0");
@@ -106,9 +118,13 @@ int main(int argc, char *argv[])
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	glEnable(GL_MULTISAMPLE);
+	/*查看系统是否支持多重采样*/
+	static GLint buf[1], sbuf[1];
+	glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
+	printf("number of sample buffers is %d\n", buf[0]);
+	glGetIntegerv(GL_SAMPLES_ARB, sbuf);
+	printf("number of samples is %d\n", sbuf[0]);
 	std::cout << "Loading application..." << std::endl;
 	app.Init();
 

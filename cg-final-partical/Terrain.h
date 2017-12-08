@@ -1,5 +1,5 @@
 #pragma once
-
+/*
 #include "TerrainRenderer.h"
 
 class Terrain
@@ -17,3 +17,4 @@ public:
 	}
 };
 
+*/

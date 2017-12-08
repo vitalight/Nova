@@ -4,12 +4,15 @@
 #include "includes/glm/glm.hpp"
 #include "includes/glm/gtc/matrix_transform.hpp"
 
-#include "Shader.h"
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
+
+#include "Shader.h"
+#include "Camera.h"
+#include "Light.h"
 using namespace std;
 
 struct Vertex {
@@ -19,10 +22,6 @@ struct Vertex {
 	glm::vec3 Normal;
 	// texCoords
 	glm::vec2 TexCoords;
-	// tangent
-	glm::vec3 Tangent;
-	// bitangent
-	glm::vec3 Bitangent;
 };
 
 struct Texture {
@@ -61,9 +60,13 @@ public:
 	}
 
 	// render the mesh
-	void Draw(Shader shader)
+	void Draw(Light light, Camera camera, Shader shader)
 	{
-		glUniform3f(glGetUniformLocation(shader.ID, "diffuseColor"), material.diffuse.r, material.diffuse.g, material.diffuse.b);
+		shader.SetVector3f("color", material.diffuse.r, material.diffuse.g, material.diffuse.b);
+		shader.SetVector3f("lightColor", light.Color);
+		shader.SetVector3f("lightDirection", light.Direction);
+		shader.SetVector2f("lightBias", light.LightBias);
+		//glUniform3f(glGetUniformLocation(shader.ID, "diffuseColor"), material.diffuse.r, material.diffuse.g, material.diffuse.b);
 		// bind appropriate textures
 		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
@@ -133,12 +136,6 @@ private:
 		// vertex texture coords
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-		// vertex tangent
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
-		// vertex bitangent
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
 
 		glBindVertexArray(0);
 	}

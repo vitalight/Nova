@@ -14,10 +14,6 @@
 #include "TextRenderer.h"
 #include "Light.h"
 #include "Entity.h"
-#include "Terrain.h"
-#include "TerrainRenderer.h"
-#include "TerrainGenerator.h"
-#include "IndicesGenerator.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
@@ -31,21 +27,18 @@ public:
 	void Init();
 	void Update();
 private:
-	Model *planet, *rock;
-	Terrain *terrain;
 	TextRenderer *textRenderer;
 	Light *light;
-	Entity *house;
+	vector<Entity*> entities;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;
 	float currentFrame = 0,
 		lastFrame = 0;
 
+	void drawEntity();
 	void showFPS();
+
 	float getTime();
 	void processKeyboard();
-
-	void prepareAsteroids();
-	void drawAsteroids();
 };

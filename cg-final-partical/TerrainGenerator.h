@@ -1,4 +1,5 @@
 #pragma once
+/*
 #include <vector>
 #include "Terrain.h"
 #include "IndicesGenerator.h"
@@ -22,7 +23,7 @@ public:
 	Terrain *createTerrain(vector<vector<float>> heights, vector<vector<glm::vec3>> colors)
 	{
 		int vertexCount = calculateVertexCount(heights.size());
-		vector<glm::vec3> terrainData = createMeshData(heights, colors, vertexCount);
+		vector<glm::vec3> terrainData;// = createMeshData(heights, colors, vertexCount);
 		// unsigned int ?
 		vector<int> indices = indicesGenerator->generateIndexBuffer(heights.size());
 		unsigned int VAO, VBO, EBO;
@@ -75,14 +76,14 @@ private:
 		int topCount = remainingRowCount * (vertexLength - 1) * 2;
 		return topCount + bottom2Rows;
 	}
-
+	/*
 	vector<glm::vec3> createMeshData(vector<vector<float>> heights, vector<vector<glm::vec3>> colors, int vertexCount)
 	{
 		int byteSize = VERTEX_SIZE_BYTES * vertexCount;
 		vector<glm::vec3> lastRow;
 		for (int row = 0; row < heights.length - 1; row++) {
 			for (int col = 0; col < heights[row].length - 1; col++) {
-				GridSquare square = new GridSquare(row, col, heights, colours);
+				GridSquare square = new GridSquare(row, col, heights, colors);
 				square.storeSquareData(buffer);
 				if (row == heights.length - 2) {
 					lastRow.push_back(square);
@@ -95,4 +96,4 @@ private:
 		return buffer.array();
 	}
 };
-
+*/
