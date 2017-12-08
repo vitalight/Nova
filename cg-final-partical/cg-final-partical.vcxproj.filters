@@ -39,9 +39,6 @@
     <ClInclude Include="PerlinNoise.h">
       <Filter>历史</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>历史</Filter>
-    </ClInclude>
     <ClInclude Include="TerrainGenerator.h">
       <Filter>历史</Filter>
     </ClInclude>
@@ -78,6 +75,9 @@
     <ClInclude Include="TextRenderer.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\asteroids.fs">
@@ -111,6 +111,12 @@
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\normalVertex.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\textureFragment.glsl">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\textureVertex.glsl">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>

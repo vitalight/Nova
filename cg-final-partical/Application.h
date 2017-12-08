@@ -14,6 +14,7 @@
 #include "TextRenderer.h"
 #include "Light.h"
 #include "Entity.h"
+#include "Terrain.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
@@ -23,7 +24,6 @@ public:
 	Camera *camera;
 
 	Application();
-	~Application();
 	void Init();
 	void Update();
 private:
@@ -41,4 +41,10 @@ private:
 
 	float getTime();
 	void processKeyboard();
+
+
+	// for partical presentation
+	Model *rock;
+	void prepareAsteroids();
+	void drawAsteroids();
 };

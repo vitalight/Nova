@@ -184,6 +184,8 @@
     <None Include="glsl\normalVertex.glsl" />
     <None Include="glsl\terrainFragment.glsl" />
     <None Include="glsl\terrainVertex.glsl" />
+    <None Include="glsl\textureFragment.glsl" />
+    <None Include="glsl\textureVertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

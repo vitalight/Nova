@@ -1,10 +1,9 @@
-#version 330
+#version 330 core
+out vec2 pass_texCoord;
 
 layout(location = 0) in vec3 in_position;
 layout(location = 1) in vec3 in_normal;
 layout(location = 2) in vec2 in_texCoord;
-
-flat out vec3 pass_color;//The "flat" qualifier stops the color from being interpolated over the triangles.
 
 uniform vec3 lightDirection;
 uniform vec3 lightColor;
@@ -25,5 +24,5 @@ void main(void){
 	gl_Position = projection * view * model * vec4(in_position, 1.0);
 	
 	vec3 lighting = calculateLighting();
-	pass_color = color * lighting;
+	pass_texCoord = in_texCoord;
 }

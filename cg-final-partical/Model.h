@@ -37,6 +37,13 @@ public:
 		loadModel(path);
 	}
 
+	Model(Shader shader, vector<Vertex> &vertices, vector<glm::vec3> &colors, vector<unsigned int> &indices)
+	{
+		cout << "Loading terrain..." << endl;
+		this->shader = shader;
+		meshes.push_back(Mesh(vertices, indices, colors));
+	}
+
 	// draws the model, and thus all its meshes
 	void Draw(Light light,
 			  Camera camera,
@@ -66,8 +73,8 @@ public:
 			meshes[i].Draw(light, camera, shader);
 	}
 
-private:
 	Shader shader;
+private:
 	/*  Functions   */
 	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const &path)
@@ -172,7 +179,7 @@ private:
 		// process materials
 		//cout << "Model:: flag 2" << endl;
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		Material myMaterial = loadMaterialColors(material);
+		glm::vec3 color = loadColors(material);
 		// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
 		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
 		// Same applies to other texture as the following list summarizes:
@@ -197,7 +204,7 @@ private:
 
 		//cout << "Model:: out maps" << endl;
 		// return a mesh object created from the extracted mesh data
-		return Mesh(vertices, indices, textures, myMaterial);
+		return Mesh(vertices, indices, textures, color);
 	}
 
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -233,17 +240,11 @@ private:
 		return textures;
 	}
 
-	Material loadMaterialColors(aiMaterial *mat)
+	glm::vec3 loadColors(aiMaterial *mat)
 	{
-		Material myMaterial;
 		aiColor4D color;
-		mat->Get(AI_MATKEY_COLOR_AMBIENT, color);
-		myMaterial.ambient = glm::vec3(color.r, color.g, color.b);
 		mat->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-		myMaterial.diffuse = glm::vec3(color.r, color.g, color.b);
-		mat->Get(AI_MATKEY_COLOR_SPECULAR, color);
-		myMaterial.specular = glm::vec3(color.r, color.g, color.b);
-		return myMaterial;
+		return glm::vec3(color.r, color.g, color.b);
 	}
 
 	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false)

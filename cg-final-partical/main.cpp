@@ -31,6 +31,7 @@ Mipmap
 	或者.x格式！
 [v] singleton
 	static both in .h and .cpp
+[v] 光照纹理贴图
 =================================================================
 TODO:
 支持滚轮
@@ -64,23 +65,15 @@ void keyboardFunc(unsigned char key, int x, int y)
 		exit(0);
 	case '1':
 		if (polygonMode) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT, GL_FILL);
 			polygonMode = false;
 		}
 		else {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT, GL_LINE);
 			polygonMode = true;
 		}
 		break;
 	case '2':
-		/*glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_POINT_SMOOTH);
-		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-		glEnable(GL_LINE_SMOOTH);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-		glEnable(GL_POLYGON_SMOOTH);
-		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);*/
 		glEnable(GL_MULTISAMPLE);
 		break;
 	}
@@ -118,13 +111,18 @@ int main(int argc, char *argv[])
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_MULTISAMPLE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_MULTISAMPLE_ARB);
+	//glEnable(GL_MULTISAMPLE);
 	/*查看系统是否支持多重采样*/
-	static GLint buf[1], sbuf[1];
+	/*static GLint buf[1], sbuf[1];
+	printf("%s\n", glGetString(GL_RENDERER));
 	glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
 	printf("number of sample buffers is %d\n", buf[0]);
 	glGetIntegerv(GL_SAMPLES_ARB, sbuf);
-	printf("number of samples is %d\n", sbuf[0]);
+	printf("number of samples is %d\n", sbuf[0]);*/
+	
 	std::cout << "Loading application..." << std::endl;
 	app.Init();
 

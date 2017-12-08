@@ -1,14 +1,22 @@
 #include "Application.h"
 
+// this enables selecting high performance graphics card
+//extern "C" {
+//	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+//}
+
 //#define A_LINE
-#define A_LIGHT_DIR (glm::vec3(-1.0f, -1.0f, -2.0f))
-#define A_LIGHT_COL (glm::vec3(1.0f, 0.8f, 0.8f))
-#define A_LIGHT_BIAS (glm::vec2(0.6f, 0.4f))
+#define A_LIGHT_DIR (glm::vec3(-1.0f, -10.0f, -10.0f))
+#define A_LIGHT_COL (glm::vec3(1.0f, 0.9f, 0.9f))
+#define A_LIGHT_BIAS (glm::vec2(0.8f, 0.2f))
 #define A_LINE_DIRECTION (glm::vec3(-1, -1, 0))
 
 #define A_OCTAVES 3
 #define A_AMPLITUDE 10
 #define A_ROUGHNESS (0.35f)
+
+#define A_TERRAIN_SIZE 100
+#define A_TERRAIN_TICK 6
 
 
 vector<glm::vec3> A_TERRAIN_COLS = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 255.0f),
@@ -16,35 +24,36 @@ vector<glm::vec3> A_TERRAIN_COLS = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 
 								glm::vec3(120 / 255.0f, 120 / 255.0f, 120 / 255.0f),
 								glm::vec3(200 / 255.0f, 200 / 255.0f, 210 / 255.0f) };
 #define A_COLOR_SPREAD (0.45f)
-#define A_TERRAIN_SIZE 100
 
 Application::Application()
 {
 }
 
-Application::~Application()
-{
-	// to delete
-}
-
 void Application::Init()
 {	
-	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
-	ResourceManager::LoadShader("glsl/normalVertex.glsl", "glsl/normalFragment.glsl", "glsl/normalGeometry.glsl", "normal");
-	ResourceManager::LoadModel("resources/objects/house/house.x", "house", "basic");
-	ResourceManager::LoadModel("resources/objects/tree.x", "tree", "basic");
-	ResourceManager::LoadModel("resources/objects/tree.x", "tree1", "normal");
-	
-	entities.push_back(new Entity(ResourceManager::GetModel("house"), glm::vec3(-50, 0, 0), glm::vec3(0.2, 0.2, 0.2)));
-	entities.push_back(new Entity(ResourceManager::GetModel("tree"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
-	entities.push_back(new Entity(ResourceManager::GetModel("tree1"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
-
-
 	light = new Light(A_LIGHT_DIR, A_LIGHT_COL, A_LIGHT_BIAS);
-	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 0.0f, 100.0f));
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 10.0f, 155.0f));
+
+	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
+	ResourceManager::LoadShader("glsl/textureVertex.glsl", "glsl/textureFragment.glsl", nullptr, "texture");
+	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
+	ResourceManager::LoadShader("glsl/normalVertex.glsl", "glsl/normalFragment.glsl", "glsl/normalGeometry.glsl", "normal");
+
+	ResourceManager::LoadModel("resources/objects/house/house.x", "house", "basic");
+	ResourceManager::LoadModel("resources/objects/tree/tree.x", "tree", "texture");
+	ResourceManager::LoadModel("resources/objects/nanosuit/nanosuit.obj", "nanosuit", "texture");
+
+	Terrain terrain(A_TERRAIN_SIZE, A_TERRAIN_TICK, ResourceManager::GetShader("texture"));
+
+	entities.push_back(new Entity(ResourceManager::GetModel("house"), glm::vec3(-50, 17.5, 0), glm::vec3(0.2, 0.2, 0.2)));
+	entities.push_back(new Entity(ResourceManager::GetModel("tree"), glm::vec3(20, 4.5, 0), glm::vec3(0.05, 0.05, 0.05)));
+	entities.push_back(new Entity(ResourceManager::GetModel("nanosuit"), glm::vec3(0, 17.75f, 0), glm::vec3(5, 5, 5)));
+	//entities.push_back(terrain.generateTerrainEntity());
+	//entities.push_back(new Entity(ResourceManager::GetModel("tree1"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
 
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
+	//prepareAsteroids();
 
 #ifdef A_LINE
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -55,19 +64,13 @@ void Application::Update()
 {
 	// per-frame logic
 	// --------------------
-#ifdef __DEBUG__
-	cout << "Update..." << endl;
-#endif
 	processKeyboard();
-
-
-	/*glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
-	glm::mat4 view = camera->GetViewMatrix();
-
-	ResourceManager::GetShader("basic").Use().SetMatrix4("projection", projection);
-	ResourceManager::GetShader("basic").SetMatrix4("view", view);*/
-
+	//drawAsteroids();
 	drawEntity();
+
+	/*entities[entities.size() - 1]->model->shader = ResourceManager::GetShader("normal");
+	entities[entities.size()-1]->Draw(*light, *camera);
+	entities[entities.size() - 1]->model->shader = ResourceManager::GetShader("terrain");*/
 
 	showFPS();
 }
@@ -123,12 +126,11 @@ void Application::showFPS()
 
 }
 
-/*
 void Application::prepareAsteroids()
 {
 	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
-	rock = new Model("resources/objects/rock/rock.obj", ResourceManager::GetShader("asteroids"));
-	unsigned int amount = 1000;
+	rock = new Model(ResourceManager::GetShader("asteroids"), "resources/objects/rock/rock.obj");
+	unsigned int amount = 80000;
 
 	glm::mat4* modelMatrices;
 	modelMatrices = new glm::mat4[amount];
@@ -190,7 +192,7 @@ void Application::prepareAsteroids()
 
 void Application::drawAsteroids()
 {
-	unsigned int amount = 1000;
+	unsigned int amount = 80000;
 	// draw meteorites
 	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
@@ -206,5 +208,3 @@ void Application::drawAsteroids()
 		glBindVertexArray(0);
 	}
 }
-
-*/

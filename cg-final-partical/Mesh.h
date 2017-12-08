@@ -42,19 +42,25 @@ public:
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
+	vector<glm::vec3> colors;
 	Material material;
 
 	unsigned int VAO;
+	enum MeshType{MESH_GROUND, MESH_TEXTURE} type;
 
 	/*  Functions  */
 	// constructor
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Material material)
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, glm::vec3 color)
+		: vertices(vertices), indices(indices), textures(textures), type(MESH_TEXTURE)
 	{
-		this->vertices = vertices;
-		this->indices = indices;
-		this->textures = textures;
-		this->material = material;
+		// now that we have all the required data, set the vertex buffers and its attribute pointers.
+		colors.push_back(color);
+		setupMesh();
+	}
 
+	Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices, vector<glm::vec3> &colors)
+		: vertices(vertices), indices(indices), colors(colors), type(MESH_GROUND)
+	{
 		// now that we have all the required data, set the vertex buffers and its attribute pointers.
 		setupMesh();
 	}
@@ -62,7 +68,7 @@ public:
 	// render the mesh
 	void Draw(Light light, Camera camera, Shader shader)
 	{
-		shader.SetVector3f("color", material.diffuse.r, material.diffuse.g, material.diffuse.b);
+
 		shader.SetVector3f("lightColor", light.Color);
 		shader.SetVector3f("lightDirection", light.Direction);
 		shader.SetVector2f("lightBias", light.LightBias);
@@ -102,6 +108,12 @@ public:
 		glActiveTexture(GL_TEXTURE0);
 	}
 
+
+	void DrawTerrain(Light light, Camera camera, Shader shader)
+	{
+
+	}
+
 private:
 	/*  Render data  */
 	unsigned int VBO, EBO;
@@ -134,9 +146,17 @@ private:
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 		// vertex texture coords
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-
+		if (type = MESH_GROUND) {
+			glGenBuffers(1, &VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(glm::vec3), &colors[0], GL_STATIC_DRAW);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
+		}
+		else {
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+		}
 		glBindVertexArray(0);
 	}
 };
