@@ -31,29 +31,50 @@ Application::Application()
 
 void Application::Init()
 {	
+	// environment
 	light = new Light(A_LIGHT_DIR, A_LIGHT_COL, A_LIGHT_BIAS);
-	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 10.0f, 155.0f));
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 0.0f, 300.0f));
 
+	// shader
 	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
 	ResourceManager::LoadShader("glsl/textureVertex.glsl", "glsl/textureFragment.glsl", nullptr, "texture");
 	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
 	ResourceManager::LoadShader("glsl/normalVertex.glsl", "glsl/normalFragment.glsl", "glsl/normalGeometry.glsl", "normal");
 
-	ResourceManager::LoadModel("resources/objects/house/house.x", "house", "basic");
-	ResourceManager::LoadModel("resources/objects/tree/tree.x", "tree", "texture");
-	ResourceManager::LoadModel("resources/objects/nanosuit/nanosuit.obj", "nanosuit", "texture");
+	// model
+	ResourceManager::LoadModel("resources/objects/planet/planet.obj", "planet", "texture", glm::vec3(0.5, -1, 0));
+	//ResourceManager::LoadModel("resources/objects/earth/source/123.blend", "earth", "texture", glm::vec3(0, 0, 0));
+	//ResourceManager::LoadModel("resources/objects/rock/rock.obj", "rock", "texture");
 
-	Terrain terrain(A_TERRAIN_SIZE, A_TERRAIN_TICK, ResourceManager::GetShader("texture"));
+	// entity
+	/*
+	 * 太阳sun,			水星mercury,		金星vernus, 
+	 * 地球earth,		月球moon,		火星mars, 
+	 * 小行星带asteroid,	木星jupiter,		土星saturn, 
+	 * 天王星uranus,		海王星neptune,	彗星pluto
+	 */
+	Entity *sun = new Entity("planet", glm::vec3(0, 0, 0), 20),
+		*planet1 = new Entity("planet", glm::vec3(0, 0, 0), 5),
+		*earth = new Entity("planet", glm::vec3(0, 0, 0), 4),
+		*moon = new Entity("planet", glm::vec3(0, 0, 0), 0.8),
+		*saturn = new Entity("planet", glm::vec3(0, 0, 0), 3);
 
-	entities.push_back(new Entity(ResourceManager::GetModel("house"), glm::vec3(-50, 17.5, 0), glm::vec3(0.2, 0.2, 0.2)));
-	entities.push_back(new Entity(ResourceManager::GetModel("tree"), glm::vec3(20, 4.5, 0), glm::vec3(0.05, 0.05, 0.05)));
-	entities.push_back(new Entity(ResourceManager::GetModel("nanosuit"), glm::vec3(0, 17.75f, 0), glm::vec3(5, 5, 5)));
-	//entities.push_back(terrain.generateTerrainEntity());
-	//entities.push_back(new Entity(ResourceManager::GetModel("tree1"), glm::vec3(50, -10, 0), glm::vec3(0.03, 0.03, 0.03)));
+	// planet type
+	sun->configPlanet(0.1);
+	planet1->configPlanet(0.5, 120, 0.4);
+	earth->configPlanet(0.5, 180, 0.2);
+	saturn->configPlanet(0.5, 230, 0.1);
+	moon->configMoon(earth, 0.5, 20, 2);
 
+	entities.push_back(sun);
+	entities.push_back(planet1);
+	entities.push_back(earth);
+	entities.push_back(saturn);
+	entities.push_back(moon);
+
+	// text
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
-	//prepareAsteroids();
 
 #ifdef A_LINE
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -64,21 +85,24 @@ void Application::Update()
 {
 	// per-frame logic
 	// --------------------
+	
+	// calculate eplased time
+	float currentFrame = getTime();
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+
 	processKeyboard();
-	//drawAsteroids();
-	drawEntity();
 
-	/*entities[entities.size() - 1]->model->shader = ResourceManager::GetShader("normal");
-	entities[entities.size()-1]->Draw(*light, *camera);
-	entities[entities.size() - 1]->model->shader = ResourceManager::GetShader("terrain");*/
+	drawEntity(deltaTime);
 
+	// show text: fps
 	showFPS();
 }
 
-void Application::drawEntity()
+void Application::drawEntity(float time)
 {
 	for (auto entity:entities)
-		entity->Draw(*(this->light), *(this->camera));
+		entity->Draw(*(this->light), *(this->camera), time);
 }
 
 float Application::getTime()
@@ -88,10 +112,6 @@ float Application::getTime()
 
 void Application::processKeyboard()
 {
-	float currentFrame = getTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-
 	if (GetKeyState('W') < 0) {
 		camera->ProcessKeyboard(FORWARD, deltaTime);
 	}

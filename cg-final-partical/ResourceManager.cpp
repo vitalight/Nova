@@ -45,9 +45,9 @@ Texture2D ResourceManager::GetTexture(std::string name)
 	return Textures[name];
 }
 
-Model *ResourceManager::LoadModel(std::string path, std::string name, std::string shaderName, bool gamma)
+Model *ResourceManager::LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma)
 {
-	Models[name] = new Model(Shaders[shaderName], path, gamma);
+	Models[name] = new Model(Shaders[shaderName], path, offset, gamma);
 	return Models[name];
 }
 

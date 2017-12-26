@@ -68,7 +68,9 @@ public:
 	// render the mesh
 	void Draw(Light light, Camera camera, Shader shader)
 	{
-
+		if (colors.size()==1) {
+			shader.SetVector3f("color", colors[0]);
+		}
 		shader.SetVector3f("lightColor", light.Color);
 		shader.SetVector3f("lightDirection", light.Direction);
 		shader.SetVector2f("lightBias", light.LightBias);
@@ -108,10 +110,12 @@ public:
 		glActiveTexture(GL_TEXTURE0);
 	}
 
-
-	void DrawTerrain(Light light, Camera camera, Shader shader)
+	void offset(glm::vec3 ofs)
 	{
-
+		for (Vertex ver:vertices)
+		{
+			ver.Position += ofs;
+		}
 	}
 
 private:

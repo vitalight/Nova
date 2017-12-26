@@ -26,12 +26,13 @@ public:
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory;
+	glm::vec3 offset;
 	bool gammaCorrection;
 
 	/*  Functions   */
 	// constructor, expects a filepath to a 3D model.
-	Model(Shader shader, string const &path, bool gamma = false) 
-		: gammaCorrection(gamma), shader(shader)
+	Model(Shader shader, string const &path, glm::vec3 offset = glm::vec3(0, 0, 0), bool gamma = false) 
+		: gammaCorrection(gamma), shader(shader), offset(offset)
 	{
 		cout << "Loading from [" << path << "]..." << endl;
 		loadModel(path);
@@ -134,7 +135,7 @@ private:
 			vector.x = mesh->mVertices[i].x;
 			vector.y = mesh->mVertices[i].y;
 			vector.z = mesh->mVertices[i].z;
-			vertex.Position = vector;
+			vertex.Position = vector + offset;
 			//cout << "Model:: inloop 3" << endl;
 			// normals
 			vector.x = mesh->mNormals[i].x;

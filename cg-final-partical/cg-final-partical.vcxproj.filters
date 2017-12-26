@@ -54,29 +54,29 @@
     <ClInclude Include="Texture.h">
       <Filter>源文件\model</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>源文件</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>源文件</Filter>
+      <Filter>历史</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>历史</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

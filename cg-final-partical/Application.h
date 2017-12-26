@@ -36,7 +36,7 @@ private:
 	float currentFrame = 0,
 		lastFrame = 0;
 
-	void drawEntity();
+	void drawEntity(float time);
 	void showFPS();
 
 	float getTime();

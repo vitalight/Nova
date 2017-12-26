@@ -29,6 +29,7 @@ Mipmap
 [v] model load in error
 	全部合并后导出obj
 	或者.x格式！
+	fbx better!
 [v] singleton
 	static both in .h and .cpp
 [v] 光照纹理贴图
@@ -113,8 +114,9 @@ int main(int argc, char *argv[])
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	//glEnable(GL_MULTISAMPLE_ARB);
-	//glEnable(GL_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 	/*查看系统是否支持多重采样*/
 	/*static GLint buf[1], sbuf[1];
 	printf("%s\n", glGetString(GL_RENDERER));

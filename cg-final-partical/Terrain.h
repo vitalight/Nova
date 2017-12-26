@@ -30,7 +30,7 @@ public:
 		vector<unsigned int> indices;
 		prepare(vertices, colors, indices);
 		Model *model = new Model(shader, vertices, colors, indices);
-		return new Entity(model, glm::vec3(-0.5*size*tick, 0, -0.5*size*tick));
+		return new Entity(model, glm::vec3(-0.5*size*tick, 0, -0.5*size*tick), 1);
 		
 	}
 

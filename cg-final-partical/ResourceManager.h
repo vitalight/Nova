@@ -44,7 +44,7 @@ public:
 	// Retrieves a stored texture
 	static Texture2D GetTexture(std::string name);
 
-	static Model *LoadModel(std::string path, std::string name, std::string shaderName, bool gamma = false);
+	static Model *LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma = false);
 
 	static Model *GetModel(std::string name);
 
