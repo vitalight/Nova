@@ -2,6 +2,42 @@
 
 This is the SJTU CG final homework —— Nova.  
 
+
+
+场景建模及渲染，场景添加光照，光照可交互控制 - 20'
+
+粒子系统特效，运动物理仿真，实时切换模型 - 30'
+
+粒子光照、纹理映射 - 20'
+
+粒子系统交互控制 - 20'
+
+作业报告 - 10'
+
+
+
+### History
+
+* 1.5 Start
+  * working on skybox
+    * network skybox need reverse direction
+
+
+
+### Problem
+
+* Low-poly model don't work well
+
+
+
+### OpenGL main framework
+
+* Vertices, Textures, shaders
+* VAO, VBO
+* set shader, draw
+
+
+
 ## Todo List
 ### 太阳系
 

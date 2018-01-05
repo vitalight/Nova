@@ -165,6 +165,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TerrainGenerator.h" />
     <ClInclude Include="TerrainRenderer.h" />
@@ -175,23 +176,24 @@
   <ItemGroup>
     <None Include="glsl\asteroids.fs" />
     <None Include="glsl\asteroids.vs" />
-    <None Include="glsl\basicFragment.glsl" />
-    <None Include="glsl\basicVertex.glsl" />
-    <None Include="glsl\2dFragment.glsl" />
-    <None Include="glsl\2dVertex.glsl" />
-    <None Include="glsl\normalFragment.glsl" />
-    <None Include="glsl\normalGeometry.glsl" />
-    <None Include="glsl\normalVertex.glsl" />
-    <None Include="glsl\terrainFragment.glsl" />
-    <None Include="glsl\terrainVertex.glsl" />
-    <None Include="glsl\textureFragment.glsl" />
-    <None Include="glsl\textureVertex.glsl" />
+    <None Include="glsl\basic.fs" />
+    <None Include="glsl\basic.vs" />
+    <None Include="glsl\2d.fs" />
+    <None Include="glsl\2d.vs" />
+    <None Include="glsl\normal.fs" />
+    <None Include="glsl\normal.gs" />
+    <None Include="glsl\normal.vs" />
+    <None Include="glsl\skybox.fs" />
+    <None Include="glsl\skybox.vs" />
+    <None Include="glsl\texture.fs" />
+    <None Include="glsl\texture.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="TerrainRenderer.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />

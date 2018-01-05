@@ -14,7 +14,7 @@
 #include "TextRenderer.h"
 #include "Light.h"
 #include "Entity.h"
-#include "Terrain.h"
+#include "Skybox.h"
 
 #define A_SCR_HEIGHT 600
 #define A_SCR_WIDTH 1000
@@ -24,12 +24,14 @@ public:
 	Camera *camera;
 
 	Application();
+	~Application();
 	void Init();
 	void Update();
 private:
 	TextRenderer *textRenderer;
 	Light *light;
 	vector<Entity*> entities;
+	Skybox *skybox;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;

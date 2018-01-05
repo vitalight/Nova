@@ -14,7 +14,7 @@
 TextRenderer::TextRenderer(GLuint width, GLuint height)
 {
 	// Load and configure shader
-	this->TextShader = ResourceManager::LoadShader("glsl/2dVertex.glsl", "glsl/2dFragment.glsl", nullptr, "text");
+	this->TextShader = ResourceManager::LoadShader("glsl/2d.vs", "glsl/2d.fs", nullptr, "text");
 	this->TextShader.SetMatrix4("projection", glm::ortho(0.0f, static_cast<GLfloat>(width), static_cast<GLfloat>(height), 0.0f), GL_TRUE);
 	this->TextShader.SetInteger("text", 0);
 	// Configure VAO/VBO for texture quads

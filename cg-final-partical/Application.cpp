@@ -23,30 +23,45 @@ vector<glm::vec3> A_TERRAIN_COLS = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 
 								glm::vec3(135 / 255.0f, 184 / 255.0f, 82 / 255.0f),
 								glm::vec3(120 / 255.0f, 120 / 255.0f, 120 / 255.0f),
 								glm::vec3(200 / 255.0f, 200 / 255.0f, 210 / 255.0f) };
-#define A_COLOR_SPREAD (0.45f)
+#define A_COLOR_SPREAD (0.45f)Vertex.glsl
 
 Application::Application()
 {
 }
 
+Application::~Application()
+{
+	delete textRenderer;
+	delete light;
+	delete skybox;
+}
+
 void Application::Init()
-{	
-	// environment
+{		
+	/*************************************************************
+	 * Environment
+	 *************************************************************/
 	light = new Light(A_LIGHT_DIR, A_LIGHT_COL, A_LIGHT_BIAS);
 	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 0.0f, 300.0f));
 
-	// shader
-	ResourceManager::LoadShader("glsl/basicVertex.glsl", "glsl/basicFragment.glsl", nullptr, "basic");
-	ResourceManager::LoadShader("glsl/textureVertex.glsl", "glsl/textureFragment.glsl", nullptr, "texture");
-	ResourceManager::LoadShader("glsl/terrainVertex.glsl", "glsl/terrainFragment.glsl", nullptr, "terrain");
-	ResourceManager::LoadShader("glsl/normalVertex.glsl", "glsl/normalFragment.glsl", "glsl/normalGeometry.glsl", "normal");
+	/*************************************************************
+	 * Compile shaders
+	 *************************************************************/
+	ResourceManager::LoadShader("glsl/basic.vs", "glsl/basic.fs", nullptr, "basic");
+	// only use texture
+	ResourceManager::LoadShader("glsl/texture.vs", "glsl/texture.fs", nullptr, "texture");
+	ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
+	// skybox texture
+	ResourceManager::LoadShader("glsl/skybox.vs", "glsl/skybox.fs", nullptr, "skybox");
 
-	// model
+	/*************************************************************
+	* Load models
+	*************************************************************/
 	ResourceManager::LoadModel("resources/objects/planet/planet.obj", "planet", "texture", glm::vec3(0.5, -1, 0));
-	//ResourceManager::LoadModel("resources/objects/earth/source/123.blend", "earth", "texture", glm::vec3(0, 0, 0));
-	//ResourceManager::LoadModel("resources/objects/rock/rock.obj", "rock", "texture");
 
-	// entity
+	/*************************************************************
+	* Entities
+	*************************************************************/
 	/*
 	 * Ì«Ñôsun,			Ë®ÐÇmercury,		½ðÐÇvernus, 
 	 * µØÇòearth,		ÔÂÇòmoon,		»ðÐÇmars, 
@@ -72,13 +87,13 @@ void Application::Init()
 	entities.push_back(saturn);
 	entities.push_back(moon);
 
-	// text
+	skybox = new Skybox(ResourceManager::GetShader("skybox"));
+
+	/*************************************************************
+	* Text render
+	*************************************************************/
 	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
-
-#ifdef A_LINE
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-#endif
 }
 
 void Application::Update()
@@ -94,6 +109,7 @@ void Application::Update()
 	processKeyboard();
 
 	drawEntity(deltaTime);
+	skybox->draw(*camera);
 
 	// show text: fps
 	showFPS();
@@ -146,6 +162,9 @@ void Application::showFPS()
 
 }
 
+/*************************************************************
+* Reference codes
+*************************************************************/
 void Application::prepareAsteroids()
 {
 	ResourceManager::LoadShader("glsl/asteroids.vs", "glsl/asteroids.fs", nullptr, "asteroids");
