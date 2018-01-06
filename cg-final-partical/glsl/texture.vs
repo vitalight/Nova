@@ -5,7 +5,7 @@ layout(location = 0) in vec3 in_position;
 layout(location = 1) in vec3 in_normal;
 layout(location = 2) in vec2 in_texCoord;
 
-uniform vec3 lightDirection;
+uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec2 lightBias;
 uniform vec3 color;
@@ -16,7 +16,7 @@ uniform mat4 model;
 
 //simple diffuse lighting
 vec3 calculateLighting(){
-	float brightness = max(normalize(dot(-lightDirection, in_normal)), 0);
+	float brightness = max(normalize(dot((in_position-lightPos), in_normal)), 0);
 	return (lightColor * lightBias.x) + (brightness * lightColor * lightBias.y);
 }
 

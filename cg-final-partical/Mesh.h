@@ -72,7 +72,7 @@ public:
 			shader.SetVector3f("color", colors[0]);
 		}
 		shader.SetVector3f("lightColor", light.Color);
-		shader.SetVector3f("lightDirection", light.Direction);
+		shader.SetVector3f("lightPos", light.Position);
 		shader.SetVector2f("lightBias", light.LightBias);
 		//glUniform3f(glGetUniformLocation(shader.ID, "diffuseColor"), material.diffuse.r, material.diffuse.g, material.diffuse.b);
 		// bind appropriate textures

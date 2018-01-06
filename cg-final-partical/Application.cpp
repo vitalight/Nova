@@ -6,7 +6,7 @@
 //}
 
 //#define A_LINE
-#define A_LIGHT_DIR (glm::vec3(-1.0f, -10.0f, -10.0f))
+#define A_LIGHT_POS (glm::vec3(0, 0, 0))
 #define A_LIGHT_COL (glm::vec3(1.0f, 0.9f, 0.9f))
 #define A_LIGHT_BIAS (glm::vec2(0.8f, 0.2f))
 #define A_LINE_DIRECTION (glm::vec3(-1, -1, 0))
@@ -41,7 +41,7 @@ void Application::Init()
 	/*************************************************************
 	 * Environment
 	 *************************************************************/
-	light = new Light(A_LIGHT_DIR, A_LIGHT_COL, A_LIGHT_BIAS);
+	light = new Light(A_LIGHT_POS, A_LIGHT_COL, A_LIGHT_BIAS);
 	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 1000.0f), glm::vec3(0.0f, 0.0f, 300.0f));
 
 	/*************************************************************
@@ -50,6 +50,7 @@ void Application::Init()
 	ResourceManager::LoadShader("glsl/basic.vs", "glsl/basic.fs", nullptr, "basic");
 	// only use texture
 	ResourceManager::LoadShader("glsl/texture.vs", "glsl/texture.fs", nullptr, "texture");
+	// used to check normal line
 	ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
 	// skybox texture
 	ResourceManager::LoadShader("glsl/skybox.vs", "glsl/skybox.fs", nullptr, "skybox");
@@ -57,7 +58,15 @@ void Application::Init()
 	/*************************************************************
 	* Load models
 	*************************************************************/
-	ResourceManager::LoadModel("resources/objects/planet/planet.obj", "planet", "texture", glm::vec3(0.5, -1, 0));
+	//ResourceManager::LoadModel("resources/objects/planet/planet.obj", "planet", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("resources/objects/earth/planet.obj", "earth", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("resources/objects/sun/planet.obj", "sun", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("resources/objects/moon/planet.obj", "moon", "texture", glm::vec3(0.5, -1, 0));
+	//ResourceManager::LoadModel("resources/objects/mars/planet.obj", "mars", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("resources/objects/saturn/planet.obj", "saturn", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("resources/objects/shuttle/shuttle.obj", "spaceship", "texture", glm::vec3(0.5, -1, 0));
+	//ResourceManager::LoadModel("resources/objects/spaceship/E 45 Aircraft_obj.obj", "spaceship", "texture", glm::vec3(0.5, -1, 0));
+	
 
 	/*************************************************************
 	* Entities
@@ -68,24 +77,27 @@ void Application::Init()
 	 * 小行星带asteroid,	木星jupiter,		土星saturn, 
 	 * 天王星uranus,		海王星neptune,	彗星pluto
 	 */
-	Entity *sun = new Entity("planet", glm::vec3(0, 0, 0), 20),
-		*planet1 = new Entity("planet", glm::vec3(0, 0, 0), 5),
-		*earth = new Entity("planet", glm::vec3(0, 0, 0), 4),
-		*moon = new Entity("planet", glm::vec3(0, 0, 0), 0.8),
-		*saturn = new Entity("planet", glm::vec3(0, 0, 0), 3);
+	Entity *sun = new Entity("sun", glm::vec3(0, 0, 0), 20),
+		*mars = new Entity("moon", glm::vec3(0, 0, 0), 5),
+		*earth = new Entity("earth", glm::vec3(0, 0, 0), 4),
+		*moon = new Entity("moon", glm::vec3(0, 0, 0), 0.8),
+		*saturn = new Entity("saturn", glm::vec3(0, 0, 0), 3),
+		*shuttle = new Entity("spaceship", glm::vec3(0, 0, 0), 0.05);
 
 	// planet type
 	sun->configPlanet(0.1);
-	planet1->configPlanet(0.5, 120, 0.4);
+	mars->configPlanet(0.5, 120, 0.4);
 	earth->configPlanet(0.5, 180, 0.2);
 	saturn->configPlanet(0.5, 230, 0.1);
 	moon->configMoon(earth, 0.5, 20, 2);
+	shuttle->configShuttle();
 
 	entities.push_back(sun);
-	entities.push_back(planet1);
+	entities.push_back(mars);
 	entities.push_back(earth);
 	entities.push_back(saturn);
 	entities.push_back(moon);
+	entities.push_back(shuttle);
 
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
 

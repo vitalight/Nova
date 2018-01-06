@@ -18,7 +18,7 @@ public:
 	float angle;
 	float mytime = 0;
 
-	enum Entity_type{ENTITY_NORMAL, ENTITY_PLANET, ENTITY_MOON} type;
+	enum Entity_type{ENTITY_NORMAL, ENTITY_PLANET, ENTITY_MOON, ENTITY_SHUTTLE} type;
 	float radius, angular_velocity, rotate_velocity;
 	Entity *parent;
 
@@ -59,24 +59,44 @@ public:
 		this->angular_velocity = angular_velocity;
 	}
 
+	void configShuttle()
+	{
+		type = ENTITY_SHUTTLE;
+	}
+
 	void Draw(Light light, Camera camera, float time)
 	{
 		update(time);
-		model->Draw(light, camera, position, scale, angle, axis);
+
+		switch (type) {
+		case ENTITY_SHUTTLE:
+			// camera.Position + glm::vec3(0, 0, 10.0f)
+			model->Draw(light, camera, camera.Position + camera.Front*40.0f - camera.Up*4.0f, 
+				scale, -glm::radians(camera.Yaw)+PI, glm::vec3(0, 1, 0));
+		case ENTITY_PLANET:
+		case ENTITY_MOON:
+			model->Draw(light, camera, position, scale, angle, axis, true);
+			break;
+		default:
+			model->Draw(light, camera, position, scale, angle, axis);
+			break;
+		}
 	}
 
 	void update(float time)
 	{
 		mytime += time;
-		if (type == ENTITY_PLANET) {
+		switch (type) {
+		case ENTITY_PLANET:
 			angle += time * rotate_velocity;
 			position.x = cos(mytime*angular_velocity) * radius;
 			position.z = sin(mytime*angular_velocity) * radius;
-		}
-		else if (type == ENTITY_MOON) {
+			break;
+		case ENTITY_MOON:
 			angle += time * rotate_velocity;
 			position.x = cos(mytime*angular_velocity) * radius + parent->position.x;
 			position.z = sin(mytime*angular_velocity) * radius + parent->position.z;
+			break;
 		}
 	}
 };

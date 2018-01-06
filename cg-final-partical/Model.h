@@ -19,6 +19,8 @@
 #include <vector>
 using namespace std;
 
+const GLfloat PI = 3.1415926535;
+
 class Model
 {
 public:
@@ -51,7 +53,8 @@ public:
 			  glm::vec3 position,
 		      glm::vec3 size, 
 		      GLfloat rotate, 
-		      glm::vec3 axis)
+		      glm::vec3 axis,
+			  bool isPlanet = false)
 	{
 		shader.Use();
 		shader.SetMatrix4("projection", camera.Projection);
@@ -62,8 +65,11 @@ public:
 		model = glm::translate(model, glm::vec3(position));
 		// Move origin of rotation to center of quad
 		model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+		
 		// Then rotate
 		model = glm::rotate(model, rotate, axis);
+		if (isPlanet)
+			model = glm::rotate(model, PI / 2, glm::vec3(1.0f, 0, 0));
 		// Move origin back
 		model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 		// Last scale
