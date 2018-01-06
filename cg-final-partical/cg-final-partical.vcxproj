@@ -163,6 +163,8 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Partical.h" />
+    <ClInclude Include="ParticalManager.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Skybox.h" />
@@ -176,8 +178,6 @@
   <ItemGroup>
     <None Include="glsl\asteroids.fs" />
     <None Include="glsl\asteroids.vs" />
-    <None Include="glsl\basic.fs" />
-    <None Include="glsl\basic.vs" />
     <None Include="glsl\2d.fs" />
     <None Include="glsl\2d.vs" />
     <None Include="glsl\normal.fs" />
@@ -185,6 +185,7 @@
     <None Include="glsl\normal.vs" />
     <None Include="glsl\skybox.fs" />
     <None Include="glsl\skybox.vs" />
+    <None Include="glsl\sun.fs" />
     <None Include="glsl\texture.fs" />
     <None Include="glsl\texture.vs" />
   </ItemGroup>
@@ -192,6 +193,8 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Partical.cpp" />
+    <ClCompile Include="ParticalManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="TerrainRenderer.cpp" />

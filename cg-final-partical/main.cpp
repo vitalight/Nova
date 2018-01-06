@@ -4,6 +4,12 @@
 
 #include "Application.h"
 
+
+// this enables selecting high performance graphics card
+//extern "C" {
+//	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+//}
+
 /****************************************************************
 NOVA
 =================================================================
@@ -116,16 +122,16 @@ int main(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//glEnable(GL_MULTISAMPLE_ARB);
-	glEnable(GL_MULTISAMPLE);
+	//glEnable(GL_MULTISAMPLE);
+	printf("%s\n", glGetString(GL_RENDERER));
 	/*查看系统是否支持多重采样*/
 	/*static GLint buf[1], sbuf[1];
-	printf("%s\n", glGetString(GL_RENDERER));
 	glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
 	printf("number of sample buffers is %d\n", buf[0]);
 	glGetIntegerv(GL_SAMPLES_ARB, sbuf);
 	printf("number of samples is %d\n", sbuf[0]);*/
 	
-	std::cout << "Loading application..." << std::endl;
+	std::cout << "Starting application..." << std::endl;
 	app.Init();
 
 	glutDisplayFunc(display);

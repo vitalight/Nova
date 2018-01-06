@@ -11,6 +11,16 @@ Shader ResourceManager::LoadShader(const GLchar *vShaderFile, const GLchar *fSha
 	return Shaders[name];
 }
 
+Shader ResourceManager::LoadShader(const GLchar * shaderName)
+{
+	GLchar vShaderFile[32],
+		   fShaderFile[32];
+	sprintf_s(vShaderFile, "glsl/%s.vs", shaderName);
+	sprintf_s(fShaderFile, "glsl/%s.fs", shaderName);
+	Shaders[shaderName] = loadShaderFromFile(vShaderFile, fShaderFile, nullptr);
+	return Shaders[shaderName];
+}
+
 Shader ResourceManager::GetShader(std::string name)
 {
 	if (Shaders.find(name) == Shaders.end()) {
@@ -38,6 +48,12 @@ Texture2D ResourceManager::GetTexture(std::string name)
 Model *ResourceManager::LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma)
 {
 	Models[name] = new Model(Shaders[shaderName], path, offset, gamma);
+	return Models[name];
+}
+
+Model *ResourceManager::LoadModel(std::string name, std::string shaderName, glm::vec3 offset)
+{
+	Models[name] = new Model(Shaders[shaderName], "resources/objects/" + name + "/" + name + ".obj", offset, false);
 	return Models[name];
 }
 

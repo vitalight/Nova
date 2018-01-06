@@ -4,7 +4,6 @@
 #include "includes/glm/gtc/matrix_transform.hpp"
 
 #include "Model.h"
-#include "Shader.h"
 #include "Light.h"
 #include "Camera.h"
 #include "ResourceManager.h"
@@ -17,6 +16,7 @@ public:
 	glm::vec3 offset;
 	float angle;
 	float mytime = 0;
+	std::vector<glm::mat4> particals;
 
 	enum Entity_type{ENTITY_NORMAL, ENTITY_PLANET, ENTITY_MOON, ENTITY_SHUTTLE} type;
 	float radius, angular_velocity, rotate_velocity;
@@ -73,6 +73,7 @@ public:
 			// camera.Position + glm::vec3(0, 0, 10.0f)
 			model->Draw(light, camera, camera.Position + camera.Front*40.0f - camera.Up*4.0f, 
 				scale, -glm::radians(camera.Yaw)+PI, glm::vec3(0, 1, 0));
+			break;
 		case ENTITY_PLANET:
 		case ENTITY_MOON:
 			model->Draw(light, camera, position, scale, angle, axis, true);
@@ -83,6 +84,7 @@ public:
 		}
 	}
 
+private:
 	void update(float time)
 	{
 		mytime += time;

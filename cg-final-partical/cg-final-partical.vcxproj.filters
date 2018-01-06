@@ -75,10 +75,16 @@
     <ClInclude Include="Terrain.h">
       <Filter>历史</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>历史</Filter>
-    </ClInclude>
     <ClInclude Include="Skybox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Partical.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticalManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,12 +99,6 @@
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\2d.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\basic.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\basic.vs">
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\normal.fs">
@@ -120,6 +120,9 @@
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\texture.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\sun.fs">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>
@@ -152,6 +155,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Partical.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticalManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

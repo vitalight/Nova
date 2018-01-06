@@ -29,12 +29,30 @@ This is the SJTU CG final homework —— Nova.
   * finding a spaceship
     * problem: not realistic
   * add light source
+    * problem: sun is dark 
+    * fixed dark sun, todo: partical effect sun
+  * add asteroids
+    * add light
+    * add movement
+    * not quite efficient
+    * 独显反而更卡？
+  * todo: random generated spaceships and rocks
+    * forget to add to vector so no difference is shown
+    * still not showing, why?
+      * for(:) isn't reference
+      * glsl not compatible
+    * working, but asteroids disapear
 
+
+### Achivement
+
+* 将partical要用的数据使用class放在一起，帧率翻倍
 
 
 ### Problem
 
 * Low-poly model don't work well
+  * collect relative technique in browser
 
 
 

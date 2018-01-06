@@ -83,15 +83,6 @@ void Skybox::init()
 		"resources/skybox/back.png",
 		"resources/skybox/front.png"
 	};
-	//vector<std::string> faces
-	//{
-	//	"resources/skybox/vr_rt.tga",
-	//	"resources/skybox/vr_lf.tga",
-	//	"resources/skybox/vr_up.tga",
-	//	"resources/skybox/vr_dn.tga",
-	//	"resources/skybox/vr_bk.tga",
-	//	"resources/skybox/vr_ft.tga",
-	//};
 	texture = loadCubemap(faces);
 
 	// shader configuration

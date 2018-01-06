@@ -37,6 +37,7 @@ public:
 
 	// Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
 	static Shader   LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile, std::string name);
+	static Shader   LoadShader(const GLchar *shaderName);
 	// Retrieves a stored sader
 	static Shader   GetShader(std::string name);
 	// Loads (and generates) a texture from file
@@ -45,6 +46,7 @@ public:
 	static Texture2D GetTexture(std::string name);
 
 	static Model *LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma = false);
+	static Model *LoadModel(std::string name, std::string shaderName, glm::vec3 offset);
 
 	static Model *GetModel(std::string name);
 
