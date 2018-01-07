@@ -55,9 +55,9 @@ void keyboardFunc(unsigned char key, int x, int y)
 		}
 		break;
 	case '2':
-		//glEnable(GL_FRAMEBUFFER_SRGB);
-		//glEnable(GL_MULTISAMPLE);
-		break;
+		app.SwitchShader();
+	case '3':
+		app.SwitchPartical();
 	}
 }
 
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 	// main window setup
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(200, 70);
 	glutInitWindowSize(NV_SCR_WIDTH, NV_SCR_HEIGHT);
 	glutCreateWindow("Nova");
 

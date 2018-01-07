@@ -40,6 +40,7 @@ public:
 	void configMoon(Entity *parent, float rotate_velocity, float radius = 0, float angular_velocity = 0);
 	void configShuttle();
 	void Draw(Light light, Camera camera, float time);
+	void switchShader();
 
 private:
 	glm::vec3 position, axis, scale;

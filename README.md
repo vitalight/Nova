@@ -55,12 +55,15 @@ This is the SJTU CG final homework —— Nova.
   - 1.7 star glow
     - frame buffer and gaussian kernel?
     - done! rim lighting!
+  - 一键切换地球
+  - 居然这个时候修复了c4d和assimp的兼容问题 ?????? 喵喵喵
+  - 1.8 自己画一个ufo
+  - 一键切换粒子
 
-  * sun partical effect
   * spaceship tail partical effect
   * billboard shows name
-  * 一键切换地球
-  * 一键切换粒子
+  * spaceship change to UFO
+  * clean up function (public name use CAPITAL)
 
 
 ### Achivement
@@ -91,14 +94,14 @@ This is the SJTU CG final homework —— Nova.
 ## Todo List
 ### 太阳系
 
-- [ ] 星球纹理(颜色，高光)
+- [x] 星球纹理(颜色，高光)
 - [ ] 只给shader传时间，glsl使用两个极坐标运算位置(减少CPU->GPU)
 
 
-- [ ] 太阳：粒子特效发光
-- [ ] 恒星：实例化大量星环
-- [ ] 地球：超漂亮
-- [ ] 月球：更漂亮 微光
+- [x] 太阳：粒子特效发光
+- [x] 恒星：实例化大量星环
+- [x] 地球：超漂亮
+- [x] 月球：更漂亮 微光
 - [x] 飞行物：随机生成小陨石及无敌道具
 - [x] 背景：天空盒，闪烁群星
 
@@ -108,7 +111,7 @@ This is the SJTU CG final homework —— Nova.
 
 - [ ] 船尾火焰粒子效果
 - [ ] 四元旋转(待定)
-- [ ] 超好看纹理，被月球和太阳照亮
+- [x] 超好看纹理，被月球和太阳照亮
 - [ ] 飞船前部点光源
 
 ### 技术

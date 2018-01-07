@@ -27,6 +27,8 @@ public:
 	~Application();
 	void Init();
 	void Update();
+	void SwitchShader();
+	void SwitchPartical();
 private:
 	TextRenderer *textRenderer;
 	Light *light;
@@ -34,13 +36,14 @@ private:
 	Skybox *skybox;
 	ParticalManager *particalManager;
 	EntityManager entityManager;
+	// this is list here because it will change shader to see difference
+	Entity *earth;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;
 	float currentFrame = 0,
 		lastFrame = 0;
 
-	void drawEntity(float time);
 	void showFPS();
 
 	float getTime();

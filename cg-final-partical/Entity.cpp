@@ -56,6 +56,19 @@ void Entity::Draw(Light light, Camera camera, float time)
 	}
 }
 
+void Entity::switchShader()
+{
+	static bool goodShader = true;
+	if (goodShader) {
+		model->shader = ResourceManager::GetShader("ugly");
+		goodShader = false;
+	}
+	else {
+		model->shader = ResourceManager::GetShader("multitexture");
+		goodShader = true;
+	}
+}
+
 void Entity::update(float time)
 {
 	mytime += time;

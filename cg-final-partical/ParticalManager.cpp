@@ -66,6 +66,20 @@ void ParticalManager::draw(Light &light, Camera &camera, float &time)
 
 }
 
+void ParticalManager::switchPartical()
+{
+	// todo
+	static bool isRock = true;
+	if (isRock) {
+		model = ResourceManager::GetModel("earth");
+		isRock = false;
+	}
+	else {
+		model = ResourceManager::GetModel("asteroids");
+		isRock = true;
+	}
+}
+
 bool ParticalManager::checkLiveness(ParticalStatus &ps)
 {
 	return ps.position.x < NV_FULL_RANGE && ps.position.x > -NV_FULL_RANGE &&
@@ -114,7 +128,7 @@ void ParticalManager::update(const float time)
 		float scale = infos[i].scale;
 		model = glm::scale(model, glm::vec3(scale));
 
-		if (infos[i].rotAngle > 100) {
+		if (infos[i].rotAngle > 90) {
 			infos[i].rotAngle += time * NV_ROTATE_SPEED;
 			float rotAngle = infos[i].rotAngle;
 			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
@@ -191,9 +205,9 @@ void ParticalManager::generateCirclingPartical(const float radius, const float o
 		model = glm::translate(model, glm::vec3(x, y, z));
 
 		// 2. scale: Scale between 0.25 and 1.25f
-		info.scale = (rand() % 20) / 20.0f + 0.25f;
+		info.scale = (rand() % 20) / 10.0f + 0.2f;
 		model = glm::scale(model, glm::vec3(info.scale));
-
+		
 		// 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
 		info.rotAngle = (rand() % 360);
 		model = glm::rotate(model, info.rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));

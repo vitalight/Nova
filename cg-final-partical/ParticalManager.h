@@ -30,6 +30,7 @@ class ParticalManager
 public:
 	ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset);
 	void draw(Light & light, Camera & camera, float & time);
+	void switchPartical();
 private:
 	unsigned int VBO;
 	Model *model;

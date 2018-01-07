@@ -77,12 +77,6 @@
     <None Include="glsl\asteroids.vs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="glsl\2d.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\2d.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
     <None Include="glsl\normal.fs">
       <Filter>源文件\glsl</Filter>
     </None>
@@ -111,6 +105,18 @@
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\light.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\ugly.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\ugly.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\2d.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\2d.fs">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>

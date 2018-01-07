@@ -4,9 +4,9 @@
  * Main
  ****************************************/
 // screen width
-#define NV_SCR_WIDTH 1000
+#define NV_SCR_WIDTH 1200
 // screen height
-#define NV_SCR_HEIGHT 600
+#define NV_SCR_HEIGHT 700
 // ascii number for keyboard-exit
 #define NV_EXIT_ASCII 27
 
@@ -18,7 +18,7 @@
 // light source color
 #define NV_LIGHT_COL (glm::vec3(1.0f, 0.8f, 1.0f))
 // light source bias against (ambient, diffuse, specular)
-#define NV_LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.5f))
+#define NV_LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.45f))
 
 /****************************************
  * Planet
@@ -39,7 +39,7 @@
 // radius of circle around sun
 #define NV_ROCK_RADIUS 1200
 // random position generation offset
-#define NV_ROCK_OFFSET 15.0f
+#define NV_ROCK_OFFSET 50.0f
 
 // range of destination position for flying asteroids
 #define NV_CENTER_RANGE 1400
