@@ -3,12 +3,12 @@
 #define GENERATE_CYCLE 0.5
 #define CLEANUP_CYCLE 5
 
-#define CENTER_RANGE 800
-#define FULL_RANGE 1200
+#define CENTER_RANGE 1200
+#define FULL_RANGE 2000
 
 #define START_FRAME 120.0f
 #define PARTICAL_SPEED 10.0f
-#define ROTATE_SPEED 0.6f
+#define ROTATE_SPEED 0.8f
 #define ANGLE_SPEED 0.02f
 
 void printVec3(glm::vec3 vec)

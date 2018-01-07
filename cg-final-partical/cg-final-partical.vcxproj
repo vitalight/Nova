@@ -179,7 +179,7 @@
     <None Include="glsl\normal.vs" />
     <None Include="glsl\skybox.fs" />
     <None Include="glsl\skybox.vs" />
-    <None Include="glsl\sun.fs" />
+    <None Include="glsl\light.fs" />
     <None Include="glsl\texture.fs" />
     <None Include="glsl\texture.vs" />
   </ItemGroup>

@@ -98,13 +98,13 @@
     <None Include="glsl\texture.vs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="glsl\sun.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
     <None Include="glsl\multitexture.vs">
       <Filter>源文件\glsl</Filter>
     </None>
     <None Include="glsl\multitexture.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\light.fs">
       <Filter>源文件\glsl</Filter>
     </None>
   </ItemGroup>

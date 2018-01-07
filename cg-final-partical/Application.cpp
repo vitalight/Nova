@@ -5,9 +5,9 @@
 #define LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.5f))
 #define LINE_DIRECTION (glm::vec3(-1, -1, 0))
 
-#define ASTEROID_FLYING 100
-#define ASTEROID_CIRCLING 800
-#define ASTEROID_RADIUS 600
+#define ASTEROID_FLYING 200
+#define ASTEROID_CIRCLING 2000
+#define ASTEROID_RADIUS 1200
 #define ASTEROID_OFFSET 15.0f
 
 Application::Application()
@@ -27,13 +27,13 @@ void Application::Init()
 	 * Environment
 	 *************************************************************/
 	light = new Light(LIGHT_POS, LIGHT_COL, LIGHT_BIAS);
-	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 2000.0f), glm::vec3(0.0f, 0.0f, 450.0f));
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 2500.0f), glm::vec3(0.0f, 0.0f, 600.0f));
 
 	/*************************************************************
 	 * Compile shaders
 	 *************************************************************/
 	// sun light source
-	ResourceManager::LoadShader("glsl/texture.vs", "glsl/sun.fs", nullptr, "sun");
+	ResourceManager::LoadShader("glsl/texture.vs", "glsl/light.fs", nullptr, "light");
 	// texture and light
 	ResourceManager::LoadShader("texture");
 	// multitexture for earth
@@ -49,53 +49,59 @@ void Application::Init()
 	* Load models
 	*************************************************************/
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
-	ResourceManager::LoadModel("sun", "sun", glm::vec3(0.5, -1, 0));
-	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -1, 0));
-	ResourceManager::LoadModel("moon", "sun", glm::vec3(0.5, -1, 0));
-	//ResourceManager::LoadModel("resources/objects/saturn2/Saturn.max", "saturn", "texture", glm::vec3(0));
-	ResourceManager::LoadModel("saturn", "texture", glm::vec3(0.5, -1, 0));
-	ResourceManager::LoadModel("shuttle", "texture", glm::vec3(0));/*
+	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("moon", "resources/objects/planetTextures/2k_moon.jpg", "light", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("sun", "resources/objects/planetTextures/2k_sun.jpg", "light", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("mercury", "resources/objects/planetTextures/2k_mercury.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("venus", "resources/objects/planetTextures/2k_venus_surface.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+
+	ResourceManager::LoadPlanetModel("mars", "resources/objects/planetTextures/2k_mars.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("jupiter", "resources/objects/planetTextures/2k_jupiter.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("saturn", "resources/objects/planetTextures/2k_saturn.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("uranus", "resources/objects/planetTextures/2k_uranus.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("neptune", "resources/objects/planetTextures/2k_neptune.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadModel("shuttle", "texture", glm::vec3(0));
 	
 	/*************************************************************
 	* Entities
 	*************************************************************/
-	/* 公转,自传
-	 * 太阳sun--25,				水星mercury-88-59,		金星vernus-224-243, 
-	 * 地球earth-365-1,			月球moon,				火星mars-687-1, 
-	 * 小行星带asteroid,			木星jupiter-11y-0.4,		土星saturn-29.5y-0.5, 
-	 * 天王星uranus-84y-0.8,		海王星neptune-164y-0.6
+	/* 公转,自传,公转半径,半径
+	 * 太阳	sun-0-25-0,				水星mercury-88-59-57-24,		金星venus-224-243-108-60, 
+	 * 地球	earth-365-1-149-63,		月球moon,					火星mars-687-1-227-33, 
+	 * 小行星带asteroid,				木星jupiter-11y-0.4-778-714,	土星saturn-29.5y-0.5-1427-603, 
+	 * 天王星uranus-84y-0.8-2869-259,海王星neptune-164y-0.6-4504-247
 	 */
-	Entity *sun = new Entity("sun", glm::vec3(0), 50),
-		*mercury = new Entity("moon", glm::vec3(0), 4),
-		*vernus = new Entity("moon", glm::vec3(0), 4),
-		*earth = new Entity("earth", glm::vec3(0), 6),
-		*moon = new Entity("moon", glm::vec3(0), 0.8),
+	Entity *sun = new Entity("sun", glm::vec3(0), 100),
+		*mercury = new Entity("mercury", glm::vec3(0), 4.8),
+		*venus = new Entity("venus", glm::vec3(0), 12),
+		*earth = new Entity("earth", glm::vec3(0), 12.6),
+		*moon = new Entity("moon", glm::vec3(0), 1.6),
 
-		*mars = new Entity("moon", glm::vec3(0), 7),
-		*jupiter = new Entity("moon", glm::vec3(0), 2),
-		*saturn = new Entity("saturn", glm::vec3(0), 3),
-		*uranus = new Entity("moon", glm::vec3(0), 2),
-		*neptune = new Entity("moon", glm::vec3(0), 2),
+		*mars = new Entity("mars", glm::vec3(0), 6.6),
+		*jupiter = new Entity("jupiter", glm::vec3(0), 20),
+		*saturn = new Entity("saturn", glm::vec3(0), 18),
+		*uranus = new Entity("uranus", glm::vec3(0), 14),
+		*neptune = new Entity("neptune", glm::vec3(0), 13),
 		*shuttle = new Entity("shuttle", glm::vec3(0), 0.05);
 
 	// planet type
 	sun->configPlanet(0.146);
-	mercury->configPlanet(5.061, 300, 0.04);//0.061
-	vernus->configPlanet(0.015, 400, 0.016);
-	earth->configPlanet(3.65, 500, 0.01);
-	moon->configMoon(earth, 0.2, 30, 0.5);// todo
+	mercury->configPlanet(0.6, 560, 0.05);
+	venus->configPlanet(0.6, 700, 0.016);
+	earth->configPlanet(3, 860, 0.01);
+	moon->configMoon(earth, 0.2, 60, 0.5);// todo
 
-	mars->configPlanet(3.65, 600, 0.005);
-	jupiter->configPlanet(9.125, 700, 0.002);
-	saturn->configPlanet(7.3, 800, 0.001);
-	uranus->configPlanet(4.56, 900, 0.005);
-	neptune->configPlanet(6.08, 1000, 0.003);
+	mars->configPlanet(3, 1040, 0.005);
+	jupiter->configPlanet(4, 1360, 0.002);
+	saturn->configPlanet(5, 1600, 0.001);
+	uranus->configPlanet(4, 1940, 0.005);
+	neptune->configPlanet(5, 2240, 0.003);
 	shuttle->configShuttle();
 
 	// put in vector
 	entities.push_back(sun);
 	entities.push_back(mercury);
-	entities.push_back(vernus);
+	entities.push_back(venus);
 	entities.push_back(earth);
 	entities.push_back(moon);
 

@@ -45,18 +45,18 @@ This is the SJTU CG final homework —— Nova.
       * random number generate not proper
     * working, but asteroids disapear
       * VAO conflict
-  * earth multi-texture
-    * done
-  * 镜面反射
-    * done
+  * earth multi-texture done
+  * 镜面反射 done
+  * 圆形模型只读一次 done
+  * 多个星球 大小数量先做好 done
 
-  - star glow
+  - 1.7 star glow
     - frame buffer and gaussian kernel?
 
-  * todo: sun partical effect
-  * 多个星球 大小数量先做好
-  * billboard
-  * 圆形模型只读一次
+  * sun partical effect
+  * spaceship tail partical effect
+  * texture & texture2d merge
+  * billboard shows name
 
 
 ### Achivement
@@ -78,6 +78,7 @@ This is the SJTU CG final homework —— Nova.
 * Vertices, Textures, shaders
 * VAO, VBO
 * set shader, draw
+* core-profile
 
 
 
@@ -125,3 +126,37 @@ This is the SJTU CG final homework —— Nova.
 - 音乐喷泉
 
 core-profile mode(核心模式) instead of immediate mode(固定渲染管线)
+
+
+
+Mipmap
+=================================================================
+问题：
+[v] glew.h
+	SysWOW64 instead of System32
+[v] exit重定义
+	include iostream before GL
+[v] 键盘延迟
+	GetKeyState()
+[v] obj重定义
+	call和定义的参数类型不同(隐式声明)
+[v] gl卡死
+	glewInit()!
+[v] 不显示
+	clearDepthBufferBit
+[v] assimp读取材料色
+	很辛苦的看document
+[v] model load in error
+	全部合并后导出obj
+	或者.x格式！
+	fbx better!
+[v] singleton
+	static both in .h and .cpp
+[v] 光照纹理贴图
+=================================================================
+TODO:
+支持滚轮
+立方体贴图 天空盒
+减少状态切换
+load model miss 不报错
+*****************************************************************/

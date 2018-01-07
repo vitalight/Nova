@@ -10,43 +10,6 @@
 //	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 //}
 
-/****************************************************************
-NOVA
-=================================================================
-优化：
-使用vbo, glsl等core-profile改善性能
-Mipmap
-=================================================================
-问题：
-[v] glew.h
-	SysWOW64 instead of System32
-[v] exit重定义
-	include iostream before GL
-[v] 键盘延迟
-	GetKeyState()
-[v] obj重定义
-	call和定义的参数类型不同(隐式声明)
-[v] gl卡死
-	glewInit()!
-[v] 不显示
-	clearDepthBufferBit
-[v] assimp读取材料色
-	很辛苦的看document
-[v] model load in error
-	全部合并后导出obj
-	或者.x格式！
-	fbx better!
-[v] singleton
-	static both in .h and .cpp
-[v] 光照纹理贴图
-=================================================================
-TODO:
-支持滚轮
-立方体贴图 天空盒
-减少状态切换
-load model miss 不报错
-*****************************************************************/
-
 #define KEY_EXIT 27
 
 Application app;
@@ -111,7 +74,7 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(A_SCR_WIDTH, A_SCR_HEIGHT);
-	glutCreateWindow("Day 0");
+	glutCreateWindow("Nova");
 
 	glewExperimental = GL_TRUE;
 	glewInit();

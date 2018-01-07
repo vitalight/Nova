@@ -47,13 +47,35 @@ Texture2D ResourceManager::GetTexture(std::string name)
 
 Model *ResourceManager::LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma)
 {
+	cout << "Loading from [" << path << "]..." << endl;
 	Models[name] = new Model(Shaders[shaderName], path, offset, gamma);
 	return Models[name];
 }
 
 Model *ResourceManager::LoadModel(std::string name, std::string shaderName, glm::vec3 offset)
 {
+
+	cout << "Loading from [" << name << "]..." << endl;
 	Models[name] = new Model(Shaders[shaderName], "resources/objects/" + name + "/" + name + ".obj", offset, false);
+	return Models[name];
+}
+
+Model * ResourceManager::LoadPlanetModel(std::string name, std::string texturePath, std::string shaderName, glm::vec3 offset)
+{
+
+	cout << "Loading from [" << name << "]..." << endl;
+	if (Models["earth"] == nullptr) {
+		LoadModel("earth", "texture", glm::vec3(0));
+	}
+	Models[name] = new Model(*Models["earth"]);
+	Texture texture;
+	Texture2D t2d = LoadTexture(texturePath.c_str(), false, name);
+	texture.id = t2d.ID;
+	texture.type = "texture_diffuse";
+	texture.path = texturePath.c_str();
+	Models[name]->textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+	Models[name]->meshes[0].textures[0] = texture;
+	Models[name]->shader = GetShader(shaderName);
 	return Models[name];
 }
 

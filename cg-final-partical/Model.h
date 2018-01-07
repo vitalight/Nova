@@ -36,7 +36,6 @@ public:
 	Model(Shader shader, string const &path, glm::vec3 offset = glm::vec3(0, 0, 0), bool gamma = false) 
 		: gammaCorrection(gamma), shader(shader), offset(offset)
 	{
-		cout << "Loading from [" << path << "]..." << endl;
 		loadModel(path);
 	}
 
@@ -287,6 +286,7 @@ private:
 		{
 			std::cout << "Texture failed to load at path: " << path << std::endl;
 			stbi_image_free(data);
+			exit(-1);
 		}
 
 		return textureID;
