@@ -66,6 +66,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>头文件\model</Filter>
     </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\asteroids.fs">
@@ -140,6 +143,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>源文件\model</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -40,67 +40,41 @@ void Application::Init()
 	*************************************************************/
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
 	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("moon", "resources/objects/planetTextures/2k_moon.jpg", "light", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("sun", "resources/objects/planetTextures/2k_sun.jpg", "light", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("mercury", "resources/objects/planetTextures/2k_mercury.jpg", "texture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("venus", "resources/objects/planetTextures/2k_venus_surface.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("moon", "light", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("sun", "light", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("mercury", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("venus", "texture", glm::vec3(0.5, -0.5, 0));
 
-	ResourceManager::LoadPlanetModel("mars", "resources/objects/planetTextures/2k_mars.jpg", "texture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("jupiter", "resources/objects/planetTextures/2k_jupiter.jpg", "texture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("saturn", "resources/objects/planetTextures/2k_saturn.jpg", "texture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("uranus", "resources/objects/planetTextures/2k_uranus.jpg", "texture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("neptune", "resources/objects/planetTextures/2k_neptune.jpg", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("mars", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("jupiter", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("saturn", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("uranus", "texture", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("neptune", "texture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadModel("shuttle", "texture", glm::vec3(0));
 	
 	/*************************************************************
 	* Entities
 	*************************************************************/
 	/* 公转,自传,公转半径,半径
-	 * 太阳	sun-0-25-0,				水星mercury-88-59-57-24,		金星venus-224-243-108-60, 
-	 * 地球	earth-365-1-149-63,		月球moon,					火星mars-687-1-227-33, 
-	 * 小行星带asteroid,				木星jupiter-11y-0.4-778-714,	土星saturn-29.5y-0.5-1427-603, 
-	 * 天王星uranus-84y-0.8-2869-259,海王星neptune-164y-0.6-4504-247
+	 * 太阳	sun-0-25-0,				 水星mercury-88-59-57-24,		金星venus-224-243-108-60, 
+	 * 地球	earth-365-1-149-63,		 月球moon,						火星mars-687-1-227-33, 
+	 * 小行星带asteroid,				 木星jupiter-11y-0.4-778-714,	土星saturn-29.5y-0.5-1427-603, 
+	 * 天王星uranus-84y-0.8-2869-259, 海王星neptune-164y-0.6-4504-247
 	 */
-	Entity *sun = new Entity("sun", glm::vec3(0), 100),
-		*mercury = new Entity("mercury", glm::vec3(0), 4.8),
-		*venus = new Entity("venus", glm::vec3(0), 12),
-		*earth = new Entity("earth", glm::vec3(0), 12.6),
-		*moon = new Entity("moon", glm::vec3(0), 1.6),
 
-		*mars = new Entity("mars", glm::vec3(0), 6.6),
-		*jupiter = new Entity("jupiter", glm::vec3(0), 20),
-		*saturn = new Entity("saturn", glm::vec3(0), 18),
-		*uranus = new Entity("uranus", glm::vec3(0), 14),
-		*neptune = new Entity("neptune", glm::vec3(0), 13),
-		*shuttle = new Entity("shuttle", glm::vec3(0), 0.05);
-
-	// planet type
-	sun->configPlanet(0.146);
-	mercury->configPlanet(0.6, 560, 0.05);
-	venus->configPlanet(0.6, 700, 0.016);
+	entityManager.createEntity("sun", 100)->configPlanet(0.146);
+	entityManager.createEntity("mercury", 4.8)->configPlanet(0.6, 560, 0.06);
+	entityManager.createEntity("venus", 12)->configPlanet(0.6, 700, 0.016);
+	Entity * earth = entityManager.createEntity("earth", 12.6);
 	earth->configPlanet(3, 860, 0.01);
-	moon->configMoon(earth, 0.2, 60, 0.5);// todo
+	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 0.5);
 
-	mars->configPlanet(3, 1040, 0.005);
-	jupiter->configPlanet(4, 1360, 0.002);
-	saturn->configPlanet(5, 1600, 0.001);
-	uranus->configPlanet(4, 1940, 0.005);
-	neptune->configPlanet(5, 2240, 0.003);
-	shuttle->configShuttle();
-
-	// put in vector
-	entities.push_back(sun);
-	entities.push_back(mercury);
-	entities.push_back(venus);
-	entities.push_back(earth);
-	entities.push_back(moon);
-
-	entities.push_back(mars);
-	entities.push_back(jupiter);
-	entities.push_back(saturn);
-	entities.push_back(uranus);
-	entities.push_back(neptune);
-	entities.push_back(shuttle);
+	entityManager.createEntity("mars", 6.6)->configPlanet(3, 1040, 0.005);
+	entityManager.createEntity("jupiter", 20)->configPlanet(4, 1360, 0.002);
+	entityManager.createEntity("saturn", 18)->configPlanet(5, 1600, 0.001);
+	entityManager.createEntity("uranus", 14)->configPlanet(4, 1940, 0.005);
+	entityManager.createEntity("neptune", 13)->configPlanet(5, 2240, 0.003);
+	entityManager.createEntity("shuttle", 0.05)->configShuttle();
 
 	// partical system
 	particalManager = new ParticalManager("asteroids", "asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
@@ -108,18 +82,13 @@ void Application::Init()
 	// universe skybox
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
 
-	/*************************************************************
-	* Text render
-	*************************************************************/
+	// text render
 	textRenderer = new TextRenderer(NV_SCR_WIDTH, NV_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
 }
 
 void Application::Update()
-{
-	// per-frame logic
-	// --------------------
-	
+{	
 	// calculate eplased time
 	float currentFrame = getTime();
 	deltaTime = currentFrame - lastFrame;
@@ -127,20 +96,12 @@ void Application::Update()
 
 	processKeyboard();
 
-	drawEntity(deltaTime);
-	particalManager->draw(*camera, *light, deltaTime);
-
-	// draw at last
+	entityManager.draw(*light, *camera, deltaTime);
+	particalManager->draw(*light, *camera, deltaTime);
 	skybox->draw(*camera);
 
 	// show text: fps
 	showFPS();
-}
-
-void Application::drawEntity(float time)
-{
-	for (auto entity:entities)
-		entity->Draw(*(this->light), *(this->camera), time);
 }
 
 float Application::getTime()

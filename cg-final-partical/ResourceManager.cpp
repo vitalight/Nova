@@ -43,13 +43,14 @@ Model *ResourceManager::LoadModel(std::string name, std::string shaderName, glm:
 	return Models[name];
 }
 
-Model * ResourceManager::LoadPlanetModel(std::string name, std::string texturePath, std::string shaderName, glm::vec3 offset)
+Model * ResourceManager::LoadPlanetModel(std::string name, std::string shaderName, glm::vec3 offset)
 {
 	cout << "Loading from [" << name << "]..." << endl;
 	if (Models["earth"] == nullptr) {
 		LoadModel("earth", "texture", glm::vec3(0));
 	}
 	Models[name] = new Model(*Models["earth"]);
+	std::string texturePath = "resources/objects/planetTextures/2k_" + name + ".jpg";
 	Texture texture;
 	texture.id = Models[name]->TextureFromFile(texturePath);
 	texture.type = "texture_diffuse";

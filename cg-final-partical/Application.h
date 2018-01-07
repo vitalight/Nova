@@ -13,10 +13,11 @@
 #include "Camera.h"
 #include "TextRenderer.h"
 #include "Light.h"
-#include "Entity.h"
 #include "Skybox.h"
 #include "ParticalManager.h"
 #include "Config.h"
+#include "EntityManager.h"
+//#include "Entity.h"
 
 class Application {
 public:
@@ -29,9 +30,10 @@ public:
 private:
 	TextRenderer *textRenderer;
 	Light *light;
-	vector<Entity*> entities;
+	//vector<Entity*> entities;
 	Skybox *skybox;
 	ParticalManager *particalManager;
+	EntityManager entityManager;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;

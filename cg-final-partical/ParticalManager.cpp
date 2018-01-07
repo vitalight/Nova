@@ -46,11 +46,7 @@ ParticalManager::ParticalManager(string name, string shaderName, int _amountFlyi
 	}
 }
 
-ParticalManager::~ParticalManager()
-{
-}
-
-void ParticalManager::draw(Camera camera, Light light, float time)
+void ParticalManager::draw(Light &light, Camera &camera, float &time)
 {
 	mytime += time;
 
@@ -92,7 +88,7 @@ void ParticalManager::deleteDeadPartical()
 	}
 }
 
-void ParticalManager::update(float time)
+void ParticalManager::update(const float time)
 {
 	if ((int)status.size() < amountFlying && mytime > NV_GENERATE_CYCLE)
 		generatePartical();
@@ -142,7 +138,7 @@ void ParticalManager::update(float time)
 	glBufferData(GL_ARRAY_BUFFER, (amountFlying + amountCircling) * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
 }
 
-void ParticalManager::generatePartical(bool justStarted)
+void ParticalManager::generatePartical(const bool justStarted)
 {
 	//cout << "[log] generate partical #" << status.size() << endl;
 	mytime = 0;
@@ -192,7 +188,7 @@ void ParticalManager::generatePartical(bool justStarted)
 	status.push_back(part);
 }
 
-void ParticalManager::generateCirclingPartical(float radius, float offset)
+void ParticalManager::generateCirclingPartical(const float radius, const float offset)
 {
 	for (int i = 0; i < amountCircling; i++)
 	{

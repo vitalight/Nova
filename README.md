@@ -49,6 +49,7 @@ This is the SJTU CG final homework —— Nova.
   * 镜面反射 done
   * 圆形模型只读一次 done
   * 多个星球 大小数量先做好 done
+  * code clean up done
 
   - 1.7 star glow
     - frame buffer and gaussian kernel?

@@ -39,7 +39,7 @@ public:
 	static Model *LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma = false);
 	static Model *LoadModel(std::string name, std::string shaderName, glm::vec3 offset);
 
-	static Model * LoadPlanetModel(std::string name, std::string texturePath, std::string shaderName, glm::vec3 offset);
+	static Model * LoadPlanetModel(std::string name, std::string shaderName, glm::vec3 offset);
 
 	static Model *GetModel(std::string name);
 

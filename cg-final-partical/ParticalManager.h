@@ -29,9 +29,8 @@ class ParticalManager
 {
 public:
 	ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset);
-	~ParticalManager();
-	void generateCirclingPartical(float radius, float offset);
-	void draw(Camera camera, Light light, float time);
+	void draw(Light & light, Camera & camera, float & time);
+	void generateCirclingPartical(const float radius, const float offset);
 private:
 	unsigned int VBO;
 	Model *model;
@@ -42,8 +41,8 @@ private:
 	ParticalInfo *infos;
 	glm::mat4 *modelMatrices;
 
-	void generatePartical(bool justStarted = false);
+	void generatePartical(const bool justStarted = false);
 	void deleteDeadPartical();
-	void update(float time);
+	void update(const float time);
 };
 
