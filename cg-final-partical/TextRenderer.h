@@ -1,13 +1,4 @@
-/*******************************************************************
-** This code is part of Breakout.
-**
-** Breakout is free software: you can redistribute it and/or modify
-** it under the terms of the CC BY 4.0 license as published by
-** Creative Commons, either version 4 of the License, or (at your
-** option) any later version.
-******************************************************************/
-#ifndef TEXT_RENDERER_H
-#define TEXT_RENDERER_H
+#pragma once
 
 #include <iostream>
 #include <GL/glew.h>
@@ -16,8 +7,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <map>
-
-#include "Texture.h"
 #include "Shader.h"
 #include "ResourceManager.h"
 
@@ -30,10 +19,13 @@ struct Character {
 	GLuint Advance;     // Horizontal offset to advance to next glyph
 };
 
-
-// A renderer class for rendering text displayed by a font loaded using the 
-// FreeType library. A single font is loaded, processed into a list of Character
-// items for later rendering.
+/***********************************************************
+* [Entity]
+*	A renderer class for rendering text displayed by a font 
+*	loaded using the FreeType library. A single font is 
+*	loaded, processed into a list of Character items for 
+*	later rendering.
+************************************************************/
 class TextRenderer
 {
 public:
@@ -51,5 +43,3 @@ private:
 	// Render state
 	GLuint VAO, VBO;
 };
-
-#endif 

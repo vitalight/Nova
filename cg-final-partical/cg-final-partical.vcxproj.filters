@@ -25,17 +25,11 @@
     <Filter Include="源文件\util">
       <UniqueIdentifier>{f4a3b0a0-0afe-4e56-aeeb-2e0633f7a219}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\model">
+      <UniqueIdentifier>{0b317c3d-f525-44dc-8735-2a75a642fbe9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Model.h">
-      <Filter>源文件\model</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>源文件\model</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>源文件\model</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -62,6 +56,15 @@
     </ClInclude>
     <ClInclude Include="ParticalManager.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>头文件\model</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>头文件\model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,9 +121,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>源文件\model</Filter>
-    </ClCompile>
     <ClCompile Include="stb_image.cpp">
       <Filter>源文件\util</Filter>
     </ClCompile>
@@ -137,6 +137,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ParticalManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

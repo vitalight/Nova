@@ -3,6 +3,12 @@
 #include <GL/GLUT.H>
 #include "includes/glm/glm.hpp"
 #include "includes/glm/gtc/matrix_transform.hpp"
+
+/***********************************************************
+* [Light]
+*	Now this class is just a simple container for 
+*   light-related information.
+************************************************************/
 class Light
 {
 public:

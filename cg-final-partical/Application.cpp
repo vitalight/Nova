@@ -1,15 +1,5 @@
 #include "Application.h"
 
-#define LIGHT_POS (glm::vec3(0, 0, 0))
-#define LIGHT_COL (glm::vec3(1.0f, 0.8f, 1.0f))
-#define LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.5f))
-#define LINE_DIRECTION (glm::vec3(-1, -1, 0))
-
-#define ASTEROID_FLYING 200
-#define ASTEROID_CIRCLING 2000
-#define ASTEROID_RADIUS 1200
-#define ASTEROID_OFFSET 15.0f
-
 Application::Application()
 {
 }
@@ -26,8 +16,8 @@ void Application::Init()
 	/*************************************************************
 	 * Environment
 	 *************************************************************/
-	light = new Light(LIGHT_POS, LIGHT_COL, LIGHT_BIAS);
-	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 2500.0f), glm::vec3(0.0f, 0.0f, 600.0f));
+	light = new Light(NV_LIGHT_POS, NV_LIGHT_COL, NV_LIGHT_BIAS);
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)NV_SCR_WIDTH / (float)NV_SCR_HEIGHT, 0.1f, 2500.0f), glm::vec3(0.0f, 0.0f, 600.0f));
 
 	/*************************************************************
 	 * Compile shaders
@@ -113,7 +103,7 @@ void Application::Init()
 	entities.push_back(shuttle);
 
 	// partical system
-	particalManager = new ParticalManager("asteroids", "asteroids", ASTEROID_FLYING, ASTEROID_CIRCLING, ASTEROID_RADIUS, ASTEROID_OFFSET);
+	particalManager = new ParticalManager("asteroids", "asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
 
 	// universe skybox
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
@@ -121,7 +111,7 @@ void Application::Init()
 	/*************************************************************
 	* Text render
 	*************************************************************/
-	textRenderer = new TextRenderer(A_SCR_WIDTH, A_SCR_HEIGHT);
+	textRenderer = new TextRenderer(NV_SCR_WIDTH, NV_SCR_HEIGHT);
 	textRenderer->Load("resources/fonts/arial.ttf", 24);
 }
 

@@ -6,14 +6,19 @@
 #include <vector>
 
 #include "ResourceManager.h"
-#include "Texture.h"
 
+/***********************************************************
+* [Skybox]
+*	This class is a implementation of cubemaps, and is used 
+*	to render the background.
+*
+*	Note that skybox has to be draw at last, otherwise the 
+*	depth detection might lead to glitches.
+************************************************************/
 class Skybox
 {
 public:
-	Skybox(Shader shader);
-	~Skybox();
-	void init();
+	Skybox(Shader _shader);
 	void draw(Camera camera);
 private:
 	unsigned int texture;

@@ -57,6 +57,7 @@ This is the SJTU CG final homework —— Nova.
   * spaceship tail partical effect
   * texture & texture2d merge
   * billboard shows name
+  * change to const and &
 
 
 ### Achivement

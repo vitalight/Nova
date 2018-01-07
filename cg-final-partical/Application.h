@@ -16,9 +16,7 @@
 #include "Entity.h"
 #include "Skybox.h"
 #include "ParticalManager.h"
-
-#define A_SCR_HEIGHT 600
-#define A_SCR_WIDTH 1000
+#include "Config.h"
 
 class Application {
 public:

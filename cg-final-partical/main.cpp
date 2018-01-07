@@ -4,19 +4,26 @@
 
 #include "Application.h"
 
-
-// this enables selecting high performance graphics card
+/*******************************************************
+*	This enables selecting high performance graphics card,
+* However for unknown reason, the strange thing is when 
+* things start to be moving, the build-in GC have better 
+* performance. 
+********************************************************/
 //extern "C" {
 //	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 //}
-
-#define KEY_EXIT 27
 
 Application app;
 bool firstMouse = true;
 bool polygonMode = false;
 int lastX, lastY;
 
+/*******************************************************
+* [display]
+*	This function is called per frame, update images by
+* invoking Application class.
+********************************************************/
 void display(void)
 {
 	glClearColor(0.1f, 0.15f, 0.2f, 1.0f);
@@ -25,13 +32,17 @@ void display(void)
 	glutSwapBuffers();
 }
 
-// this function doesn't handle movement(like wasd)
-// because it can't complete per frame call
+/*****************************************************
+* [keyboardFunc]
+*	Process input from keyboard.
+*	Note that 'wasd' key is not handled here because
+* it will have unacceptable latency 
+******************************************************/
 void keyboardFunc(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case KEY_EXIT:
+	case NV_EXIT_ASCII:
 		exit(0);
 	case '1':
 		if (polygonMode) {
@@ -50,6 +61,10 @@ void keyboardFunc(unsigned char key, int x, int y)
 	}
 }
 
+/*****************************************************
+* [motionFunc]
+*	Process input from mouse movement
+******************************************************/
 void motionFunc(int x, int y)
 {
 	if (firstMouse)
@@ -70,34 +85,40 @@ void motionFunc(int x, int y)
 
 int main(int argc, char *argv[])
 {
+	// main window setup
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(A_SCR_WIDTH, A_SCR_HEIGHT);
+	glutInitWindowSize(NV_SCR_WIDTH, NV_SCR_HEIGHT);
 	glutCreateWindow("Nova");
 
+	// enable supported extensions from graphics driver to be exposed
 	glewExperimental = GL_TRUE;
 	glewInit();
+
+	// glew initially will has a error, use this to clear it
 	glGetError();
 
+	// enable relative functions
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//glEnable(GL_MULTISAMPLE_ARB);
-	//glEnable(GL_MULTISAMPLE);
-	printf("%s\n", glGetString(GL_RENDERER));
-	/*查看系统是否支持多重采样*/
+	//查看系统是否支持多重采样
 	//static GLint buf[1], sbuf[1];
 	//glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
 	//printf("number of sample buffers is %d\n", buf[0]);
 	//glGetIntegerv(GL_SAMPLES_ARB, sbuf);
 	//printf("number of samples is %d\n", sbuf[0]);
-	
+	//glEnable(GL_MULTISAMPLE_ARB);
+	//glEnable(GL_MULTISAMPLE);
+
+	std::cout << glGetString(GL_RENDERER) << endl;
 	std::cout << "Starting application..." << std::endl;
 	app.Init();
 
+	// link each condition to corresponding functions
 	glutDisplayFunc(display);
 	glutIdleFunc(display);
 	glutKeyboardFunc(keyboardFunc);

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "ResourceManager.h"
-#include "Texture.h"
+#include "Config.h"
 
 class ParticalStatus
 {

@@ -1,16 +1,5 @@
 #include "ParticalManager.h"
 
-#define GENERATE_CYCLE 0.5
-#define CLEANUP_CYCLE 5
-
-#define CENTER_RANGE 1200
-#define FULL_RANGE 2000
-
-#define START_FRAME 120.0f
-#define PARTICAL_SPEED 10.0f
-#define ROTATE_SPEED 0.8f
-#define ANGLE_SPEED 0.02f
-
 void printVec3(glm::vec3 vec)
 {
 	cout << "[" << vec.x << ", " << vec.y << ", " << vec.z << "]" << endl;
@@ -89,13 +78,13 @@ void ParticalManager::draw(Camera camera, Light light, float time)
 
 void ParticalManager::deleteDeadPartical()
 {
-	if ((int)status.size() < amountFlying && mytime < CLEANUP_CYCLE)
+	if ((int)status.size() < amountFlying && mytime < NV_CLEANUP_CYCLE)
 		return;
 
 	for (int i = 0; i < (int)status.size(); i++) {
-		if (status[i].position.x > FULL_RANGE || status[i].position.x < -FULL_RANGE ||
-			status[i].position.y > FULL_RANGE || status[i].position.y < -FULL_RANGE ||
-			status[i].position.z > FULL_RANGE || status[i].position.z < -FULL_RANGE) {
+		if (status[i].position.x > NV_FULL_RANGE || status[i].position.x < -NV_FULL_RANGE ||
+			status[i].position.y > NV_FULL_RANGE || status[i].position.y < -NV_FULL_RANGE ||
+			status[i].position.z > NV_FULL_RANGE || status[i].position.z < -NV_FULL_RANGE) {
 			status.erase(status.begin() + i, status.begin() + i + 1);
 			//cout << "[log] delete partical #" << i << endl;
 			i--;
@@ -105,7 +94,7 @@ void ParticalManager::deleteDeadPartical()
 
 void ParticalManager::update(float time)
 {
-	if ((int)status.size() < amountFlying && mytime > GENERATE_CYCLE)
+	if ((int)status.size() < amountFlying && mytime > NV_GENERATE_CYCLE)
 		generatePartical();
 
 	int size = status.size();
@@ -117,10 +106,10 @@ void ParticalManager::update(float time)
 		float scale = status[i].scale;
 		model = glm::scale(model, glm::vec3(scale));
 
-		status[i].angle += time * ROTATE_SPEED;
+		status[i].angle += time * NV_ROTATE_SPEED;
 		float rotAngle = status[i].angle;
 		model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-		status[i].position += status[i].velocity * time * PARTICAL_SPEED;
+		status[i].position += status[i].velocity * time * NV_PARTICAL_SPEED;
 
 		// 4. now add to list of matrices
 		modelMatrices[i] = model;
@@ -128,7 +117,7 @@ void ParticalManager::update(float time)
 
 	for (int i = 0; i < amountCircling; i++) {
 		glm::mat4 model;
-		infos[i].angle += time * ANGLE_SPEED;
+		infos[i].angle += time * NV_ANGLE_SPEED;
 		float angle = infos[i].angle,
 			radius = infos[i].radius;
 
@@ -141,7 +130,7 @@ void ParticalManager::update(float time)
 		float scale = infos[i].scale;
 		model = glm::scale(model, glm::vec3(scale));
 
-		infos[i].rotAngle += time * ROTATE_SPEED;
+		infos[i].rotAngle += time * NV_ROTATE_SPEED;
 		float rotAngle = infos[i].rotAngle;
 		model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
@@ -163,35 +152,35 @@ void ParticalManager::generatePartical(bool justStarted)
 	part.angle = (rand() % 20) / 20.0 * PI;
 	part.scale = (rand() % 20) / 2.0f + 2.0f;
 	int startDirection = rand() % 6;
-	float val_1 = rand() % FULL_RANGE - FULL_RANGE/2.0,
-		val_2 = rand() % FULL_RANGE - FULL_RANGE/2.0,
-		val_3 = rand() % CENTER_RANGE - CENTER_RANGE/2.0,
-		val_4 = rand() % CENTER_RANGE - CENTER_RANGE/2.0;
+	float val_1 = rand() % NV_FULL_RANGE - NV_FULL_RANGE/2.0,
+		val_2 = rand() % NV_FULL_RANGE - NV_FULL_RANGE/2.0,
+		val_3 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE/2.0,
+		val_4 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE/2.0;
 	switch (startDirection)
 	{
 	case 0:// up
-		part.position = glm::vec3(val_1, FULL_RANGE - 1, val_2);
-		part.velocity = glm::normalize(glm::vec3(val_3, 1 - FULL_RANGE, val_4) - part.position);
+		part.position = glm::vec3(val_1, NV_FULL_RANGE - 1, val_2);
+		part.velocity = glm::normalize(glm::vec3(val_3, 1 - NV_FULL_RANGE, val_4) - part.position);
 		break;
 	case 1:// down
-		part.position = glm::vec3(val_1, 1 - FULL_RANGE, val_2);
-		part.velocity = glm::normalize(glm::vec3(val_3, FULL_RANGE - 1, val_4) - part.position);
+		part.position = glm::vec3(val_1, 1 - NV_FULL_RANGE, val_2);
+		part.velocity = glm::normalize(glm::vec3(val_3, NV_FULL_RANGE - 1, val_4) - part.position);
 		break;
 	case 2:// left
-		part.position = glm::vec3(1 - FULL_RANGE, val_1, val_2);
-		part.velocity = glm::normalize(glm::vec3(FULL_RANGE - 1, val_3, val_4) - part.position);
+		part.position = glm::vec3(1 - NV_FULL_RANGE, val_1, val_2);
+		part.velocity = glm::normalize(glm::vec3(NV_FULL_RANGE - 1, val_3, val_4) - part.position);
 		break;
 	case 3:// right
-		part.position = glm::vec3(FULL_RANGE - 1, val_1, val_2);
-		part.velocity = glm::normalize(glm::vec3(1 - FULL_RANGE, val_3, val_4) - part.position);
+		part.position = glm::vec3(NV_FULL_RANGE - 1, val_1, val_2);
+		part.velocity = glm::normalize(glm::vec3(1 - NV_FULL_RANGE, val_3, val_4) - part.position);
 		break;
 	case 4:// front
-		part.position = glm::vec3(val_1, val_2, FULL_RANGE - 1);
-		part.velocity = glm::normalize(glm::vec3(val_3, val_4, 1 - FULL_RANGE) - part.position);
+		part.position = glm::vec3(val_1, val_2, NV_FULL_RANGE - 1);
+		part.velocity = glm::normalize(glm::vec3(val_3, val_4, 1 - NV_FULL_RANGE) - part.position);
 		break;
 	case 5:// back
-		part.position = glm::vec3(val_1, val_2, 1 - FULL_RANGE);
-		part.velocity = glm::normalize(glm::vec3(val_3, val_4, FULL_RANGE - 1) - part.position);
+		part.position = glm::vec3(val_1, val_2, 1 - NV_FULL_RANGE);
+		part.velocity = glm::normalize(glm::vec3(val_3, val_4, NV_FULL_RANGE - 1) - part.position);
 		break;
 	default:
 		cout << "error: generate wrong direction" << endl;
@@ -199,13 +188,13 @@ void ParticalManager::generatePartical(bool justStarted)
 	}
 	part.velocity *= rand() % 4 + 1;
 	if (justStarted)
-		part.position += part.velocity * START_FRAME;
+		part.position += part.velocity * NV_INITIAL_FRAME;
 	status.push_back(part);
 }
 
 void ParticalManager::generateCirclingPartical(float radius, float offset)
 {
-	for (unsigned int i = 0; i < amountCircling; i++)
+	for (int i = 0; i < amountCircling; i++)
 	{
 		glm::mat4 model;
 		ParticalInfo info;

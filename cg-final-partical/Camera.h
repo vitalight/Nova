@@ -6,8 +6,6 @@
 #include "includes/glm/gtc/matrix_transform.hpp"
 #include "includes/glm/gtc/type_ptr.hpp"
 
-// Defines several possible options for camera movement. Used as abstraction
-// to stay away from window-system specific input methods
 enum Camera_Movement {
 	FORWARD,
 	BACKWARD,
@@ -24,8 +22,11 @@ const float SPEED = 300.0f;
 const float SENSITIVITY = 0.5f;
 const float ZOOM = 45.0f;
 
-// An abstract camera class that processes input and calculates the
-// corresponding Eular Angles, Vectors and Matrics for use in OpenGL
+/***********************************************************
+* [Camera]
+*	This class processes input and calculates the 
+*   corresponding Eular Angles, Vectors and Matrices
+************************************************************/
 class Camera
 {
 public:
@@ -46,8 +47,8 @@ public:
 
 	// Constructor with vectors
 	Camera(glm::mat4 projection,
-		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), 
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), 
+		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
 		float yaw = YAW, float pitch = PITCH);
 
 	// Constructor with scalar values
