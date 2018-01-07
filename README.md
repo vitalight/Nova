@@ -23,6 +23,7 @@ This is the SJTU CG final homework —— Nova.
     * network skybox need reverse direction
   * complete skybox and find proper pictures ( red galaxy )
   * tomorrow should do spaceship
+
 * 1.6 Better
   * find a little bit hideous texture, but it work fine anyway
     * problem: load obj multiple times
@@ -41,12 +42,28 @@ This is the SJTU CG final homework —— Nova.
     * still not showing, why?
       * for(:) isn't reference
       * glsl not compatible
+      * random number generate not proper
     * working, but asteroids disapear
+      * VAO conflict
+  * earth multi-texture
+    * done
+  * 镜面反射
+    * done
+
+  - star glow
+    - frame buffer and gaussian kernel?
+
+  * todo: sun partical effect
+  * 多个星球 大小数量先做好
+  * billboard
+  * 圆形模型只读一次
 
 
 ### Achivement
 
 * 将partical要用的数据使用class放在一起，帧率翻倍
+* Instanciation
+* 地球4纹理，到晚上会开灯
 
 
 ### Problem
@@ -75,12 +92,12 @@ This is the SJTU CG final homework —— Nova.
 - [ ] 恒星：实例化大量星环
 - [ ] 地球：超漂亮
 - [ ] 月球：更漂亮 微光
-- [ ] 飞行物：随机生成小陨石及无敌道具
+- [x] 飞行物：随机生成小陨石及无敌道具
 - [x] 背景：天空盒，闪烁群星
 
 ### 飞船
 
-* [ ] 飞船基本实现
+* [x] 飞船基本实现
 
 - [ ] 船尾火焰粒子效果
 - [ ] 四元旋转(待定)

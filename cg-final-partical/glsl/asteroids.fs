@@ -8,7 +8,7 @@ in vec3 pass_normal;
 uniform sampler2D texture_diffuse1;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
-uniform vec2 lightBias;
+uniform vec3 lightBias;
 
 //simple diffuse lighting
 vec3 calculateLighting(){

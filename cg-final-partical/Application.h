@@ -15,7 +15,6 @@
 #include "Light.h"
 #include "Entity.h"
 #include "Skybox.h"
-#include "Partical.h"
 #include "ParticalManager.h"
 
 #define A_SCR_HEIGHT 600
@@ -34,7 +33,6 @@ private:
 	Light *light;
 	vector<Entity*> entities;
 	Skybox *skybox;
-	Partical *asteroids;
 	ParticalManager *particalManager;
 
 	float deltaTime, lastTime = 0;

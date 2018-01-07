@@ -69,7 +69,7 @@ public:
 		// Then rotate
 		model = glm::rotate(model, rotate, axis);
 		if (isPlanet)
-			model = glm::rotate(model, PI / 2, glm::vec3(1.0f, 0, 0));
+			model = glm::rotate(model, -PI / 2, glm::vec3(1.0f, 0, 0));
 		// Move origin back
 		model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 		// Last scale
@@ -162,15 +162,15 @@ private:
 			else
 				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 			//// tangent
-			//vector.x = mesh->mTangents[i].x;
-			//vector.y = mesh->mTangents[i].y;
-			//vector.z = mesh->mTangents[i].z;
-			//vertex.Tangent = vector;
-			//// bitangent
-			//vector.x = mesh->mBitangents[i].x;
-			//vector.y = mesh->mBitangents[i].y;
-			//vector.z = mesh->mBitangents[i].z;
-			//vertex.Bitangent = vector;
+			vector.x = mesh->mTangents[i].x;
+			vector.y = mesh->mTangents[i].y;
+			vector.z = mesh->mTangents[i].z;
+			vertex.Tangent = vector;
+			// bitangent
+			vector.x = mesh->mBitangents[i].x;
+			vector.y = mesh->mBitangents[i].y;
+			vector.z = mesh->mBitangents[i].z;
+			vertex.Bitangent = vector;
 			
 			vertices.push_back(vertex);
 		}
@@ -195,8 +195,6 @@ private:
 		// normal: texture_normalN
 		
 		// 1. diffuse maps
-		//cout << "Model:: in maps" << endl;
-	
 		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		// 2. specular maps

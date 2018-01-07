@@ -27,24 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ColorGenerator.h">
-      <Filter>历史</Filter>
-    </ClInclude>
-    <ClInclude Include="Configs.h">
-      <Filter>历史</Filter>
-    </ClInclude>
-    <ClInclude Include="IndicesGenerator.h">
-      <Filter>历史</Filter>
-    </ClInclude>
-    <ClInclude Include="PerlinNoise.h">
-      <Filter>历史</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainGenerator.h">
-      <Filter>历史</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainRenderer.h">
-      <Filter>历史</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>源文件\model</Filter>
     </ClInclude>
@@ -72,13 +54,7 @@
     <ClInclude Include="TextRenderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>历史</Filter>
-    </ClInclude>
     <ClInclude Include="Skybox.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Partical.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
@@ -125,11 +101,14 @@
     <None Include="glsl\sun.fs">
       <Filter>源文件\glsl</Filter>
     </None>
+    <None Include="glsl\multitexture.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\multitexture.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TerrainRenderer.cpp">
-      <Filter>历史</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -155,9 +134,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Partical.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ParticalManager.cpp">

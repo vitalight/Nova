@@ -8,9 +8,9 @@ class Light
 public:
 	glm::vec3 Position;
 	glm::vec3 Color;
-	glm::vec2 LightBias;
+	glm::vec3 LightBias;
 
-	Light(glm::vec3 pos, glm::vec3 color, glm::vec2 lightBias)
+	Light(glm::vec3 pos, glm::vec3 color, glm::vec3 lightBias)
 		:Position(pos), Color(color), LightBias(lightBias)
 	{
 	}

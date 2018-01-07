@@ -8,18 +8,6 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 
-#define PARTICAL_MAX_NUM 100
-#define PARTICAL_GENERATE_CYCLE 0.5
-#define PARTICAL_CLEANUP_CYCLE 5
-
-#define PARTICAL_CENTER_RANGE 800
-#define PARTICAL_RANGE 1200
-
-#define PARTICAL_START 120.0f
-// 10.0f
-#define PARTICAL_SPEED 10.0f
-#define PARTICAL_ROTATE_SPEED 0.6f
-
 class ParticalStatus
 {
 public:
@@ -27,19 +15,31 @@ public:
 	float scale, angle;
 };
 
+class ParticalInfo
+{
+public:
+	GLfloat angle;
+	GLfloat radius;
+	GLfloat y;
+	GLfloat scale;
+	GLfloat rotAngle;
+};
+
 class ParticalManager
 {
 public:
-	ParticalManager(string name, string shaderName, int _amount = PARTICAL_MAX_NUM);
+	ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset);
 	~ParticalManager();
+	void generateCirclingPartical(float radius, float offset);
 	void draw(Camera camera, Light light, float time);
 private:
 	unsigned int VBO;
 	Model *model;
 	Shader shader;
-	int amount;
+	int amountFlying, amountCircling;
 	float mytime = 0;
 	std::vector<ParticalStatus> status;
+	ParticalInfo *infos;
 	glm::mat4 *modelMatrices;
 
 	void generatePartical(bool justStarted = false);

@@ -91,13 +91,13 @@ private:
 		switch (type) {
 		case ENTITY_PLANET:
 			angle += time * rotate_velocity;
-			position.x = cos(mytime*angular_velocity) * radius;
-			position.z = sin(mytime*angular_velocity) * radius;
+			position.x = cos(-mytime*angular_velocity) * radius;
+			position.z = sin(-mytime*angular_velocity) * radius;
 			break;
 		case ENTITY_MOON:
 			angle += time * rotate_velocity;
-			position.x = cos(mytime*angular_velocity) * radius + parent->position.x;
-			position.z = sin(mytime*angular_velocity) * radius + parent->position.z;
+			position.x = cos(-mytime*angular_velocity) * radius + parent->position.x;
+			position.z = sin(-mytime*angular_velocity) * radius + parent->position.z;
 			break;
 		}
 	}

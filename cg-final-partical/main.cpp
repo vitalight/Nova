@@ -81,7 +81,8 @@ void keyboardFunc(unsigned char key, int x, int y)
 		}
 		break;
 	case '2':
-		glEnable(GL_MULTISAMPLE);
+		//glEnable(GL_FRAMEBUFFER_SRGB);
+		//glEnable(GL_MULTISAMPLE);
 		break;
 	}
 }
@@ -125,11 +126,11 @@ int main(int argc, char *argv[])
 	//glEnable(GL_MULTISAMPLE);
 	printf("%s\n", glGetString(GL_RENDERER));
 	/*查看系统是否支持多重采样*/
-	/*static GLint buf[1], sbuf[1];
-	glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
-	printf("number of sample buffers is %d\n", buf[0]);
-	glGetIntegerv(GL_SAMPLES_ARB, sbuf);
-	printf("number of samples is %d\n", sbuf[0]);*/
+	//static GLint buf[1], sbuf[1];
+	//glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
+	//printf("number of sample buffers is %d\n", buf[0]);
+	//glGetIntegerv(GL_SAMPLES_ARB, sbuf);
+	//printf("number of samples is %d\n", sbuf[0]);
 	
 	std::cout << "Starting application..." << std::endl;
 	app.Init();

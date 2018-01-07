@@ -1,25 +1,14 @@
 #include "Application.h"
 
-//#define A_LINE
-#define A_LIGHT_POS (glm::vec3(0, 0, 0))
-#define A_LIGHT_COL (glm::vec3(1.0f, 0.8f, 0.8f))
-#define A_LIGHT_BIAS (glm::vec2(0.4f, 0.7f))
-#define A_LINE_DIRECTION (glm::vec3(-1, -1, 0))
+#define LIGHT_POS (glm::vec3(0, 0, 0))
+#define LIGHT_COL (glm::vec3(1.0f, 0.8f, 1.0f))
+#define LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.5f))
+#define LINE_DIRECTION (glm::vec3(-1, -1, 0))
 
-#define A_OCTAVES 3
-#define A_AMPLITUDE 10
-#define A_ROUGHNESS (0.35f)
-
-#define A_TERRAIN_SIZE 100
-#define A_TERRAIN_TICK 6
-#define A_ASTEROID_NUM 800
-#define A_ASTEROID_RADIUS 600
-
-vector<glm::vec3> A_TERRAIN_COLS = { glm::vec3(201 / 255.0f, 178 / 255.0f, 99 / 255.0f),
-								glm::vec3(135 / 255.0f, 184 / 255.0f, 82 / 255.0f),
-								glm::vec3(120 / 255.0f, 120 / 255.0f, 120 / 255.0f),
-								glm::vec3(200 / 255.0f, 200 / 255.0f, 210 / 255.0f) };
-#define A_COLOR_SPREAD (0.45f)Vertex.glsl
+#define ASTEROID_FLYING 100
+#define ASTEROID_CIRCLING 800
+#define ASTEROID_RADIUS 600
+#define ASTEROID_OFFSET 15.0f
 
 Application::Application()
 {
@@ -37,7 +26,7 @@ void Application::Init()
 	/*************************************************************
 	 * Environment
 	 *************************************************************/
-	light = new Light(A_LIGHT_POS, A_LIGHT_COL, A_LIGHT_BIAS);
+	light = new Light(LIGHT_POS, LIGHT_COL, LIGHT_BIAS);
 	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)A_SCR_WIDTH / (float)A_SCR_HEIGHT, 0.1f, 2000.0f), glm::vec3(0.0f, 0.0f, 450.0f));
 
 	/*************************************************************
@@ -47,6 +36,8 @@ void Application::Init()
 	ResourceManager::LoadShader("glsl/texture.vs", "glsl/sun.fs", nullptr, "sun");
 	// texture and light
 	ResourceManager::LoadShader("texture");
+	// multitexture for earth
+	ResourceManager::LoadShader("multitexture");
 	// skybox texture
 	ResourceManager::LoadShader("skybox");
 	// asteroids shader (instance render)
@@ -59,47 +50,64 @@ void Application::Init()
 	*************************************************************/
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
 	ResourceManager::LoadModel("sun", "sun", glm::vec3(0.5, -1, 0));
-	ResourceManager::LoadModel("earth", "texture", glm::vec3(0.5, -1, 0));
+	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -1, 0));
 	ResourceManager::LoadModel("moon", "sun", glm::vec3(0.5, -1, 0));
+	//ResourceManager::LoadModel("resources/objects/saturn2/Saturn.max", "saturn", "texture", glm::vec3(0));
 	ResourceManager::LoadModel("saturn", "texture", glm::vec3(0.5, -1, 0));
-	ResourceManager::LoadModel("shuttle", "texture", glm::vec3(0.5, -1, 0));/*
+	ResourceManager::LoadModel("shuttle", "texture", glm::vec3(0));/*
 	
 	/*************************************************************
 	* Entities
 	*************************************************************/
-	/*
-	 * 太阳sun,			水星mercury,		金星vernus, 
-	 * 地球earth,		月球moon,		火星mars, 
-	 * 小行星带asteroid,	木星jupiter,		土星saturn, 
-	 * 天王星uranus,		海王星neptune,	彗星pluto
+	/* 公转,自传
+	 * 太阳sun--25,				水星mercury-88-59,		金星vernus-224-243, 
+	 * 地球earth-365-1,			月球moon,				火星mars-687-1, 
+	 * 小行星带asteroid,			木星jupiter-11y-0.4,		土星saturn-29.5y-0.5, 
+	 * 天王星uranus-84y-0.8,		海王星neptune-164y-0.6
 	 */
-	Entity *sun = new Entity("sun", glm::vec3(0, 0, 0), 50),
-		*mars = new Entity("moon", glm::vec3(0, 0, 0), 5),
-		*earth = new Entity("earth", glm::vec3(0, 0, 0), 4),
-		*moon = new Entity("moon", glm::vec3(0, 0, 0), 0.8),
-		*saturn = new Entity("saturn", glm::vec3(0, 0, 0), 3),
-		*shuttle = new Entity("shuttle", glm::vec3(0, 0, 0), 0.05);
+	Entity *sun = new Entity("sun", glm::vec3(0), 50),
+		*mercury = new Entity("moon", glm::vec3(0), 4),
+		*vernus = new Entity("moon", glm::vec3(0), 4),
+		*earth = new Entity("earth", glm::vec3(0), 6),
+		*moon = new Entity("moon", glm::vec3(0), 0.8),
+
+		*mars = new Entity("moon", glm::vec3(0), 7),
+		*jupiter = new Entity("moon", glm::vec3(0), 2),
+		*saturn = new Entity("saturn", glm::vec3(0), 3),
+		*uranus = new Entity("moon", glm::vec3(0), 2),
+		*neptune = new Entity("moon", glm::vec3(0), 2),
+		*shuttle = new Entity("shuttle", glm::vec3(0), 0.05);
 
 	// planet type
-	sun->configPlanet(0.1);
-	mars->configPlanet(0.5, 300, 0.2);
-	earth->configPlanet(0.5, 360, 0.05);
-	saturn->configPlanet(0.5, 410, 0.02);
-	moon->configMoon(earth, 0.5, 20, 0.5);
+	sun->configPlanet(0.146);
+	mercury->configPlanet(5.061, 300, 0.04);//0.061
+	vernus->configPlanet(0.015, 400, 0.016);
+	earth->configPlanet(3.65, 500, 0.01);
+	moon->configMoon(earth, 0.2, 30, 0.5);// todo
+
+	mars->configPlanet(3.65, 600, 0.005);
+	jupiter->configPlanet(9.125, 700, 0.002);
+	saturn->configPlanet(7.3, 800, 0.001);
+	uranus->configPlanet(4.56, 900, 0.005);
+	neptune->configPlanet(6.08, 1000, 0.003);
 	shuttle->configShuttle();
 
+	// put in vector
 	entities.push_back(sun);
-	entities.push_back(mars);
+	entities.push_back(mercury);
+	entities.push_back(vernus);
 	entities.push_back(earth);
-	entities.push_back(saturn);
 	entities.push_back(moon);
+
+	entities.push_back(mars);
+	entities.push_back(jupiter);
+	entities.push_back(saturn);
+	entities.push_back(uranus);
+	entities.push_back(neptune);
 	entities.push_back(shuttle);
 
-	// asteroid partical
-	asteroids = new Partical("asteroids", A_ASTEROID_NUM, getTime(), A_ASTEROID_RADIUS);
-
 	// partical system
-	particalManager = new ParticalManager("asteroids", "asteroids");
+	particalManager = new ParticalManager("asteroids", "asteroids", ASTEROID_FLYING, ASTEROID_CIRCLING, ASTEROID_RADIUS, ASTEROID_OFFSET);
 
 	// universe skybox
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
@@ -124,7 +132,6 @@ void Application::Update()
 	processKeyboard();
 
 	drawEntity(deltaTime);
-	asteroids->draw(*camera, *light, deltaTime);
 	particalManager->draw(*camera, *light, deltaTime);
 
 	// draw at last
