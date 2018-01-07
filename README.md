@@ -50,15 +50,17 @@ This is the SJTU CG final homework —— Nova.
   * 圆形模型只读一次 done
   * 多个星球 大小数量先做好 done
   * code clean up done
+  * 优化粒子系统 不删除 直接复用 done
 
   - 1.7 star glow
     - frame buffer and gaussian kernel?
+    - done! rim lighting!
 
   * sun partical effect
   * spaceship tail partical effect
-  * texture & texture2d merge
   * billboard shows name
-  * change to const and &
+  * 一键切换地球
+  * 一键切换粒子
 
 
 ### Achivement
@@ -66,6 +68,8 @@ This is the SJTU CG final homework —— Nova.
 * 将partical要用的数据使用class放在一起，帧率翻倍
 * Instanciation
 * 地球4纹理，到晚上会开灯
+* 提高40%帧率 by less rotation(no rotation at all 90fps : all rotation 40fps)
+* 地球边缘大气层发光！
 
 
 ### Problem

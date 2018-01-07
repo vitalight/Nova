@@ -1,10 +1,5 @@
 #include "ParticalManager.h"
 
-void printVec3(glm::vec3 vec)
-{
-	cout << "[" << vec.x << ", " << vec.y << ", " << vec.z << "]" << endl;
-}
-
 ParticalManager::ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset)
 {
 	model = ResourceManager::GetModel(name);
@@ -12,8 +7,8 @@ ParticalManager::ParticalManager(string name, string shaderName, int _amountFlyi
 	amountFlying = _amountFlying;
 	amountCircling = _amountCircling;
 	modelMatrices = new glm::mat4[amountFlying + amountCircling];
-	for (int i = 0; i < amountFlying/2; i++)
-		generatePartical(true);
+	for (int i = 0; i < amountFlying; i++)
+		generatePartical();
 
 	infos = new ParticalInfo[amountCircling];
 
@@ -69,32 +64,18 @@ void ParticalManager::draw(Light &light, Camera &camera, float &time)
 		glBindVertexArray(0);
 	}
 
-	deleteDeadPartical();
 }
 
-void ParticalManager::deleteDeadPartical()
+bool ParticalManager::checkLiveness(ParticalStatus &ps)
 {
-	if ((int)status.size() < amountFlying && mytime < NV_CLEANUP_CYCLE)
-		return;
-
-	for (int i = 0; i < (int)status.size(); i++) {
-		if (status[i].position.x > NV_FULL_RANGE || status[i].position.x < -NV_FULL_RANGE ||
-			status[i].position.y > NV_FULL_RANGE || status[i].position.y < -NV_FULL_RANGE ||
-			status[i].position.z > NV_FULL_RANGE || status[i].position.z < -NV_FULL_RANGE) {
-			status.erase(status.begin() + i, status.begin() + i + 1);
-			//cout << "[log] delete partical #" << i << endl;
-			i--;
-		}
-	}
+	return ps.position.x < NV_FULL_RANGE && ps.position.x > -NV_FULL_RANGE &&
+		ps.position.y < NV_FULL_RANGE && ps.position.y > -NV_FULL_RANGE &&
+		ps.position.z < NV_FULL_RANGE && ps.position.z > -NV_FULL_RANGE;
 }
 
 void ParticalManager::update(const float time)
 {
-	if ((int)status.size() < amountFlying && mytime > NV_GENERATE_CYCLE)
-		generatePartical();
-
-	int size = status.size();
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < amountFlying; i++) {
 		glm::mat4 model;
 
 		model = glm::translate(model, status[i].position);
@@ -105,7 +86,14 @@ void ParticalManager::update(const float time)
 		status[i].angle += time * NV_ROTATE_SPEED;
 		float rotAngle = status[i].angle;
 		model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-		status[i].position += status[i].velocity * time * NV_PARTICAL_SPEED;
+		if (checkLiveness(status[i])) {
+			status[i].position += status[i].velocity * time * NV_PARTICAL_SPEED;
+		}
+		else {
+			//cout << "[log] ParticalManager::reverse #" << i << endl;
+			status[i].velocity = -status[i].velocity;
+			status[i].position += status[i].velocity * NV_PARTICAL_SPEED;
+		}
 
 		// 4. now add to list of matrices
 		modelMatrices[i] = model;
@@ -126,10 +114,11 @@ void ParticalManager::update(const float time)
 		float scale = infos[i].scale;
 		model = glm::scale(model, glm::vec3(scale));
 
-		infos[i].rotAngle += time * NV_ROTATE_SPEED;
-		float rotAngle = infos[i].rotAngle;
-		model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
-
+		if (infos[i].rotAngle > 100) {
+			infos[i].rotAngle += time * NV_ROTATE_SPEED;
+			float rotAngle = infos[i].rotAngle;
+			model = glm::rotate(model, rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
+		}
 		// 4. now add to list of matrices
 		modelMatrices[amountFlying+i] = model;
 	}
@@ -138,9 +127,8 @@ void ParticalManager::update(const float time)
 	glBufferData(GL_ARRAY_BUFFER, (amountFlying + amountCircling) * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
 }
 
-void ParticalManager::generatePartical(const bool justStarted)
+void ParticalManager::generatePartical()
 {
-	//cout << "[log] generate partical #" << status.size() << endl;
 	mytime = 0;
 
 	ParticalStatus part;
@@ -148,10 +136,10 @@ void ParticalManager::generatePartical(const bool justStarted)
 	part.angle = (rand() % 20) / 20.0 * PI;
 	part.scale = (rand() % 20) / 2.0f + 2.0f;
 	int startDirection = rand() % 6;
-	float val_1 = rand() % NV_FULL_RANGE - NV_FULL_RANGE/2.0,
-		val_2 = rand() % NV_FULL_RANGE - NV_FULL_RANGE/2.0,
-		val_3 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE/2.0,
-		val_4 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE/2.0;
+	float val_1 = rand() % NV_FULL_RANGE - NV_FULL_RANGE / 2.0,
+		val_2 = rand() % NV_FULL_RANGE - NV_FULL_RANGE / 2.0,
+		val_3 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE / 2.0,
+		val_4 = rand() % NV_CENTER_RANGE - NV_CENTER_RANGE / 2.0;
 	switch (startDirection)
 	{
 	case 0:// up
@@ -182,9 +170,8 @@ void ParticalManager::generatePartical(const bool justStarted)
 		cout << "error: generate wrong direction" << endl;
 		break;
 	}
-	part.velocity *= rand() % 4 + 1;
-	if (justStarted)
-		part.position += part.velocity * NV_INITIAL_FRAME;
+	part.velocity *= rand() % 5 + 1;
+	part.position += part.velocity * NV_INITIAL_FRAME;
 	status.push_back(part);
 }
 

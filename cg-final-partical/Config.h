@@ -41,19 +41,14 @@
 // random position generation offset
 #define NV_ROCK_OFFSET 15.0f
 
-// cycle for partical generation (unit: second)
-#define NV_GENERATE_CYCLE 0.5
-// cycle for partical cleanup (unit: second)
-#define NV_CLEANUP_CYCLE 5
-
 // range of destination position for flying asteroids
-#define NV_CENTER_RANGE 1200
+#define NV_CENTER_RANGE 1400
 // range of generation position for flying asteroids
-#define NV_FULL_RANGE 2000
+#define NV_FULL_RANGE 2200
 
 // initial elapse time for flying asteroids
 #define NV_INITIAL_FRAME 120.0f
-// speed of flying asteroids
+// speed of flying asteroids 10.0f
 #define NV_PARTICAL_SPEED 10.0f
 // rotate speed of asteroids 
 #define NV_ROTATE_SPEED 0.8f

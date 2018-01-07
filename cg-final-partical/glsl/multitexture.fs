@@ -31,14 +31,16 @@ vec3 calculateLighting(){
 	// specular
 	vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	vec3 halfwayDir = normalize(lightDir + viewDir);  
+	vec3 halfwayDir = normalize(lightDir + viewDir);
     float specular = pow(max(dot(norm, halfwayDir), 0.0), 32.0);
-
+	// rim lighting
+	float intensity = 1.0 - max(dot(normalize(viewDir), norm), 0.0);
+	vec3 rimColor = vec3(0.2, 0.6, 1.5) * smoothstep(0.2, 1.0, intensity);
 	
 	if (diffuse < 0.2) {
 		texColor += (0.2-diffuse) * 15 * texture(texture_height1, fs_in.TexCoords).rgb;
 	}
-	return lightColor * ((lightBias.x + diffuse * lightBias.y) * texColor + specular * lightBias.z * specularColor);
+	return lightColor * ((lightBias.x + diffuse * lightBias.y) * (texColor + rimColor) + specular * lightBias.z * specularColor);
 }
 
 void main(void){

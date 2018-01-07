@@ -17,7 +17,8 @@ void Application::Init()
 	 * Environment
 	 *************************************************************/
 	light = new Light(NV_LIGHT_POS, NV_LIGHT_COL, NV_LIGHT_BIAS);
-	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)NV_SCR_WIDTH / (float)NV_SCR_HEIGHT, 0.1f, 2500.0f), glm::vec3(0.0f, 0.0f, 600.0f));
+	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)NV_SCR_WIDTH / (float)NV_SCR_HEIGHT, 0.1f, 2500.0f), 
+						glm::vec3(0.0f, 0.0f, 600.0f));
 
 	/*************************************************************
 	 * Compile shaders
@@ -30,7 +31,7 @@ void Application::Init()
 	ResourceManager::LoadShader("multitexture");
 	// skybox texture
 	ResourceManager::LoadShader("skybox");
-	// asteroids shader (instance render)
+	// asteroids shader
 	ResourceManager::LoadShader("asteroids");
 	// used to check normal line
 	//ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
@@ -67,7 +68,7 @@ void Application::Init()
 	entityManager.createEntity("venus", 12)->configPlanet(0.6, 700, 0.016);
 	Entity * earth = entityManager.createEntity("earth", 12.6);
 	earth->configPlanet(3, 860, 0.01);
-	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 0.5);
+	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 1.0);
 
 	entityManager.createEntity("mars", 6.6)->configPlanet(3, 1040, 0.005);
 	entityManager.createEntity("jupiter", 20)->configPlanet(4, 1360, 0.002);
