@@ -45,5 +45,6 @@ private:
 	bool checkLiveness(ParticalStatus & ps);
 	void generateCirclingPartical(const float radius, const float offset);
 	void generatePartical();
+	void setupModel(Model * model);
 };
 

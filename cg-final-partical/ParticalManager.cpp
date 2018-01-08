@@ -2,6 +2,7 @@
 
 ParticalManager::ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset)
 {
+	Model *backupModel = ResourceManager::GetModel("myrobot");
 	model = ResourceManager::GetModel(name);
 	shader = ResourceManager::GetShader(shaderName);
 	amountFlying = _amountFlying;
@@ -18,6 +19,12 @@ ParticalManager::ParticalManager(string name, string shaderName, int _amountFlyi
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, (amountFlying + amountCircling) * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
 
+	setupModel(model);
+	setupModel(backupModel);
+}
+
+void ParticalManager::setupModel(Model *model)
+{
 	for (unsigned int i = 0; i < model->meshes.size(); i++)
 	{
 		unsigned int VAO = model->meshes[i].VAO;
@@ -71,7 +78,7 @@ void ParticalManager::switchPartical()
 	// todo
 	static bool isRock = true;
 	if (isRock) {
-		model = ResourceManager::GetModel("earth");
+		model = ResourceManager::GetModel("myrobot");
 		isRock = false;
 	}
 	else {
@@ -205,7 +212,7 @@ void ParticalManager::generateCirclingPartical(const float radius, const float o
 		model = glm::translate(model, glm::vec3(x, y, z));
 
 		// 2. scale: Scale between 0.25 and 1.25f
-		info.scale = (rand() % 20) / 10.0f + 0.2f;
+		info.scale = (rand() % 20) / 5.0f + 0.2f;
 		model = glm::scale(model, glm::vec3(info.scale));
 		
 		// 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector

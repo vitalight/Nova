@@ -56,8 +56,10 @@ void keyboardFunc(unsigned char key, int x, int y)
 		break;
 	case '2':
 		app.SwitchShader();
+		break;
 	case '3':
 		app.SwitchPartical();
+		break;
 	}
 }
 
@@ -106,13 +108,13 @@ int main(int argc, char *argv[])
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//查看系统是否支持多重采样
-	//static GLint buf[1], sbuf[1];
-	//glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
-	//printf("number of sample buffers is %d\n", buf[0]);
-	//glGetIntegerv(GL_SAMPLES_ARB, sbuf);
-	//printf("number of samples is %d\n", sbuf[0]);
-	//glEnable(GL_MULTISAMPLE_ARB);
-	//glEnable(GL_MULTISAMPLE);
+	static GLint buf[1], sbuf[1];
+	glGetIntegerv(GL_SAMPLE_BUFFERS_ARB, buf);
+	printf("number of sample buffers is %d\n", buf[0]);
+	glGetIntegerv(GL_SAMPLES_ARB, sbuf);
+	printf("number of samples is %d\n", sbuf[0]);
+	glEnable(GL_MULTISAMPLE_ARB);
+	glEnable(GL_MULTISAMPLE);
 
 	std::cout << glGetString(GL_RENDERER) << endl;
 	std::cout << "Starting application..." << std::endl;

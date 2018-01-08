@@ -41,7 +41,8 @@ void Application::Init()
 	/*************************************************************
 	* Load models
 	*************************************************************/
-	ResourceManager::LoadModel("resources/objects/tree/tree.obj", "cube", "light", glm::vec3(0));
+	//ResourceManager::LoadModel("resources/objects/tree/tree.obj", "cube", "light", glm::vec3(0));
+	ResourceManager::LoadModel("myrobot", "texture", glm::vec3(0));
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
 	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("sun", "light", glm::vec3(0.5, -0.5, 0));
@@ -72,7 +73,7 @@ void Application::Init()
 	earth = entityManager.createEntity("earth", 12.6);
 	earth->configPlanet(3, 860, 0.01);
 	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 1.0);
-	entityManager.createEntity("cube", 0.05)->configMoon(earth, 0.2, 60, 0);
+	//entityManager.createEntity("myrobot", 1)->configMoon(earth, 0.2, 60, 0);
 
 	entityManager.createEntity("mars", 6.6)->configPlanet(3, 1040, 0.005);
 	entityManager.createEntity("jupiter", 20)->configPlanet(4, 1360, 0.002);

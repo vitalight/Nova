@@ -23,7 +23,6 @@ This is the SJTU CG final homework —— Nova.
     * network skybox need reverse direction
   * complete skybox and find proper pictures ( red galaxy )
   * tomorrow should do spaceship
-
 * 1.6 Better
   * find a little bit hideous texture, but it work fine anyway
     * problem: load obj multiple times
@@ -45,26 +44,37 @@ This is the SJTU CG final homework —— Nova.
       * random number generate not proper
     * working, but asteroids disapear
       * VAO conflict
+* 1.7 detail
+
   * earth multi-texture done
   * 镜面反射 done
   * 圆形模型只读一次 done
   * 多个星球 大小数量先做好 done
   * code clean up done
   * 优化粒子系统 不删除 直接复用 done
+  * star glow
+    * frame buffer and gaussian kernel?
+    * done! rim lighting!
+  * 一键切换地球
+  * 居然这个时候修复了c4d和assimp的兼容问题 ?????? 喵喵喵
+* 1.8 perfection
+  * 画了一个space robot
+    * 有裂缝
+    * really dark, because of no normal
+  * 亮边缘再亮一点
+  * 一键切换粒子  todo
+  * 加小星星点点
 
-  - 1.7 star glow
-    - frame buffer and gaussian kernel?
-    - done! rim lighting!
-  - 一键切换地球
-  - 居然这个时候修复了c4d和assimp的兼容问题 ?????? 喵喵喵
-  - 1.8 自己画一个ufo
-  - 一键切换粒子
 
   * spaceship tail partical effect
   * billboard shows name
   * spaceship change to UFO
   * clean up function (public name use CAPITAL)
+  * fade-in fade-out background-music
 
+* 1.9 cleanup and document
+
+* 1.10 documentation and improvement
 
 ### Achivement
 
@@ -73,6 +83,7 @@ This is the SJTU CG final homework —— Nova.
 * 地球4纹理，到晚上会开灯
 * 提高40%帧率 by less rotation(no rotation at all 90fps : all rotation 40fps)
 * 地球边缘大气层发光！
+* 自己画Model!
 
 
 ### Problem

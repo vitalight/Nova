@@ -34,7 +34,7 @@
 // numbers of asteroids flying everywhere
 #define NV_FLYING_NUM 200
 // numbers of asteroids that circle around sun
-#define NV_CIRCLING_NUM 2000
+#define NV_CIRCLING_NUM 1000
 
 // radius of circle around sun
 #define NV_ROCK_RADIUS 1200
