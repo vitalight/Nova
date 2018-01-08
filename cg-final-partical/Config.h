@@ -32,7 +32,7 @@
  * Asteroids
  ****************************************/
 // numbers of asteroids flying everywhere
-#define NV_FLYING_NUM 200
+#define NV_FLYING_NUM 150
 // numbers of asteroids that circle around sun
 #define NV_CIRCLING_NUM 1000
 

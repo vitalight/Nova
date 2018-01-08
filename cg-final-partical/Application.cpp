@@ -43,10 +43,11 @@ void Application::Init()
 	*************************************************************/
 	//ResourceManager::LoadModel("resources/objects/tree/tree.obj", "cube", "light", glm::vec3(0));
 	ResourceManager::LoadModel("myrobot", "texture", glm::vec3(0));
+	//ResourceManager::LoadModel("ufo", "texture", glm::vec3(0));
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
 	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("sun", "light", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("moon", "light", glm::vec3(0.5, -0.5, 0));
+	ResourceManager::LoadPlanetModel("moon", "texture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("mercury", "texture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("venus", "texture", glm::vec3(0.5, -0.5, 0));
 
@@ -71,9 +72,9 @@ void Application::Init()
 	entityManager.createEntity("mercury", 4.8)->configPlanet(0.6, 560, 0.06);
 	entityManager.createEntity("venus", 12)->configPlanet(0.6, 700, 0.016);
 	earth = entityManager.createEntity("earth", 12.6);
-	earth->configPlanet(3, 860, 0.01);
+	earth->configPlanet(2, 860, 0.01);
 	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 1.0);
-	//entityManager.createEntity("myrobot", 1)->configMoon(earth, 0.2, 60, 0);
+	//entityManager.createEntity("ufo", 10)->configMoon(earth, 0.2, 60, 0);
 
 	entityManager.createEntity("mars", 6.6)->configPlanet(3, 1040, 0.005);
 	entityManager.createEntity("jupiter", 20)->configPlanet(4, 1360, 0.002);

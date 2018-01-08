@@ -66,26 +66,27 @@ This is the SJTU CG final homework —— Nova.
   * 一键切换粒子  done
   * 天空盒done
   * 换更好看的天空盒！github上找的
+  * 太阳微调
+  * 太阳shader failed
+    * seems impossible to achieve partical effect in shader
 
 
   * spaceship tail partical effect
-  * billboard shows name
-  * spaceship change to UFO
+  * 彗星
+  * spaceship action
   * clean up function (public name use CAPITAL)
   * fade-in fade-out background-music
-
 * 1.9 cleanup and document
-
 * 1.10 documentation and improvement
 
 ### Achivement
 
-* 将partical要用的数据使用class放在一起，帧率翻倍
-* Instanciation
-* 地球4纹理，到晚上会开灯
-* 提高40%帧率 by less rotation(no rotation at all 90fps : all rotation 40fps)
-* 地球边缘大气层发光！
-* 自己画Model!
+- [x] 将partical要用的数据使用class放在一起，帧率翻倍
+- [x] Instanciation
+- [x] 地球4纹理，到晚上会开灯
+- [x] 提高40%帧率 by less rotation(no rotation at all 90fps : all rotation 40fps)
+- [x] 地球边缘大气层发光！
+- [x] 自己画Model!
 
 
 ### Problem
@@ -123,15 +124,10 @@ This is the SJTU CG final homework —— Nova.
 * [x] 飞船基本实现
 
 - [ ] 船尾火焰粒子效果
-- [ ] 四元旋转(待定)
 - [x] 超好看纹理，被月球和太阳照亮
 
 ### 技术
 
-- [ ] 碰撞检测
-  * 飞船最后渲染，此前使用深度buffer判断是否物体进入屏幕特定位置，是则撞毁
-  * (persumably optimum solution in the world)
-- [ ] 滤镜：撞毁后添加毁灭滤镜
 - [ ] 运动：变加速度运动而不是瞬时运动
 - [x] 字体渲染
 - [x] 使用独显(从NVIDIA文档里找来的)
@@ -177,7 +173,6 @@ Mipmap
 =================================================================
 TODO:
 支持滚轮
-立方体贴图 天空盒
 减少状态切换
 load model miss 不报错
 *****************************************************************/
