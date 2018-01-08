@@ -66,12 +66,12 @@ Skybox::Skybox(Shader _shader)
 	// -------------
 	vector<std::string> faces
 	{
-		"resources/skybox/right.png",
-		"resources/skybox/left.png",
-		"resources/skybox/top.png",
-		"resources/skybox/bottom.png",
-		"resources/skybox/back.png",
-		"resources/skybox/front.png"
+		"resources/skybox/right.jpg",
+		"resources/skybox/left.jpg",
+		"resources/skybox/top.jpg",
+		"resources/skybox/bottom.jpg",
+		"resources/skybox/back.jpg",
+		"resources/skybox/front.jpg"
 	};
 	texture = loadCubemap(faces);
 

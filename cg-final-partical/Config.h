@@ -18,7 +18,7 @@
 // light source color
 #define NV_LIGHT_COL (glm::vec3(1.0f, 0.8f, 1.0f))
 // light source bias against (ambient, diffuse, specular)
-#define NV_LIGHT_BIAS (glm::vec3(0.3f, 0.8f, 0.45f))
+#define NV_LIGHT_BIAS (glm::vec3(0.25f, 0.8f, 0.45f))
 
 /****************************************
  * Planet

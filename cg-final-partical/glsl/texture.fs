@@ -24,7 +24,7 @@ vec3 calculateLighting(){
 	float intensity = 1.0 - max(dot(viewDir, normalize(pass_normal)), 0.0);
 	float rim = smoothstep(0.2, 1.0, intensity);
 
-	return lightColor * (lightBias.x + diffuse * lightBias.y + specular * lightBias.z) * (1 + 0.6 * rim) + vec3(0.2*rim);
+	return lightColor * (lightBias.x + diffuse * lightBias.y + specular * lightBias.z) * (1 + rim) + vec3(0.3*rim);
 }
 
 void main(void){

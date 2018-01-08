@@ -41,7 +41,7 @@ vec3 calculateLighting(){
 	if (diffuse < 0.2) {
 		texColor += (0.2-diffuse) * 15 * texture(texture_height1, fs_in.TexCoords).rgb;
 	}
-	return lightColor * ((lightBias.x + diffuse * lightBias.y)*texColor + specular*lightBias.z*specularColor) * (1 + rim);
+	return lightColor * ((lightBias.x + diffuse * lightBias.y)*texColor + specular*lightBias.z*specularColor) * (1 + 1.2*rim) + 0.2*vec3(rim);
 }
 
 void main(void){

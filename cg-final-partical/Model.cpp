@@ -133,6 +133,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 
 	//cout << "Model:: processMesh" << endl;
 	// Walk through each of the mesh's vertices
+	bool hasNormal = true;
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
@@ -149,6 +150,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 			vector.z = mesh->mNormals[i].z;
 		}
 		else {
+			hasNormal = false;
 			vector.x = 0;
 			vector.y = 0;
 			vector.z = 0;
@@ -200,7 +202,20 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 		// retrieve all indices of the face and store them in the indices vector
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
+
+		if (!hasNormal)
+		{
+			for (unsigned int k = 0; k < face.mNumIndices - 2; k += 3)
+			{
+				glm::vec3 normal = glm::normalize(glm::cross(vertices[face.mIndices[k]].Position - vertices[face.mIndices[k+2]].Position,
+					vertices[face.mIndices[k + 1]].Position - vertices[face.mIndices[k]].Position));
+				vertices[face.mIndices[k]].Normal = normal;
+				vertices[face.mIndices[k+1]].Normal = normal;
+				vertices[face.mIndices[k+2]].Normal = normal;
+			}
+		}
 	}
+
 	// process materials
 	//cout << "Model:: flag 2" << endl;
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];

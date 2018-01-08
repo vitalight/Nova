@@ -61,9 +61,11 @@ This is the SJTU CG final homework —— Nova.
   * 画了一个space robot
     * 有裂缝
     * really dark, because of no normal
-  * 亮边缘再亮一点
-  * 一键切换粒子  todo
-  * 加小星星点点
+    * fixed! auto generated normal
+  * 亮边缘再亮一点 done
+  * 一键切换粒子  done
+  * 天空盒done
+  * 换更好看的天空盒！github上找的
 
 
   * spaceship tail partical effect
@@ -123,7 +125,6 @@ This is the SJTU CG final homework —— Nova.
 - [ ] 船尾火焰粒子效果
 - [ ] 四元旋转(待定)
 - [x] 超好看纹理，被月球和太阳照亮
-- [ ] 飞船前部点光源
 
 ### 技术
 
