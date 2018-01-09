@@ -54,7 +54,7 @@ public:
 	// constructor
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, glm::vec3 color);
 
-	Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices, vector<glm::vec3> &colors);
+	Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices);
 
 	// render the mesh
 	void Draw(Light light, Camera camera, Shader shader);

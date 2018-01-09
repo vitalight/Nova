@@ -30,12 +30,13 @@ public:
 	glm::vec3 offset;
 	bool gammaCorrection;
 	Shader shader;
+	float brightness = -1.0;
 
 	/*  Functions   */
 	// constructor, expects a filepath to a 3D model.
 	Model(Shader shader, string const &path, glm::vec3 offset = glm::vec3(0, 0, 0), bool gamma = false);
 
-	Model(Shader shader, vector<Vertex> &vertices, vector<glm::vec3> &colors, vector<unsigned int> &indices);
+	Model(Shader shader, vector<Vertex> &vertices, vector<unsigned int> &indices);
 
 	// draws the model, and thus all its meshes
 	void Draw(Light light,

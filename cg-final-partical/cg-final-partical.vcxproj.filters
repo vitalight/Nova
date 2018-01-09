@@ -119,6 +119,12 @@
     <None Include="glsl\2d.fs">
       <Filter>源文件\glsl</Filter>
     </None>
+    <None Include="glsl\fire.vs">
+      <Filter>源文件\glsl</Filter>
+    </None>
+    <None Include="glsl\fire.fs">
+      <Filter>源文件\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

@@ -173,6 +173,8 @@
     <None Include="glsl\2d.vs" />
     <None Include="glsl\asteroids.fs" />
     <None Include="glsl\asteroids.vs" />
+    <None Include="glsl\fire.fs" />
+    <None Include="glsl\fire.vs" />
     <None Include="glsl\multitexture.fs" />
     <None Include="glsl\multitexture.vs" />
     <None Include="glsl\normal.fs" />

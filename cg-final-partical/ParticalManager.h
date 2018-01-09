@@ -8,14 +8,16 @@
 #include "ResourceManager.h"
 #include "Config.h"
 
-class ParticalStatus
+class ParticalFlying
 {
 public:
-	glm::vec3 velocity, position, axis;
-	float scale, angle;
+	glm::vec3 velocity;
+	glm::vec3 position;
+	glm::vec3 axis;
+	GLfloat scale, angle;
 };
 
-class ParticalInfo
+class ParticalCircling
 {
 public:
 	GLfloat angle;
@@ -25,26 +27,38 @@ public:
 	GLfloat rotAngle;
 };
 
+class ParticalFire
+{
+public:
+	GLfloat elapseTime = 0;
+	glm::vec3 velocity;
+	glm::vec3 position;
+};
+
 class ParticalManager
 {
 public:
-	ParticalManager(string name, string shaderName, int _amountFlying, int _amountCircling, float radius, float offset);
+	ParticalManager(string name, int _amountFlying, int _amountCircling, float radius, float offset);
 	void draw(Light & light, Camera & camera, float & time);
 	void switchPartical();
 private:
-	unsigned int VBO;
-	Model *model;
-	Shader shader;
-	int amountFlying, amountCircling;
-	float mytime = 0;
-	std::vector<ParticalStatus> status;
-	ParticalInfo *infos;
-	glm::mat4 *modelMatrices;
+	unsigned int rockVBO, fireVBO;
+	Model *rock, *fire;
+	int amountFlying, amountCircling, amountFireMax;
+	float liveRange = 0.8;
+	std::vector<ParticalFlying> flyingRocks;
+	ParticalCircling *circlingRocks;
+	std::vector<ParticalFire> particalFires;
 
-	void update(const float time);
-	bool checkLiveness(ParticalStatus & ps);
+	glm::mat4 *rockMatrices;
+	glm::mat4 *fireMatrices;
+
+	void update(const float time, Camera &camera);
+	void generateFire(Camera & camera);
+	bool checkLiveness(ParticalFlying & particalFlying);
 	void generateCirclingPartical(const float radius, const float offset);
 	void generatePartical();
-	void setupModel(Model * model);
+	void setupModel(Model * rock);
+	void drawModel(Model * model, int number, Light & light, Camera & camera, float & time);
 };
 

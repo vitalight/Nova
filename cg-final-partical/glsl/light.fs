@@ -7,6 +7,7 @@ in vec3 pass_normal;
 
 uniform sampler2D texture_diffuse1;
 uniform vec3 viewPos;
+uniform float brightness;
 
 void main(void){
 	// rim lighting
@@ -14,5 +15,5 @@ void main(void){
 	float intensity = 1.0 - max(dot(viewDir, normalize(pass_normal)), 0.0);
 	float rim = smoothstep(0.2, 1.0, intensity);
 
-	out_color = vec4(vec3(texture(texture_diffuse1, pass_texCoord))*0.9 + vec3(1, 0.2, 0.2)*rim, 1.0);
+	out_color = vec4(brightness * (vec3(texture(texture_diffuse1, pass_texCoord)) + vec3(1, 0.2, 0.2)*rim), 1.0)  ;
 }

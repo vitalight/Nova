@@ -69,11 +69,24 @@ This is the SJTU CG final homework —— Nova.
   * 太阳微调
   * 太阳shader failed
     * seems impossible to achieve partical effect in shader
+* 1.9 final rush
+  * sun brightness adjustment done
+  * == instead of =
+  * generateFire会闪屏 而且陨石不见了
+    * vbo bind incorrectly
+    * now make it billboard
+    * switch partical doesn't work
+      * myrobot wrong shader
+    * earth wierd light
+    * wierd white glitches
+      * [!!!!]BufferData size shouldn't change
+    * transpose not working
+    * default angle can't be seen， so after rotate still can never be seen
 
 
   * spaceship tail partical effect
   * 彗星
-  * spaceship action
+  * spaceship action ( not important )
   * clean up function (public name use CAPITAL)
   * fade-in fade-out background-music
 * 1.9 cleanup and document

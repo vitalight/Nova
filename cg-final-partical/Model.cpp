@@ -6,11 +6,11 @@ Model::Model(Shader shader, string const &path, glm::vec3 offset, bool gamma)
 	loadModel(path);
 }
 
-Model::Model(Shader shader, vector<Vertex> &vertices, vector<glm::vec3> &colors, vector<unsigned int> &indices)
+Model::Model(Shader shader, vector<Vertex> &vertices, vector<unsigned int> &indices)
 {
-	cout << "Loading terrain..." << endl;
+	cout << "Loading vertices..." << endl;
 	this->shader = shader;
-	meshes.push_back(Mesh(vertices, indices, colors));
+	meshes.push_back(Mesh(vertices, indices));
 }
 
 void Model::Draw(Light light, Camera camera, glm::vec3 position,
@@ -19,22 +19,25 @@ void Model::Draw(Light light, Camera camera, glm::vec3 position,
 	shader.Use();
 	shader.SetMatrix4("projection", camera.Projection);
 	shader.SetMatrix4("view", camera.GetViewMatrix());
+	// todo
+	if (brightness >= 0)
+		shader.SetFloat("brightness", brightness);
 
-	glm::mat4 model;
+	glm::mat4 rock;
 	// First translate (transformations are: scale happens first, then rotation and then finall translation happens; reversed order)
-	model = glm::translate(model, glm::vec3(position));
+	rock = glm::translate(rock, glm::vec3(position));
 	// Move origin of rotation to center of quad
-	model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
+	rock = glm::translate(rock, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
 
 	// Then rotate
-	model = glm::rotate(model, rotate, axis);
+	rock = glm::rotate(rock, rotate, axis);
 	if (isPlanet)
-		model = glm::rotate(model, -PI / 2, glm::vec3(1.0f, 0, 0));
+		rock = glm::rotate(rock, -PI / 2, glm::vec3(1.0f, 0, 0));
 	// Move origin back
-	model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
+	rock = glm::translate(rock, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 	// Last scale
-	model = glm::scale(model, glm::vec3(size));
-	shader.SetMatrix4("model", model);
+	rock = glm::scale(rock, glm::vec3(size));
+	shader.SetMatrix4("model", rock);
 
 	for (unsigned int i = 0; i < meshes.size(); i++)
 		meshes[i].Draw(light, camera, shader);

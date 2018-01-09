@@ -43,6 +43,45 @@ Model *ResourceManager::LoadModel(std::string name, std::string shaderName, glm:
 	return Models[name];
 }
 
+Model *ResourceManager::LoadFireModel(std::string shaderName, std::string texturePath)
+{
+	cout << "Loading Fire Model" << endl;
+	if (Models["fire"] == nullptr) {
+		vector<Vertex> vertices;
+		Vertex v1, v2, v3, v4;
+		v1.Position = glm::vec3(-0.5, 0.5, 0);
+		v1.TexCoords = glm::vec2(0, 0);
+		v2.Position = glm::vec3(0.5, 0.5, 0);
+		v2.TexCoords = glm::vec2(1, 0);
+		v3.Position = glm::vec3(0.5, -0.5, 0);
+		v3.TexCoords = glm::vec2(1, 1);
+		v4.Position = glm::vec3(-0.5, -0.5, 0);
+		v4.TexCoords = glm::vec2(0, 1);
+		vertices.push_back(v1);
+		vertices.push_back(v2);
+		vertices.push_back(v3);
+		vertices.push_back(v4);
+
+		vector<unsigned int> indices;
+		indices.push_back(3);
+		indices.push_back(1);
+		indices.push_back(0);
+		indices.push_back(3);
+		indices.push_back(2);
+		indices.push_back(1);
+		
+		Model *fire = new Model(GetShader(shaderName), vertices, indices);
+		Models["fire"] = fire;
+		Texture texture;
+		texture.id = Models["fire"]->TextureFromFile(texturePath);
+		texture.type = "texture_diffuse";
+		texture.path = texturePath.c_str();
+		Models["fire"]->textures_loaded.push_back(texture);
+		fire->meshes[0].textures.push_back(texture);
+	}
+	return Models["fire"];
+}
+
 Model * ResourceManager::LoadPlanetModel(std::string name, std::string shaderName, glm::vec3 offset)
 {
 	cout << "Loading from [" << name << "]..." << endl;
@@ -64,7 +103,7 @@ Model * ResourceManager::LoadPlanetModel(std::string name, std::string shaderNam
 Model *ResourceManager::GetModel(std::string name)
 {
 	if (Models.find(name) == Models.end()) {
-		std::cout << "Error::ResourceManager::GetTexture: No model named '" << name << "'" << std::endl;
+		std::cout << "Error::ResourceManager::GetModel: No model named '" << name << "'" << std::endl;
 		exit(-1);
 	}
 	return Models[name];

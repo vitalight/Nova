@@ -35,18 +35,20 @@ void Application::Init()
 	ResourceManager::LoadShader("skybox");
 	// asteroids shader
 	ResourceManager::LoadShader("asteroids");
+	// shader for fire animation
+	ResourceManager::LoadShader("fire");
+
 	// used to check normal line
 	//ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
 
 	/*************************************************************
 	* Load models
 	*************************************************************/
-	//ResourceManager::LoadModel("resources/objects/tree/tree.obj", "cube", "light", glm::vec3(0));
-	ResourceManager::LoadModel("myrobot", "texture", glm::vec3(0));
-	//ResourceManager::LoadModel("ufo", "texture", glm::vec3(0));
+	ResourceManager::LoadModel("myrobot", "asteroids", glm::vec3(0));
 	ResourceManager::LoadModel("asteroids", "asteroids", glm::vec3(0, 0, 0));
 	ResourceManager::LoadModel("earth", "multitexture", glm::vec3(0.5, -0.5, 0));
-	ResourceManager::LoadPlanetModel("sun", "light", glm::vec3(0.5, -0.5, 0));
+	// for test
+	ResourceManager::LoadPlanetModel("sun", "light", glm::vec3(0.5, -0.5, 0))->brightness = 1.0f;
 	ResourceManager::LoadPlanetModel("moon", "texture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("mercury", "texture", glm::vec3(0.5, -0.5, 0));
 	ResourceManager::LoadPlanetModel("venus", "texture", glm::vec3(0.5, -0.5, 0));
@@ -74,7 +76,6 @@ void Application::Init()
 	earth = entityManager.createEntity("earth", 12.6);
 	earth->configPlanet(2, 860, 0.01);
 	entityManager.createEntity("moon", 1.6)->configMoon(earth, 0.2, 60, 1.0);
-	//entityManager.createEntity("ufo", 10)->configMoon(earth, 0.2, 60, 0);
 
 	entityManager.createEntity("mars", 6.6)->configPlanet(3, 1040, 0.005);
 	entityManager.createEntity("jupiter", 20)->configPlanet(4, 1360, 0.002);
@@ -84,7 +85,7 @@ void Application::Init()
 	entityManager.createEntity("shuttle", 0.05)->configShuttle();
 
 	// partical system
-	particalManager = new ParticalManager("asteroids", "asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
+	particalManager = new ParticalManager("asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
 
 	// universe skybox
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
@@ -128,6 +129,7 @@ float Application::getTime()
 
 void Application::processKeyboard()
 {
+	// process movement
 	if (GetKeyState('W') < 0) {
 		camera->ProcessKeyboard(FORWARD, deltaTime);
 	}
@@ -145,6 +147,19 @@ void Application::processKeyboard()
 	}
 	if (GetKeyState('E') < 0) {
 		camera->ProcessKeyboard(DOWN, deltaTime);
+	}
+
+	static float brightness = 1.0f;
+	// process brightness adjustment
+	if (GetKeyState('Z') < 0 && brightness < 1.0) {
+		brightness += deltaTime * NV_LIGHT_ADJUST;
+		ResourceManager::GetModel("sun")->brightness = brightness;
+		light->Color = NV_LIGHT_COL * brightness;
+	}
+	if (GetKeyState('X') < 0 && brightness > 0.3) {
+		brightness -= deltaTime * NV_LIGHT_ADJUST;
+		ResourceManager::GetModel("sun")->brightness = brightness;
+		light->Color = NV_LIGHT_COL * brightness;
 	}
 }
 

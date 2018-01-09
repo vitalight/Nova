@@ -18,19 +18,19 @@
 class Entity
 {
 public:
-	Entity(Model *model,
+	Entity(Model *rock,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		glm::vec3 scale = glm::vec3(1, 1, 1),
 		float angle = 0.0f,
 		glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Entity(Model *model,
+	Entity(Model *rock,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		float scale = 1.0f,
 		float angle = 0.0f,
 		glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Entity(string model,
+	Entity(string rock,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		float scale = 1.0f,
 		float angle = 0.0f,
@@ -52,7 +52,7 @@ private:
 	float radius, angular_velocity, rotate_velocity;
 	Entity *parent;
 
-	Model *model;
+	Model *rock;
 
 	void update(float time);
 };

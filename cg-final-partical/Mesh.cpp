@@ -8,8 +8,8 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 	setupMesh();
 }
 
-Mesh::Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices, vector<glm::vec3> &colors)
-	: vertices(vertices), indices(indices), colors(colors), type(MESH_GROUND)
+Mesh::Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices)
+	: vertices(vertices), indices(indices), type(MESH_GROUND)
 {
 	// now that we have all the required data, set the vertex buffers and its attribute pointers.
 	setupMesh();
@@ -97,14 +97,6 @@ void Mesh::setupMesh()
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 	// vertex texture coords
-	/*if (type = MESH_GROUND) {
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(glm::vec3), &colors[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
-	}
-	else {*/
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
 	glEnableVertexAttribArray(3);
