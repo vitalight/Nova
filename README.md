@@ -82,6 +82,7 @@ This is the SJTU CG final homework —— Nova.
       * [!!!!]BufferData size shouldn't change
     * transpose not working
     * default angle can't be seen， so after rotate still can never be seen
+    * animation done!
 
 
   * spaceship tail partical effect

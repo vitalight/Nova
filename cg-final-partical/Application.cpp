@@ -18,7 +18,7 @@ void Application::Init()
 	 *************************************************************/
 	light = new Light(NV_LIGHT_POS, NV_LIGHT_COL, NV_LIGHT_BIAS);
 	camera = new Camera(glm::perspective(glm::radians(45.0f), (float)NV_SCR_WIDTH / (float)NV_SCR_HEIGHT, 0.1f, 2500.0f), 
-						glm::vec3(0.0f, 0.0f, 600.0f));
+						glm::vec3(0.0f, 0.0f, NV_CAMERA_SPEED));
 
 	/*************************************************************
 	 * Compile shaders
@@ -37,8 +37,7 @@ void Application::Init()
 	ResourceManager::LoadShader("asteroids");
 	// shader for fire animation
 	ResourceManager::LoadShader("fire");
-
-	// used to check normal line
+	// used to show normal line
 	//ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
 
 	/*************************************************************
@@ -105,8 +104,8 @@ void Application::Update()
 	processKeyboard();
 
 	entityManager.draw(*light, *camera, deltaTime);
-	particalManager->draw(*light, *camera, deltaTime);
 	skybox->draw(*camera);
+	particalManager->draw(*light, *camera, deltaTime);
 
 	// show text: fps
 	showFPS();
@@ -132,21 +131,27 @@ void Application::processKeyboard()
 	// process movement
 	if (GetKeyState('W') < 0) {
 		camera->ProcessKeyboard(FORWARD, deltaTime);
+		particalManager->generateFire(*camera, camera->Front);
 	}
 	if (GetKeyState('S') < 0) {
 		camera->ProcessKeyboard(BACKWARD, deltaTime);
+		particalManager->generateFire(*camera, -camera->Front);
 	}
 	if (GetKeyState('A') < 0) {
 		camera->ProcessKeyboard(LEFT, deltaTime);
+		particalManager->generateFire(*camera, -camera->Right);
 	}
 	if (GetKeyState('D') < 0) {
 		camera->ProcessKeyboard(RIGHT, deltaTime);
+		particalManager->generateFire(*camera, camera->Right);
 	}
 	if (GetKeyState('Q') < 0) {
 		camera->ProcessKeyboard(UP, deltaTime);
+		particalManager->generateFire(*camera, camera->Up);
 	}
 	if (GetKeyState('E') < 0) {
 		camera->ProcessKeyboard(DOWN, deltaTime);
+		particalManager->generateFire(*camera, -camera->Up);
 	}
 
 	static float brightness = 1.0f;

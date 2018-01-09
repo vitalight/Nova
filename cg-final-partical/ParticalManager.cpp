@@ -27,36 +27,61 @@ ParticalManager::ParticalManager(string name, int _amountFlying, int _amountCirc
 
 	// fire partical
 #ifdef USE_FIRE
-	fire = ResourceManager::LoadFireModel("fire", "resources/atlas/fire.png");
-	fireMatrices = new glm::mat4[amountFireMax];
+	fire = ResourceManager::LoadFireModel("fire", "resources/atlas/particleAtlas.png");
+	fireMatrices = new FireMatrix[amountFireMax];
 	glGenBuffers(1, &fireVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, fireVBO);
-	glBufferData(GL_ARRAY_BUFFER, amountFireMax*sizeof(glm::mat4), &fireMatrices[0], GL_STREAM_DRAW);
-	setupModel(fire);
+	glBufferData(GL_ARRAY_BUFFER, amountFireMax*sizeof(FireMatrix), &fireMatrices[0], GL_STREAM_DRAW);
+	setupModel(fire, true);
 #endif
 }
 
-void ParticalManager::setupModel(Model *model)
+void ParticalManager::setupModel(Model *model, bool isFire)
 {
 	for (unsigned int i = 0; i < model->meshes.size(); i++)
 	{
 		unsigned int VAO = model->meshes[i].VAO;
 		glBindVertexArray(VAO);
 		// set attribute pointers for matrix (4 times vec4)
-		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-		glEnableVertexAttribArray(5);
-		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-		glEnableVertexAttribArray(6);
-		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+		if (isFire) {
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)0);
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(sizeof(glm::vec4)));
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(2 * sizeof(glm::vec4)));
+			glEnableVertexAttribArray(6);
+			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(3 * sizeof(glm::vec4)));
+			glEnableVertexAttribArray(7);
+			glVertexAttribPointer(7, 2, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(4 * sizeof(glm::vec4)));
+			glEnableVertexAttribArray(8);
+			glVertexAttribPointer(8, 2, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(4 * sizeof(glm::vec4) + sizeof(glm::vec2)));
+			glEnableVertexAttribArray(9);
+			glVertexAttribPointer(9, 1, GL_FLOAT, GL_FALSE, sizeof(FireMatrix), (void*)(6 * sizeof(glm::vec4) + 2*sizeof(glm::vec2)));
 
-		glVertexAttribDivisor(3, 1);
-		glVertexAttribDivisor(4, 1);
-		glVertexAttribDivisor(5, 1);
-		glVertexAttribDivisor(6, 1);
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+			glVertexAttribDivisor(5, 1);
+			glVertexAttribDivisor(6, 1);
+			glVertexAttribDivisor(7, 1);
+			glVertexAttribDivisor(8, 1);
+			glVertexAttribDivisor(9, 1);
+		}
+		else {
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+			glEnableVertexAttribArray(6);
+			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
 
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+			glVertexAttribDivisor(5, 1);
+			glVertexAttribDivisor(6, 1);
+		}
 		glBindVertexArray(0);
 	}
 }
@@ -67,9 +92,12 @@ void ParticalManager::draw(Light &light, Camera &camera, float &time)
 
 	drawModel(rock, amountFlying + amountCircling, light, camera, time);
 #ifdef USE_FIRE
-	generateFire(camera);
 	if (particalFires.size()) {
+		glDisable(GL_DEPTH_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		drawModel(fire, particalFires.size(), light, camera, time);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
 	}
 #endif
 }
@@ -180,19 +208,27 @@ void ParticalManager::update(const float time, Camera &camera)
 			continue;
 		}
 		fireMat = glm::translate(fireMat, glm::vec3(particalFires[i].position));
-		fireMatrices[i] = fireMat;
+		fireMatrices[i].matrix = fireMat;
+
+		double stage = particalFires[i].elapseTime / liveRange * 4 * 4;
+		int stage1 = int(stage);
+		int stage2 = stage1 + 1;
+		float blend = stage - stage1;
+		fireMatrices[i].texCoord1 = glm::vec2(stage1 % 4 * 0.25, stage1 / 4 * 0.25);
+		fireMatrices[i].texCoord2 = glm::vec2(stage2 % 4 * 0.25, stage2 / 4 * 0.25);
+		fireMatrices[i].blend = blend;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, fireVBO);
-	glBufferData(GL_ARRAY_BUFFER, amountFireMax*sizeof(glm::mat4), &fireMatrices[0], GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, amountFireMax*sizeof(FireMatrix), &fireMatrices[0], GL_STREAM_DRAW);
 #endif
 }
 
-void ParticalManager::generateFire(Camera &camera)
+void ParticalManager::generateFire(Camera &camera, glm::vec3 direction)
 {
 	if (particalFires.size() >= amountFireMax)
 		return;
 	ParticalFire part;
-	part.velocity = -10.0f * camera.Front + float(rand() % 10 - 5) * camera.Right;// rand();
+	part.velocity = 0.9f * camera.MovementSpeed * direction + float(rand() % 6 - 3) * camera.Right;// rand();
 	part.position = camera.Position + camera.Front*30.0f - camera.Up*4.0f;// todo? change to a class
 	particalFires.push_back(part);
 
