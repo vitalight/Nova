@@ -29,6 +29,7 @@ public:
 	void Update();
 	void SwitchShader();
 	void SwitchPartical();
+	void processMouse(int xoffset, int yoffset);
 private:
 	TextRenderer *textRenderer;
 	Light *light;
@@ -37,12 +38,13 @@ private:
 	ParticalManager *particalManager;
 	EntityManager entityManager;
 	// this is list here because it will change shader to see difference
-	Entity *earth;
+	Entity *earth, *shuttle;
 
 	float deltaTime, lastTime = 0;
 	unsigned int frameCnt = 0, fps = 0;
 	float currentFrame = 0,
 		lastFrame = 0;
+
 
 	void showFPS();
 

@@ -2,13 +2,14 @@
 
 #define USE_FIRE
 
-ParticalManager::ParticalManager(string name, int _amountFlying, int _amountCircling, float radius, float offset)
+ParticalManager::ParticalManager(Entity *shuttle, string name, int _amountFlying, int _amountCircling, float radius, float offset)
 {
 	amountFlying = _amountFlying;
 	amountCircling = _amountCircling;
 	amountFireMax = 1000;
 
 	// rock partical
+	this->shuttle = shuttle;
 	rock = ResourceManager::GetModel(name);
 	Model *myrobot = ResourceManager::GetModel("myrobot");
 	rockMatrices = new glm::mat4[amountFlying + amountCircling];
@@ -200,7 +201,7 @@ void ParticalManager::update(const float time, Camera &camera)
 	// fire particals
 	for (int i = 0; i < particalFires.size(); i++) {
 		glm::mat4 fireMat;
-		particalFires[i].position += time * particalFires[i].velocity;
+		particalFires[i].position = shuttle->getTail() + particalFires[i].elapseTime * particalFires[i].velocity;// time * particalFires[i].velocity;
 		particalFires[i].elapseTime += time;
 		if (particalFires[i].elapseTime > liveRange) {
 			particalFires.erase(particalFires.begin() + i);
@@ -210,7 +211,7 @@ void ParticalManager::update(const float time, Camera &camera)
 		fireMat = glm::translate(fireMat, glm::vec3(particalFires[i].position));
 		fireMatrices[i].matrix = fireMat;
 
-		double stage = particalFires[i].elapseTime / liveRange * 4 * 4;
+		double stage = particalFires[i].elapseTime / liveRange * 8;
 		int stage1 = int(stage);
 		int stage2 = stage1 + 1;
 		float blend = stage - stage1;
@@ -223,13 +224,16 @@ void ParticalManager::update(const float time, Camera &camera)
 #endif
 }
 
-void ParticalManager::generateFire(Camera &camera, glm::vec3 direction)
+void ParticalManager::generateFire(Camera &camera, glm::vec3 direction, glm::vec3 otherDirection1, glm::vec3 otherDirection2)
 {
 	if (particalFires.size() >= amountFireMax)
 		return;
 	ParticalFire part;
-	part.velocity = 0.9f * camera.MovementSpeed * direction + float(rand() % 6 - 3) * camera.Right;// rand();
-	part.position = camera.Position + camera.Front*30.0f - camera.Up*4.0f;// todo? change to a class
+	float rand1 = NV_FIRE_RAND, rand2 = NV_FIRE_RAND;
+	part.velocity = -NV_FIRE_SPEED * direction + rand1*otherDirection1*0.5f + rand2*otherDirection2*0.5f;
+	//part.elapseTime += (rand1 + rand2) / NV_FIRE_RAND_MAX * liveRange * 0.9;
+	// 0.9f * camera.MovementSpeed * direction + float(rand() % 6 - 3) * camera.Right;
+	part.position = shuttle->getTail();// camera.Position + camera.Front*30.0f - camera.Up*4.0f;// todo? change to a class
 	particalFires.push_back(part);
 
 	//cout << "new fire #" << particalFires.size() << endl;

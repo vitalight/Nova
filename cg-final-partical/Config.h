@@ -14,6 +14,8 @@
 * Camera
 ****************************************/
 #define NV_CAMERA_SPEED (600.0f)
+#define NV_CAMERA_FRONT_DISTANCE (35.0f)
+#define NV_CAMERA_DOWN_DISTANCE (5.0f)
 
 /****************************************
  * Light
@@ -34,6 +36,13 @@
 #define NV_ROTATE_WEIGHT 0.2
 // initial elapse time for entities // change to 3500
 #define NV_ENTITY_INITIAL_FRAME 0
+
+/****************************************
+* Fire
+****************************************/
+#define NV_FIRE_SPEED 15.0f
+#define NV_FIRE_RAND (float(rand()%6-3))
+#define NV_FIRE_RAND_MAX 6.0f
 
 /****************************************
  * Asteroids

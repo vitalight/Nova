@@ -32,19 +32,24 @@ void Entity::configMoon(Entity *parent, float rotate_velocity, float radius, flo
 	this->angular_velocity = angular_velocity;
 }
 
-void Entity::configShuttle()
+void Entity::configShuttle(Camera &camera)
 {
 	type = ENTITY_SHUTTLE;
+	position = camera.Position + camera.Front* NV_CAMERA_FRONT_DISTANCE - camera.Up * NV_CAMERA_DOWN_DISTANCE;// -camera.Up*6.0f;
+	angle = -glm::radians(camera.Yaw) + PI;
+	axis = glm::vec3(0, 1, 0);
 }
 
 void Entity::Draw(Light light, Camera camera, float time)
 {
 	update(time);
 
+	// todo: change name
 	switch (type) {
 	case ENTITY_SHUTTLE:
-		rock->Draw(light, camera, camera.Position + camera.Front*40.0f - camera.Up*4.0f,
-			scale, -glm::radians(camera.Yaw) + PI, glm::vec3(0, 1, 0));
+		//rock->Draw(light, camera, camera.Position + camera.Front*40.0f - camera.Up*4.0f,
+		//	scale, -glm::radians(camera.Yaw) + PI, glm::vec3(0, 1, 0));
+		rock->Draw(light, camera, position, scale, angle, axis);
 		break;
 	case ENTITY_PLANET:
 	case ENTITY_MOON:
@@ -67,6 +72,11 @@ void Entity::switchShader()
 		rock->shader = ResourceManager::GetShader("multitexture");
 		goodShader = true;
 	}
+}
+
+glm::vec3 Entity::getTail()
+{
+	return position + 2.3f * glm::vec3(cos(angle), 0.1, -sin(angle));
 }
 
 void Entity::update(float time)

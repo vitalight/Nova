@@ -84,14 +84,10 @@ This is the SJTU CG final homework —— Nova.
     * default angle can't be seen， so after rotate still can never be seen
     * animation done!
 
-
-  * spaceship tail partical effect
-  * 彗星
-  * spaceship action ( not important )
-  * clean up function (public name use CAPITAL)
-  * fade-in fade-out background-music
-* 1.9 cleanup and document
-* 1.10 documentation and improvement
+    * spaceship tail partical effect
+    * that's it!
+  * 1.10 documentation and improvement
+      * clean up function (public name use CAPITAL)
 
 ### Achivement
 

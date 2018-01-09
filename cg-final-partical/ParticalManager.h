@@ -7,6 +7,7 @@
 
 #include "ResourceManager.h"
 #include "Config.h"
+#include "Entity.h"
 
 class ParticalFlying
 {
@@ -47,15 +48,16 @@ public:
 class ParticalManager
 {
 public:
-	ParticalManager(string name, int _amountFlying, int _amountCircling, float radius, float offset);
+	ParticalManager(Entity *shuttle, string name, int _amountFlying, int _amountCircling, float radius, float offset);
 	void draw(Light & light, Camera & camera, float & time);
 	void switchPartical();
-	void generateFire(Camera & camera, glm::vec3 direction);
+	void generateFire(Camera & camera, glm::vec3 direction, glm::vec3 otherDirection1, glm::vec3 otherDirection2);
 private:
 	unsigned int rockVBO, fireVBO;
 	Model *rock, *fire;
+	Entity *shuttle;
 	int amountFlying, amountCircling, amountFireMax;
-	float liveRange = 0.8;
+	float liveRange = 1.2;
 	std::vector<ParticalFlying> flyingRocks;
 	ParticalCircling *circlingRocks;
 	std::vector<ParticalFire> particalFires;

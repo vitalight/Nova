@@ -81,10 +81,11 @@ void Application::Init()
 	entityManager.createEntity("saturn", 18)->configPlanet(5, 1600, 0.001);
 	entityManager.createEntity("uranus", 14)->configPlanet(4, 1940, 0.005);
 	entityManager.createEntity("neptune", 13)->configPlanet(5, 2240, 0.003);
-	entityManager.createEntity("shuttle", 0.05)->configShuttle();
+	shuttle = entityManager.createEntity("shuttle", 0.05);
+	shuttle->configShuttle(*camera);
 
 	// partical system
-	particalManager = new ParticalManager("asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
+	particalManager = new ParticalManager(shuttle, "asteroids", NV_FLYING_NUM, NV_CIRCLING_NUM, NV_ROCK_RADIUS, NV_ROCK_OFFSET);
 
 	// universe skybox
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
@@ -129,29 +130,42 @@ float Application::getTime()
 void Application::processKeyboard()
 {
 	// process movement
+	bool hasKey = false;
 	if (GetKeyState('W') < 0) {
 		camera->ProcessKeyboard(FORWARD, deltaTime);
-		particalManager->generateFire(*camera, camera->Front);
+		shuttle->position += camera->Front * deltaTime * camera->MovementSpeed;
+		particalManager->generateFire(*camera, camera->Front, camera->Right, camera->Up);
+		hasKey = true;
 	}
 	if (GetKeyState('S') < 0) {
 		camera->ProcessKeyboard(BACKWARD, deltaTime);
-		particalManager->generateFire(*camera, -camera->Front);
+		shuttle->position -= camera->Front * deltaTime * camera->MovementSpeed;
+		particalManager->generateFire(*camera, -camera->Front, camera->Right, camera->Up);
+		hasKey = true;
 	}
 	if (GetKeyState('A') < 0) {
 		camera->ProcessKeyboard(LEFT, deltaTime);
-		particalManager->generateFire(*camera, -camera->Right);
+		shuttle->position -= camera->Right * deltaTime * camera->MovementSpeed;
+		if (!hasKey)
+			particalManager->generateFire(*camera, -camera->Right + camera->Front, camera->Front, camera->Up);
 	}
 	if (GetKeyState('D') < 0) {
 		camera->ProcessKeyboard(RIGHT, deltaTime);
-		particalManager->generateFire(*camera, camera->Right);
+		shuttle->position += camera->Right * deltaTime * camera->MovementSpeed;
+		if (!hasKey)
+			particalManager->generateFire(*camera, camera->Right + camera->Front, camera->Front, camera->Up);
 	}
 	if (GetKeyState('Q') < 0) {
 		camera->ProcessKeyboard(UP, deltaTime);
-		particalManager->generateFire(*camera, camera->Up);
+		shuttle->position += camera->Up * deltaTime * camera->MovementSpeed;
+		if (!hasKey)
+			particalManager->generateFire(*camera, camera->Up + camera->Front, camera->Right, camera->Front);
 	}
 	if (GetKeyState('E') < 0) {
 		camera->ProcessKeyboard(DOWN, deltaTime);
-		particalManager->generateFire(*camera, -camera->Up);
+		shuttle->position -= camera->Up * deltaTime * camera->MovementSpeed;
+		if (!hasKey)
+			particalManager->generateFire(*camera, -camera->Up + camera->Front, camera->Right, camera->Front);
 	}
 
 	static float brightness = 1.0f;
@@ -166,6 +180,12 @@ void Application::processKeyboard()
 		ResourceManager::GetModel("sun")->brightness = brightness;
 		light->Color = NV_LIGHT_COL * brightness;
 	}
+}
+
+void Application::processMouse(int xoffset, int yoffset)
+{
+	camera->ProcessMouseMovement(xoffset, yoffset);
+	shuttle->angle = -glm::radians(camera->Yaw) + PI;
 }
 
 void Application::showFPS()

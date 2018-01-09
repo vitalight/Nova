@@ -6,6 +6,8 @@
 #include "includes/glm/gtc/matrix_transform.hpp"
 #include "includes/glm/gtc/type_ptr.hpp"
 
+#include "Config.h"
+
 enum Camera_Movement {
 	FORWARD,
 	BACKWARD,
@@ -44,6 +46,7 @@ public:
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom;
+	//Entity *master;
 
 	// Constructor with vectors
 	Camera(glm::mat4 projection,
@@ -68,6 +71,8 @@ public:
 	// Porcesses input received from a moouse scroll-wheel event. Only requires input
 	// on the vertical wheel-axis
 	void ProcessMouseScroll(int yoffset);
+
+	//void follow(Entity *entity);
 private:
 	// Calculates the front vector from Camera's (updated) Eular Angles
 	void updateCameraVectors();

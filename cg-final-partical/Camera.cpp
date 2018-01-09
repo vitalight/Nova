@@ -70,8 +70,14 @@ void Camera::ProcessMouseMovement(int xoffset, int yoffset, GLboolean constrainP
 			Pitch = -89.0f;
 	}
 
+	Position += Front * NV_CAMERA_FRONT_DISTANCE;
+	Position -= Up * NV_CAMERA_DOWN_DISTANCE;
+
 	// Update Front, Right and Up Vectors using the updated Eular angles
 	updateCameraVectors();
+
+	Position -= Front * NV_CAMERA_FRONT_DISTANCE;
+	Position += Up * NV_CAMERA_DOWN_DISTANCE;
 }
 
 void Camera::ProcessMouseScroll(int yoffset)
@@ -83,6 +89,11 @@ void Camera::ProcessMouseScroll(int yoffset)
 	if (Zoom >= 45.0f)
 		Zoom = 45.0f;
 }
+//
+//void Camera::follow(Entity * entity)
+//{
+//	master = entity;
+//}
 
 void Camera::updateCameraVectors()
 {

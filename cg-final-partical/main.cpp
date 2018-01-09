@@ -82,7 +82,7 @@ void motionFunc(int x, int y)
 	lastX = x;
 	lastY = y;
 
-	app.camera->ProcessMouseMovement(xoffset, yoffset);
+	app.processMouse(xoffset, yoffset);
 }
 
 int main(int argc, char *argv[])

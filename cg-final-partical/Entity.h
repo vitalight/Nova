@@ -5,9 +5,9 @@
 
 #include "Model.h"
 #include "Light.h"
-#include "Camera.h"
 #include "ResourceManager.h"
 #include "Config.h"
+#include "Camera.h"
 
 /***********************************************************
 * [Entity]
@@ -18,6 +18,10 @@
 class Entity
 {
 public:
+	glm::vec3 position, axis, scale;
+	glm::vec3 offset;
+	float angle;
+
 	Entity(Model *rock,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		glm::vec3 scale = glm::vec3(1, 1, 1),
@@ -38,14 +42,12 @@ public:
 
 	void configPlanet(float rotate_velocity, float radius = 0, float angular_velocity = 0);
 	void configMoon(Entity *parent, float rotate_velocity, float radius = 0, float angular_velocity = 0);
-	void configShuttle();
+	void configShuttle(Camera &camera);
 	void Draw(Light light, Camera camera, float time);
 	void switchShader();
+	glm::vec3 getTail();
 
 private:
-	glm::vec3 position, axis, scale;
-	glm::vec3 offset;
-	float angle;
 	float mytime = NV_ENTITY_INITIAL_FRAME;
 
 	enum Entity_type { ENTITY_NORMAL, ENTITY_PLANET, ENTITY_MOON, ENTITY_SHUTTLE } type;
