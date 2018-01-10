@@ -88,6 +88,10 @@ This is the SJTU CG final homework —— Nova.
     * that's it!
   * 1.10 documentation and improvement
       * clean up function (public name use CAPITAL)
+      * cleanup [Mesh] and [Model], not much todo
+      * [Pariticalmanager] glBufferData -> glBufferSubData
+      * [TextRenderer]
+      * fix glitches with multiple keyboard input
 
 ### Achivement
 

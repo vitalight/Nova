@@ -196,7 +196,7 @@ void ParticalManager::update(const float time, Camera &camera)
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, rockVBO);
-	glBufferData(GL_ARRAY_BUFFER, (amountFlying + amountCircling) * sizeof(glm::mat4), &rockMatrices[0], GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, (amountFlying + amountCircling) * sizeof(glm::mat4), &rockMatrices[0]);
 #ifdef USE_FIRE
 	// fire particals
 	for (int i = 0; i < particalFires.size(); i++) {
@@ -220,7 +220,7 @@ void ParticalManager::update(const float time, Camera &camera)
 		fireMatrices[i].blend = blend;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, fireVBO);
-	glBufferData(GL_ARRAY_BUFFER, amountFireMax*sizeof(FireMatrix), &fireMatrices[0], GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, particalFires.size()*sizeof(FireMatrix), &fireMatrices[0]);
 #endif
 }
 

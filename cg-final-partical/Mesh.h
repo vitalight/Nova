@@ -16,11 +16,8 @@
 using namespace std;
 
 struct Vertex {
-	// position
 	glm::vec3 Position;
-	// normal
 	glm::vec3 Normal;
-	// texCoords
 	glm::vec2 TexCoords;
 	glm::vec3 Tangent;
 	glm::vec3 Bitangent;
@@ -38,34 +35,32 @@ struct Material {
 	glm::vec3 specular;
 };
 
+/***************************************************************
+* [Mesh]
+*
+*	This is basically the same with the tutorial online.
+*	[Mesh] is the submodule of [Model]. They contains the 
+*	vertices, indices, textures and colors of a 3D item. 
+*	A [Model] may contain multiple [Mesh].
+****************************************************************/
 class Mesh {
 public:
-	/*  Mesh Data  */
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
 	vector<glm::vec3> colors;
 	Material material;
 
-	unsigned int VAO;
-	enum MeshType{MESH_GROUND, MESH_TEXTURE} type;
+	unsigned int VAO, VBO, EBO;
 
-	/*  Functions  */
 	// constructor
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, glm::vec3 color);
-
 	Mesh(vector<Vertex> &vertices, vector<unsigned int> &indices);
 
-	// render the mesh
+	// Set shader uniform, bind texture, then render
 	void Draw(Light light, Camera camera, Shader shader);
 
-	void offset(glm::vec3 ofs);
-
 private:
-	/*  Render data  */
-	unsigned int VBO, EBO;
-
-	/*  Functions    */
-	// initializes all the buffer objects/arrays
+	// setup VAO, VBO and EBO
 	void setupMesh();
 };

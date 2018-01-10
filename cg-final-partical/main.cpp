@@ -10,9 +10,9 @@
 * things start to be moving, the build-in GC have better 
 * performance. 
 ********************************************************/
-//extern "C" {
-//	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
-//}
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
 
 Application app;
 bool firstMouse = true;

@@ -9,11 +9,9 @@
 
 /***********************************************************
 * [Skybox]
+*	
 *	This class is a implementation of cubemaps, and is used 
 *	to render the background.
-*
-*	Note that skybox has to be draw at last, otherwise the 
-*	depth detection might lead to glitches.
 ************************************************************/
 class Skybox
 {

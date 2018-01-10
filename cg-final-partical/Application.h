@@ -17,8 +17,14 @@
 #include "ParticalManager.h"
 #include "Config.h"
 #include "EntityManager.h"
-//#include "Entity.h"
 
+/***************************************************************
+* [Application]
+*
+*	The core class that invokes other modules to implement the
+*	basic logic. Load in the resources(models, shaders, textures)
+*	and update each item's position and render them on screen. 
+****************************************************************/
 class Application {
 public:
 	Camera *camera;
@@ -33,11 +39,14 @@ public:
 private:
 	TextRenderer *textRenderer;
 	Light *light;
-	//vector<Entity*> entities;
 	Skybox *skybox;
 	ParticalManager *particalManager;
 	EntityManager entityManager;
-	// this is list here because it will change shader to see difference
+	/*************************************************
+	* This two is list out of EntityManager because
+	*	[Earth] will change shader according to user input
+	*	[shuttle] ?
+	**************************************************/
 	Entity *earth, *shuttle;
 
 	float deltaTime, lastTime = 0;

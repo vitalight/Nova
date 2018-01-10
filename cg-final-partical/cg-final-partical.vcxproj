@@ -83,6 +83,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>F:\MyCodes\cg-final-partical\cg-final-partical\dll;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>F:\MyCodes\cg-final-partical\cg-final-partical\includes;$(IncludePath)</IncludePath>
+    <ReferencePath>F:\MyCodes\cg-final-partical\cg-final-partical\lib;$(ReferencePath)</ReferencePath>
+    <LibraryPath>F:\MyCodes\cg-final-partical\cg-final-partical\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -133,6 +137,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype271.lib;assimp.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -169,8 +175,8 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="glsl\2d.fs" />
-    <None Include="glsl\2d.vs" />
+    <None Include="glsl\text.fs" />
+    <None Include="glsl\text.vs" />
     <None Include="glsl\asteroids.fs" />
     <None Include="glsl\asteroids.vs" />
     <None Include="glsl\fire.fs" />

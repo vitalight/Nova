@@ -23,6 +23,8 @@ void Application::Init()
 	/*************************************************************
 	 * Compile shaders
 	 *************************************************************/
+	// shader for text
+	ResourceManager::LoadShader("text");
 	// ugly shader is needed for show difference
 	ResourceManager::LoadShader("ugly");
 	// sun light source
@@ -91,8 +93,8 @@ void Application::Init()
 	skybox = new Skybox(ResourceManager::GetShader("skybox"));
 
 	// text render
-	textRenderer = new TextRenderer(NV_SCR_WIDTH, NV_SCR_HEIGHT);
-	textRenderer->Load("resources/fonts/arial.ttf", 24);
+	textRenderer = new TextRenderer("text", NV_SCR_WIDTH, NV_SCR_HEIGHT);
+	textRenderer->Load("resources/fonts/STXIHEI.TTF", 30);
 }
 
 void Application::Update()
@@ -148,12 +150,14 @@ void Application::processKeyboard()
 		shuttle->position -= camera->Right * deltaTime * camera->MovementSpeed;
 		if (!hasKey)
 			particalManager->generateFire(*camera, -camera->Right + camera->Front, camera->Front, camera->Up);
+		hasKey = true;
 	}
 	if (GetKeyState('D') < 0) {
 		camera->ProcessKeyboard(RIGHT, deltaTime);
 		shuttle->position += camera->Right * deltaTime * camera->MovementSpeed;
 		if (!hasKey)
 			particalManager->generateFire(*camera, camera->Right + camera->Front, camera->Front, camera->Up);
+		hasKey = true;
 	}
 	if (GetKeyState('Q') < 0) {
 		camera->ProcessKeyboard(UP, deltaTime);

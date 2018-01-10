@@ -93,9 +93,8 @@ void Model::loadModel(string const &path)
 	// read file via ASSIMP
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-	//cout << "Model:: assimp read scene" << endl;
-	// check for errors
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
 		return;
@@ -104,9 +103,7 @@ void Model::loadModel(string const &path)
 	directory = path.substr(0, path.find_last_of('/'));
 
 	// process ASSIMP's root node recursively
-	//cout << "Model:: before processNode" << endl;
 	processNode(scene->mRootNode, scene);
-	//cout << "Model:: after processNode" << endl;
 }
 
 void Model::processNode(aiNode *node, const aiScene *scene)
@@ -129,19 +126,17 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
-	// data to fill
 	vector<Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<Texture> textures;
 
-	//cout << "Model:: processMesh" << endl;
-	// Walk through each of the mesh's vertices
+	// Walk through each of the mesh's vertices, normals and texCoords
 	bool hasNormal = true;
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex;
-		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-						  // positions
+		glm::vec3 vector; 
+
 		vector.x = mesh->mVertices[i].x;
 		vector.y = mesh->mVertices[i].y;
 		vector.z = mesh->mVertices[i].z;
@@ -206,6 +201,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 
+		// if it doesn't contain normal, calculate them
 		if (!hasNormal)
 		{
 			for (unsigned int k = 0; k < face.mNumIndices - 2; k += 3)
@@ -220,15 +216,8 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	}
 
 	// process materials
-	//cout << "Model:: flag 2" << endl;
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 	glm::vec3 color = loadColors(material);
-	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	// Same applies to other texture as the following list summarizes:
-	// diffuse: texture_diffuseN
-	// specular: texture_specularN
-	// normal: texture_normalN
 
 	// 1. diffuse maps
 	vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
@@ -243,7 +232,6 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	//cout << "Model:: out maps" << endl;
 	// return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures, color);
 }

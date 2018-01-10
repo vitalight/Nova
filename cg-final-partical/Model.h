@@ -20,25 +20,40 @@ using namespace std;
 
 const GLfloat PI = 3.1415926535;
 
+/***************************************************************
+* [Model]
+*
+*	This is mostly the same with the tutorial online. It reads
+*	the model from file, and setup [Mesh].
+*	However, a few changes have been made to achive:
+*	
+*	1. auto generated normal
+*		Some obj files contains no normal or inadequate normal,
+*		thus we have to detect them and calculate normal by 
+*		ourselves.
+*	2. code input model
+*		Originally [Model] can only construct a model from file,
+*		I made a few changes to make it able to construct a model
+*		by input the vectices and indices that is generated 
+*		somewhere else.
+****************************************************************/
 class Model
 {
 public:
-	/*  Model Data */
-	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	vector<Texture> textures_loaded;
 	vector<Mesh> meshes;
+
 	string directory;
 	glm::vec3 offset;
 	bool gammaCorrection;
 	Shader shader;
 	float brightness = -1.0;
 
-	/*  Functions   */
-	// constructor, expects a filepath to a 3D model.
 	Model(Shader shader, string const &path, glm::vec3 offset = glm::vec3(0, 0, 0), bool gamma = false);
-
 	Model(Shader shader, vector<Vertex> &vertices, vector<unsigned int> &indices);
 
-	// draws the model, and thus all its meshes
+	// Set shader, change modelMatrix, then render all meshes
+	// Note that if [isPlanet] is true, the model will be rotate to make it look right 
 	void Draw(Light light,
 		Camera camera,
 		glm::vec3 position,
@@ -47,17 +62,15 @@ public:
 		glm::vec3 axis,
 		bool isPlanet = false);
 
+	// create a texture from image file
 	unsigned int TextureFromFile(const string &filename, bool gamma = false);
-
 	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 private:
-	/*  Functions   */
-	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const &path);
 
-	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
+	// traverse each [aiNode]'s [aiMesh] and it's children node
 	void processNode(aiNode *node, const aiScene *scene);
-
+	// translate [aiMesh] into [Mesh]
 	Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
 	// checks all material textures of a given type and loads the textures if they're not loaded yet.

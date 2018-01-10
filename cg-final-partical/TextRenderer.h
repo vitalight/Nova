@@ -20,11 +20,11 @@ struct Character {
 };
 
 /***********************************************************
-* [Entity]
-*	A renderer class for rendering text displayed by a font 
-*	loaded using the FreeType library. A single font is 
-*	loaded, processed into a list of Character items for 
-*	later rendering.
+* [TextRenderer]
+*	
+*	Takes in the shader name, configure VAO & VBO. Then load
+*	the text file and create a texture. When rendering a
+*	character, draw a quad and put the texture on it.
 ************************************************************/
 class TextRenderer
 {
@@ -34,7 +34,7 @@ public:
 	// Shader used for text rendering
 	Shader TextShader;
 	// Constructor
-	TextRenderer(GLuint width, GLuint height);
+	TextRenderer(string shaderName, GLuint width, GLuint height);
 	// Pre-compiles a list of characters from the given font
 	void Load(std::string font, GLuint fontSize);
 	// Renders a string of text using the precompiled list of characters

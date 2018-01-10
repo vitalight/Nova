@@ -48,22 +48,23 @@
  * Asteroids
  ****************************************/
 // numbers of asteroids flying everywhere
-#define NV_FLYING_NUM 150
+#define NV_FLYING_NUM 200
 // numbers of asteroids that circle around sun
-#define NV_CIRCLING_NUM 1000
+// discrete video card can take up to 20000 particals with 50fps
+#define NV_CIRCLING_NUM 1200 
 
 // radius of circle around sun
 #define NV_ROCK_RADIUS 1200
 // random position generation offset
-#define NV_ROCK_OFFSET 50.0f
+#define NV_ROCK_OFFSET 60.0f
 
 // range of destination position for flying asteroids
-#define NV_CENTER_RANGE 1400
+#define NV_CENTER_RANGE 1600
 // range of generation position for flying asteroids
-#define NV_FULL_RANGE 2200
+#define NV_FULL_RANGE 2400
 
 // initial elapse time for flying asteroids
-#define NV_INITIAL_FRAME 120.0f
+#define NV_INITIAL_FRAME 180.0f
 // speed of flying asteroids 10.0f
 #define NV_PARTICAL_SPEED 10.0f
 // rotate speed of asteroids 

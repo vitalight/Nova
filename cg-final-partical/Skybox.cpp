@@ -74,11 +74,6 @@ Skybox::Skybox(Shader _shader)
 		"resources/skybox/front.jpg"
 	};
 	texture = loadCubemap(faces);
-
-	// shader configuration
-	// --------------------
-	shader.Use();
-	shader.SetInteger("skybox", 0);
 }
 
 void Skybox::draw(Camera camera)
