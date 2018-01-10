@@ -6,7 +6,7 @@
 
 /***********************************************************
 * [Light]
-*	Now this class is just a simple container for 
+*	This class is just a simple container for 
 *   light-related information.
 ************************************************************/
 class Light

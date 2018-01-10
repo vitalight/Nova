@@ -65,7 +65,7 @@ private:
 	glm::mat4 *rockMatrices;
 	FireMatrix *fireMatrices;
 
-	void update(const float time, Camera &camera);
+	void update(const float time);
 	bool checkLiveness(ParticalFlying & particalFlying);
 	void generateCirclingPartical(const float radius, const float offset);
 	void generatePartical();

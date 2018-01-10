@@ -77,15 +77,6 @@
     <None Include="glsl\asteroids.vs">
       <Filter>源文件\glsl</Filter>
     </None>
-    <None Include="glsl\normal.fs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\normal.gs">
-      <Filter>源文件\glsl</Filter>
-    </None>
-    <None Include="glsl\normal.vs">
-      <Filter>源文件\glsl</Filter>
-    </None>
     <None Include="glsl\skybox.fs">
       <Filter>源文件\glsl</Filter>
     </None>

@@ -19,7 +19,6 @@ void Model::Draw(Light light, Camera camera, glm::vec3 position,
 	shader.Use();
 	shader.SetMatrix4("projection", camera.Projection);
 	shader.SetMatrix4("view", camera.GetViewMatrix());
-	// todo
 	if (brightness >= 0)
 		shader.SetFloat("brightness", brightness);
 

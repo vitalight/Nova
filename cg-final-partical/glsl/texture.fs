@@ -11,7 +11,6 @@ uniform vec3 lightColor;
 uniform vec3 lightBias;
 uniform vec3 viewPos;
 
-//simple diffuse lighting
 vec3 calculateLighting(){
 	vec3 norm = normalize(pass_normal);
     vec3 lightDir = normalize(lightPos - pass_fragPos);

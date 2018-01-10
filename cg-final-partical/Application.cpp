@@ -39,8 +39,6 @@ void Application::Init()
 	ResourceManager::LoadShader("asteroids");
 	// shader for fire animation
 	ResourceManager::LoadShader("fire");
-	// used to show normal line
-	//ResourceManager::LoadShader("glsl/normal.vs", "glsl/normal.fs", "glsl/normal.gs", "normal");
 
 	/*************************************************************
 	* Load models
@@ -196,8 +194,7 @@ void Application::showFPS()
 {
 	frameCnt++;
 	if (lastFrame - lastTime > 1)
-	{
-		//cout << "gotcha" << endl;
+	{	
 		fps = frameCnt / (lastFrame - lastTime);
 		lastTime = lastFrame;
 		frameCnt = 0;

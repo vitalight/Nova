@@ -10,5 +10,6 @@ void main()
 {
     pass_texCoord = in_position;
     vec4 pos = projection * view * vec4(in_position, 1.0);
+	// make z the maximum depth
     gl_Position = pos.xyww;
 }  

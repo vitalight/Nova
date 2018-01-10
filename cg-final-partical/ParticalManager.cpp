@@ -89,7 +89,7 @@ void ParticalManager::setupModel(Model *model, bool isFire)
 
 void ParticalManager::draw(Light &light, Camera &camera, float &time)
 {
-	update(time, camera);
+	update(time);
 
 	drawModel(rock, amountFlying + amountCircling, light, camera, time);
 #ifdef USE_FIRE
@@ -127,7 +127,6 @@ void ParticalManager::drawModel(Model *model, int number, Light &light, Camera &
 
 void ParticalManager::switchPartical()
 {
-	// todo
 	static bool isRock = true;
 	if (isRock) {
 		rock = ResourceManager::GetModel("myrobot");
@@ -146,9 +145,9 @@ bool ParticalManager::checkLiveness(ParticalFlying &particalFlying)
 		particalFlying.position.z < NV_FULL_RANGE && particalFlying.position.z > -NV_FULL_RANGE;
 }
 
-// todo: remove camera
-void ParticalManager::update(const float time, Camera &camera)
+void ParticalManager::update(const float time)
 {
+	// update flying rocks
 	for (int i = 0; i < amountFlying; i++) {
 		glm::mat4 rockMat;
 		rockMat = glm::translate(rockMat, flyingRocks[i].position);
@@ -171,6 +170,7 @@ void ParticalManager::update(const float time, Camera &camera)
 		rockMatrices[i] = rockMat;
 	}
 
+	// update circling rocks
 	for (int i = 0; i < amountCircling; i++) {
 		glm::mat4 rockMat;
 		circlingRocks[i].angle += time * NV_ANGLE_SPEED;
@@ -198,7 +198,7 @@ void ParticalManager::update(const float time, Camera &camera)
 	glBindBuffer(GL_ARRAY_BUFFER, rockVBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, (amountFlying + amountCircling) * sizeof(glm::mat4), &rockMatrices[0]);
 #ifdef USE_FIRE
-	// fire particals
+	// update fire particals
 	for (int i = 0; i < particalFires.size(); i++) {
 		glm::mat4 fireMat;
 		particalFires[i].position = shuttle->getTail() + particalFires[i].elapseTime * particalFires[i].velocity;// time * particalFires[i].velocity;
@@ -231,12 +231,8 @@ void ParticalManager::generateFire(Camera &camera, glm::vec3 direction, glm::vec
 	ParticalFire part;
 	float rand1 = NV_FIRE_RAND, rand2 = NV_FIRE_RAND;
 	part.velocity = -NV_FIRE_SPEED * direction + rand1*otherDirection1*0.5f + rand2*otherDirection2*0.5f;
-	//part.elapseTime += (rand1 + rand2) / NV_FIRE_RAND_MAX * liveRange * 0.9;
-	// 0.9f * camera.MovementSpeed * direction + float(rand() % 6 - 3) * camera.Right;
-	part.position = shuttle->getTail();// camera.Position + camera.Front*30.0f - camera.Up*4.0f;// todo? change to a class
+	part.position = shuttle->getTail();
 	particalFires.push_back(part);
-
-	//cout << "new fire #" << particalFires.size() << endl;
 }
 
 void ParticalManager::generatePartical()
@@ -291,7 +287,7 @@ void ParticalManager::generateCirclingPartical(const float radius, const float o
 	{
 		glm::mat4 rock;
 		ParticalCircling info;
-		// 1. translation: displace along circle with 'radius' in range [-offset, offset]
+
 		info.angle = (float)i / (float)amountCircling * 360.0f;
 		info.radius = radius + (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
 		info.y = ((rand() % (int)(2 * offset * 100)) / 100.0f - offset)*0.4;
@@ -300,15 +296,12 @@ void ParticalManager::generateCirclingPartical(const float radius, const float o
 		float y = info.y;
 		rock = glm::translate(rock, glm::vec3(x, y, z));
 
-		// 2. scale: Scale between 0.25 and 1.25f
 		info.scale = (rand() % 20) / 5.0f + 0.2f;
 		rock = glm::scale(rock, glm::vec3(info.scale));
 		
-		// 3. rotation: add random rotation around a (semi)randomly picked rotation axis vector
 		info.rotAngle = (rand() % 360);
 		rock = glm::rotate(rock, info.rotAngle, glm::vec3(0.4f, 0.6f, 0.8f));
 
-		// 4. now add to list of matrices
 		rockMatrices[amountFlying + i] = rock;
 		circlingRocks[i] = info;
 	}

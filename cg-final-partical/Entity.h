@@ -22,19 +22,19 @@ public:
 	glm::vec3 offset;
 	float angle;
 
-	Entity(Model *rock,
+	Entity(Model *model,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		glm::vec3 scale = glm::vec3(1, 1, 1),
 		float angle = 0.0f,
 		glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Entity(Model *rock,
+	Entity(Model *model,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		float scale = 1.0f,
 		float angle = 0.0f,
 		glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Entity(string rock,
+	Entity(string modelName,
 		glm::vec3 position = glm::vec3(0, 0, 0),
 		float scale = 1.0f,
 		float angle = 0.0f,
@@ -43,8 +43,11 @@ public:
 	void configPlanet(float rotate_velocity, float radius = 0, float angular_velocity = 0);
 	void configMoon(Entity *parent, float rotate_velocity, float radius = 0, float angular_velocity = 0);
 	void configShuttle(Camera &camera);
+
 	void Draw(Light light, Camera camera, float time);
+	
 	void switchShader();
+	
 	glm::vec3 getTail();
 
 private:
@@ -54,7 +57,7 @@ private:
 	float radius, angular_velocity, rotate_velocity;
 	Entity *parent;
 
-	Model *rock;
+	Model *model;
 
 	void update(float time);
 };

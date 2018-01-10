@@ -88,10 +88,16 @@ This is the SJTU CG final homework —— Nova.
     * that's it!
   * 1.10 documentation and improvement
       * clean up function (public name use CAPITAL)
-      * cleanup [Mesh] and [Model], not much todo
-      * [Pariticalmanager] glBufferData -> glBufferSubData
-      * [TextRenderer]
-      * fix glitches with multiple keyboard input
+        * cleanup [Mesh] and [Model], not much todo
+        * [Pariticalmanager] glBufferData -> glBufferSubData
+        * [TextRenderer]
+        * fix glitches with multiple keyboard input
+        * clean up glsl done
+        * shader done
+        * Resourcemanager
+        * particalManager
+        * basically done
+      * write document
 
 ### Achivement
 
@@ -123,7 +129,6 @@ This is the SJTU CG final homework —— Nova.
 ### 太阳系
 
 - [x] 星球纹理(颜色，高光)
-- [ ] 只给shader传时间，glsl使用两个极坐标运算位置(减少CPU->GPU)
 
 
 - [x] 太阳：粒子特效发光
@@ -137,26 +142,14 @@ This is the SJTU CG final homework —— Nova.
 
 * [x] 飞船基本实现
 
-- [ ] 船尾火焰粒子效果
+- [x] 船尾火焰粒子效果
 - [x] 超好看纹理，被月球和太阳照亮
 
 ### 技术
 
-- [ ] 运动：变加速度运动而不是瞬时运动
 - [x] 字体渲染
 - [x] 使用独显(从NVIDIA文档里找来的)
 
-
-
-
-##  History
-
-- 鱼和海洋
-- 樱花、银杏叶
-- 宇宙与星环
-- 音乐喷泉
-
-core-profile mode(核心模式) instead of immediate mode(固定渲染管线)
 
 
 

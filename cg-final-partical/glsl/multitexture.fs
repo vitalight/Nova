@@ -13,6 +13,7 @@ uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_normal1;
 uniform sampler2D texture_specular1;
 uniform sampler2D texture_height1;
+
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 lightBias;

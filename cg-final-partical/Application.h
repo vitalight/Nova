@@ -27,8 +27,6 @@
 ****************************************************************/
 class Application {
 public:
-	Camera *camera;
-
 	Application();
 	~Application();
 	void Init();
@@ -38,14 +36,16 @@ public:
 	void processMouse(int xoffset, int yoffset);
 private:
 	TextRenderer *textRenderer;
+	Camera *camera;
 	Light *light;
 	Skybox *skybox;
 	ParticalManager *particalManager;
 	EntityManager entityManager;
+
 	/*************************************************
 	* This two is list out of EntityManager because
 	*	[Earth] will change shader according to user input
-	*	[shuttle] ?
+	*	[shuttle] will be followed by fire partical effects
 	**************************************************/
 	Entity *earth, *shuttle;
 
@@ -54,9 +54,7 @@ private:
 	float currentFrame = 0,
 		lastFrame = 0;
 
-
 	void showFPS();
-
 	float getTime();
 	void processKeyboard();
 };

@@ -30,25 +30,20 @@ public:
 	static std::map<std::string, Shader>    Shaders;
 	static std::map<std::string, Model*> Models;
 
-	// Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-	static Shader   LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile, std::string name);
-	static Shader   LoadShader(const GLchar *shaderName);
-	// Retrieves a stored sader
-	static Shader   GetShader(std::string name);
+	static Shader LoadShader(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile, std::string name);
+	static Shader LoadShader(const GLchar *shaderName);
+	static Shader GetShader(std::string name);
 
 	static Model *LoadModel(std::string path, std::string name, std::string shaderName, glm::vec3 offset, bool gamma = false);
 	static Model *LoadModel(std::string name, std::string shaderName, glm::vec3 offset);
-	static Model * LoadFireModel(std::string shaderName, std::string texturePath);
-	static Model * LoadPlanetModel(std::string name, std::string shaderName, glm::vec3 offset);
-
+	static Model *LoadFireModel(std::string shaderName, std::string texturePath);
+	static Model *LoadPlanetModel(std::string name, std::string shaderName, glm::vec3 offset);
 	static Model *GetModel(std::string name);
 
-	// Properly de-allocates all loaded resources
-	static void      Clear();
+	static void Clear();
 private:
-	// Private constructor, that is we do not want any actual resource manager objects. Its members and functions should be publicly available (static).
+	// singleton constructor
 	ResourceManager() { }
 	// Loads and generates a shader from file
-	static Shader    loadShaderFromFile(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile = nullptr);
-	// Loads a single texture from file
+	static Shader loadShaderFromFile(const GLchar *vShaderFile, const GLchar *fShaderFile, const GLchar *gShaderFile = nullptr);
 };

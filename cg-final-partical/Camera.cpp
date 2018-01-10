@@ -89,11 +89,6 @@ void Camera::ProcessMouseScroll(int yoffset)
 	if (Zoom >= 45.0f)
 		Zoom = 45.0f;
 }
-//
-//void Camera::follow(Entity * entity)
-//{
-//	master = entity;
-//}
 
 void Camera::updateCameraVectors()
 {

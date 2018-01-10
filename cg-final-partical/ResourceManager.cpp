@@ -94,7 +94,7 @@ Model * ResourceManager::LoadPlanetModel(std::string name, std::string shaderNam
 	texture.id = Models[name]->TextureFromFile(texturePath);
 	texture.type = "texture_diffuse";
 	texture.path = texturePath.c_str();
-	Models[name]->textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+	Models[name]->textures_loaded.push_back(texture);
 	Models[name]->meshes[0].textures[0] = texture;
 	Models[name]->shader = GetShader(shaderName);
 	return Models[name];

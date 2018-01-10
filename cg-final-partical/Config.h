@@ -51,7 +51,7 @@
 #define NV_FLYING_NUM 200
 // numbers of asteroids that circle around sun
 // discrete video card can take up to 20000 particals with 50fps
-#define NV_CIRCLING_NUM 1200 
+#define NV_CIRCLING_NUM 1200
 
 // radius of circle around sun
 #define NV_ROCK_RADIUS 1200
